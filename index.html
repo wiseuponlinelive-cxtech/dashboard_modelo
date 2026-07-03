@@ -285,7 +285,7 @@
 
       <div class="legend">
         <div class="li"><b>Caixa</b> — onde a conversa entrou/está no Chatwoot (ex.: WOL RA - 5057).</div>
-        <div class="li"><b>Campanha</b> — o disparo/régua de origem (ex.: CS WOL — Campanha Onboarding). Conversas por demanda espontânea entram na caixa sem campanha.</div>
+        <div class="li"><b>Campanha</b> — o disparo/régua de origem. Ao selecionar uma caixa, o filtro de campanha mostra apenas as campanhas cadastradas para aquela caixa. Caixas apenas receptivas podem não exibir campanhas.</div>
       </div>
 
       <div class="overview-groups" id="overview-groups"></div>
@@ -293,8 +293,6 @@
       <div class="block">
         <h3>Gráficos de performance <span class="cap">percentuais recalculados conforme os filtros</span></h3>
         <div id="chart-geral" class="chartbox"></div>
-        <div id="chart-ativas" class="chartbox"></div>
-        <div id="chart-reativas" class="chartbox"></div>
       </div>
 
       <div class="block">
@@ -387,7 +385,7 @@
         <ol class="steps">
           <li>Selecione o <b>Período</b>. Use os presets ou escolha <b>Personalizado</b>; ao selecionar essa opção, as datas de início e fim aparecem dentro do próprio controle de período para escolher qualquer intervalo.</li>
           <li>Comece pela <b>Caixa</b> — é onde a conversa está no Chatwoot. Nem toda conversa tem campanha, então a caixa vem primeiro.</li>
-          <li>Se quiser, adicione a <b>Campanha</b> (o disparo/régua de origem) para olhar só um envio específico.</li>
+          <li>Depois, use <b>Campanha</b> apenas se aquela caixa tiver disparos cadastrados. Quando a caixa for só receptiva, o filtro fica sem campanhas no exemplo.</li>
           <li>Refine com <b>Etiqueta / Tabulação</b> e <b>Status</b>. Na página Operação, use também <b>Agente</b>, <b>Time</b> e <b>Origem</b>. Os filtros Campanha, Status, Etiqueta / Tabulação e Falha de envio permitem selecionar uma, várias ou todas as opções.</li>
           <li>Leia os cards e tabelas. Para ver os alunos, vá para <b>Operação</b>; para baixar a lista, clique em <b>Exportar lista filtrada CSV</b>. A exportação respeita os filtros aplicados.</li>
         </ol>
@@ -400,9 +398,7 @@
           <table>
             <thead><tr><th>Análise</th><th>Base de cálculo</th><th>Exemplo de leitura</th></tr></thead>
             <tbody>
-              <tr><td class="name-cell">Composição geral</td><td>Total de conversas filtradas</td><td>Mostra o peso de ativas/receptivas, abertas/fechadas e transbordos no recorte.</td></tr>
-              <tr><td class="name-cell">Performance das ativas</td><td>Total de conversas de campanha/template</td><td>Mostra respondidas pelo aluno, andamento, sem retorno, falhas e transbordos.</td></tr>
-              <tr><td class="name-cell">Performance das receptivas</td><td>Total de conversas de demanda espontânea</td><td>Mostra resolvidas/fechadas, aguardando resposta agente, andamento e transbordos.</td></tr>
+              <tr><td class="name-cell">Composição geral</td><td>Total de conversas filtradas</td><td>Mostra ativas/receptivas, abertas/fechadas e transbordos separados por motivo.</td></tr>
             </tbody>
           </table>
         </div>
@@ -526,17 +522,34 @@ const FIRST=["Ana","João","Larissa","Pedro","Amanda","Carlos","Fernanda","Lucas
 const LAST=["Silva","Souza","Lima","Pereira","Ferreira","Rocha","Alves","Martins","Gomes","Dias","Castro","Andrade","Costa","Ribeiro","Carvalho","Almeida","Barbosa","Nunes","Moreira","Teixeira"];
 
 const CAIXAS_W=[
-["WOL Onboarding 5531",20],["WOL FAQ - 2139 - MENU",10],["WOL FAQ - 4054 - MENU",8],["WOL FAQ - 5003 - MENU",7],
-["WOL FAQ Marinha - 0418",5],["WOL RA - 5057",9],["WOL Renovacao - 5537 - MENU",12],["WOL Renovacao - 0394",6],
-["WOL Reversão - 5022 - MENU",8],["MENU/SITE - WOL Reversão - 3714",5],["WOL - Inadimplencia - 0926",11],
-["Wol Inadimplência IA - 4809",12],["LIVE - Inadimplência - 0423",7],["LIVE - Inadimplência MD - 6286",5],
-["LIVE FAQ - 0951 - MENU",6],["Wol / Live / LiveMD Inadimplência - 5028",6],["WOL Auditoria - 0772 - MENU",4],
-["Disparos Wupday - 2615",9],["Operacional - Franquias - 0623",4],["Wiser Educação - G&G - 0174",3],
-["Wiser Empreende - 0123",3],["Testes Onboarding Live - 3746",2]
+  ["Live - Inadimplência - 0423",10],
+  ["Live - Inadimplência MD - 6286",8],
+  ["WOL - Inadimplencia - 0926",12],
+  ["WOL - Renovação - 5537",10],
+  ["WOL - Reversão - 5022",7],
+  ["LIVE - Reversão - 3714",6],
+  ["WOL FAQ - 4054",9],
+  ["LIVE FAQ - 0951",7],
+  ["WOL - Auditoria - 0772",5],
+  ["WOL Onboarding - 5531",14],
+  ["Live Onboarding - 3746",6]
 ];
 const CAIXAS=CAIXAS_W.map(x=>x[0]);
-const CAMPANHAS=["CS WOL — Campanha Onboarding","CS WOL — 9D","CS WOL — 15D","CS WOL — 30D","CS WOL — 72D","Retomada","WOL Renovação"];
-const TPL={"CS WOL — Campanha Onboarding":"wol_onb_boasvindas","CS WOL — 9D":"wol_9d_apoio","CS WOL — 15D":"wol_15d_checkin","CS WOL — 30D":"wol_30d_retorno","CS WOL — 72D":"wol_72d_retomada","Retomada":"wol_retomada","WOL Renovação":"wol_renov_lembrete"};
+const CAMPANHAS_POR_CAIXA={
+  "Live - Inadimplência - 0423":["LIVE Inadimplência — 1º contato","LIVE Inadimplência — Link de pagamento","LIVE Inadimplência — Retorno 24h","LIVE Inadimplência — Transbordo financeiro"],
+  "Live - Inadimplência MD - 6286":["LIVE MD Inadimplência — 1º contato","LIVE MD Inadimplência — Link de pagamento","LIVE MD Inadimplência — Retorno 24h","LIVE MD Inadimplência — Transbordo financeiro"],
+  "WOL - Inadimplencia - 0926":["WOL Inadimplência — 1º contato","WOL Inadimplência — FUP pagamento","WOL Inadimplência — Negociação","WOL Inadimplência — Transbordo financeiro"],
+  "WOL - Renovação - 5537":["WOL Renovação — Alunos plano anual","WOL Renovação — Atualização cadastral","WOL Renovação — FUP 1h","WOL Renovação — Transbordo retenção"],
+  "WOL - Reversão - 5022":[],
+  "LIVE - Reversão - 3714":[],
+  "WOL FAQ - 4054":[],
+  "LIVE FAQ - 0951":[],
+  "WOL - Auditoria - 0772":[],
+  "WOL Onboarding - 5531":["CS WOL — Campanha Onboarding","CS WOL — 9D","CS WOL — 15D","CS WOL — 30D","CS WOL — 72D","WOL Onboarding — Boas-vindas","WOL Onboarding — AZ"],
+  "Live Onboarding - 3746":[]
+};
+const CAMPANHAS=Object.values(CAMPANHAS_POR_CAIXA).flat();
+const TPL=Object.fromEntries(CAMPANHAS.map(c=>[c,slug(c).replace(/-/g,'_')]));
 const TIMES=["CS","Onboarding","Orientações Acadêmicas","Retenção","Suporte","Financeiro"];
 const AGENTES=["Ana Paula","Beatriz Lima","Camila Rocha"];
 const MOTIVOS=["131026: Message undeliverable","131049: This message was not delivered to maintain healthy ecosystem engagement","130472: User's number is part of an experiment","falha_ao_enviar_msg","contato_sem_wpp","template não entregue","janela expirada","erro de integração","opt-in ausente","telefone inválido","erro desconhecido"];
@@ -567,7 +580,7 @@ function tabulacaoFor(status,origem,caixa,campanha){
     objetivo="Regularizar pagamento / inadimplência";
     tab=weighted([["Pagou",18],["Link de pagamento enviado",34],["Negou pagar",18],["Solicitou negociação",18],["Sem retorno",12]]);
     resultado=tab==="Pagou"?"Realizado":(tab==="Link de pagamento enviado"||tab==="Solicitou negociação"?"Parcial":(tab==="Negou pagar"?"Não realizado":"Pendente"));
-  }else if(caixa.includes("Renovacao")||campanha==="WOL Renovação"){
+  }else if(caixa.includes("Renov")||campanha==="WOL Renovação"){
     objetivo="Renovação / atualização cadastral";
     tab=weighted([["Atualização cadastral",22],["Solicitou negociação",20],["Sem retorno",25],["Negou pagar",12],["Resolvido",21]]);
     resultado=tab==="Resolvido"||tab==="Atualização cadastral"?"Realizado":(tab==="Solicitou negociação"?"Parcial":(tab==="Negou pagar"?"Não realizado":"Pendente"));
@@ -605,7 +618,7 @@ function tagsFor(status,origem,caixa){
   else if(status==="Pendente")t.push(pick(["atendimento_iniciado","az_agendada"]));
   if(caixa.includes("Onboarding")&&rand()<.6)t.push(pick(["onboarding_20","onboarding_35","onboarding_50","onboarding_65","onboarding_80","onboarding_100","cs_boas_vindas_concluido"]));
   if((caixa.includes("Inadimpl"))&&rand()<.7)t.push(pick(["quero_pagar","quero_negociar","nao_quero_pagar","pago","pgto_pix","confirmar_pagamento","wol_c_fup_inadimplencia_1h"]));
-  if(caixa.includes("Renovacao")&&rand()<.6)t.push(pick(["renovado","desconhece_renovacao","wol_c_fup_renovacao_1h"]));
+  if(caixa.includes("Renov")&&rand()<.6)t.push(pick(["renovado","desconhece_renovacao","wol_c_fup_renovacao_1h"]));
   if(caixa.includes("Reversão")&&rand()<.6)t.push(pick(["revertido","cancelado","nao_contratei","nao_tem_interesse"]));
   if(caixa.includes("RA")&&rand()<.7)t.push("ra_procon");
   if(caixa.includes("FAQ")&&rand()<.5)t.push(pick(["nao_identificado","duplicidade-de-atendimento","fluxo_encerrado"]));
@@ -617,30 +630,40 @@ function tagsFor(status,origem,caixa){
 
 function makeRow(){
   const fn=pick(FIRST),ln=pick(LAST);
-  const origem=weighted([["Campanha",70],["Demanda espontânea",30]]);
-  let status=origem==="Demanda espontânea"
-    ? weighted([["Transbordado",30],["Resolvido",30],["Pendente",22],["Iniciou e parou de responder",18]])
-    : weighted([["Recebeu e não respondeu",29],["Resolvido",22],["Transbordado",13],["Pendente",13],["Iniciou e parou de responder",11],["Falha de envio",12]]);
   const caixa=weighted(CAIXAS_W);
-  const campanha=origem==="Campanha"?pick(CAMPANHAS):"Não se aplica";
+  const campanhasDaCaixa=CAMPANHAS_POR_CAIXA[caixa]||[];
+  const origem=campanhasDaCaixa.length?weighted([["Campanha",70],["Demanda espontânea",30]]):"Demanda espontânea";
+  let status=origem==="Demanda espontânea"
+    ? weighted([["Transbordado",28],["Resolvido",32],["Pendente",22],["Iniciou e parou de responder",18]])
+    : weighted([["Recebeu e não respondeu",29],["Resolvido",22],["Transbordado",13],["Pendente",13],["Iniciou e parou de responder",11],["Falha de envio",12]]);
+  const campanha=origem==="Campanha"?pick(campanhasDaCaixa):"Não se aplica";
   const template=origem==="Campanha"?TPL[campanha]:"—";
   let statusEnvio,respondeu,motivo="";
   if(status==="Falha de envio"){statusEnvio="Falha";respondeu="—";motivo=pick(MOTIVOS);}
   else if(status==="Recebeu e não respondeu"){statusEnvio=weighted([["Entregue",80],["Enviado",20]]);respondeu="Não";}
   else if(status==="Pendente"){statusEnvio=weighted([["Enviado",55],["Entregue",45]]);respondeu=weighted([["Não",55],["Sim",45]]);}
   else{statusEnvio="Entregue";respondeu="Sim";}
-  if(origem==="Demanda espontânea"){statusEnvio=weighted([["Entregue",70],["Enviado",30]]);if(status!=="Pendente")respondeu="Sim";}
+  if(origem==="Demanda espontânea"){
+    statusEnvio="Não se aplica";
+    if(status!=="Pendente")respondeu="Sim";
+  }
   let agente,time;
-  if(status==="Transbordado"){agente=weighted([["Ana Paula",24],["Beatriz Lima",24],["Camila Rocha",22],["Sem agente",30]]);time=pick(TIMES);}
-  else{agente=weighted([["Sem agente",35],["Ana Paula",22],["Beatriz Lima",22],["Camila Rocha",21]]);time=weighted([["Sem time",26],["CS",18],["Onboarding",16],["Orientações Acadêmicas",13],["Retenção",11],["Suporte",9],["Financeiro",7]]);}
-  const tipoEntrada=origem==="Demanda espontânea"?weighted([["Reativo",65],["Ativo",35]]):weighted([["Ativo",78],["Reativo",22]]);
+  if(status==="Transbordado"){
+    agente=weighted([["Ana Paula",24],["Beatriz Lima",24],["Camila Rocha",22],["Sem agente",30]]);
+    time=pick(TIMES);
+  }else{
+    agente=weighted([["Sem agente",35],["Ana Paula",22],["Beatriz Lima",22],["Camila Rocha",21]]);
+    time=weighted([["Sem time",26],["CS",18],["Onboarding",16],["Orientações Acadêmicas",13],["Retenção",11],["Suporte",9],["Financeiro",7]]);
+  }
+  const tipoEntrada=origem==="Demanda espontânea"?weighted([["Reativo",85],["Ativo",15]]):"Ativo";
   const dt=dataEntradaInfo();
   const tab=tabulacaoFor(status,origem,caixa,campanha);
+  const motivoTransbordo=status==='Transbordado'?weighted(TRANSBORDO_MOTIVOS.map(m=>[m,1])):'';
   const statusConversa=status==='Resolvido'||(status==='Falha de envio'&&rand()<0.7)?'Fechadas':'Abertas';
   return {nome:`${fn} ${ln}`,telefone:phone(),email:`${slug(fn)}.${slug(ln)}@aluno.wiser.com`,id:String(720000+Math.floor(rand()*9999)),
     dataEntrada:dt.texto,dataISO:dt.iso,tipoEntrada,caixa,campanha,origem,template,statusConversa,etiquetas:tagsFor(status,origem,caixa),
     tabulacao:tab.tabulacao,resultadoObjetivo:tab.resultadoObjetivo,objetivoCampanha:tab.objetivoCampanha,
-    agente,time,statusEnvio,respondeu,statusFinal:status,motivo};
+    agente,time,statusEnvio,respondeu,statusFinal:status,motivo,motivoTransbordo};
 }
 const DATA=Array.from({length:180},makeRow);
 
@@ -710,6 +733,27 @@ function applyFilters(data){
 }
 function sortAlpha(arr){return [...arr].sort((a,b)=>String(a).localeCompare(String(b),'pt-BR',{sensitivity:'base'}));}
 function optHTML(opts){return [`<option value="">Todos</option>`].concat(opts.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`)).join('');}
+function campanhasDisponiveis(){
+  const rows=DATA.filter(r=>r.origem==='Campanha' && (!state.caixa || r.caixa===state.caixa));
+  return sortAlpha(uniq(rows.map(r=>r.campanha)));
+}
+function updateCampanhaOptions(){
+  const options=campanhasDisponiveis();
+  state.campanha=(state.campanha||[]).filter(v=>options.includes(v));
+  const rows=options.length
+    ? options.map(c=>`<label class="multi-option" data-label="${esc(c)}" data-type=""><input type="checkbox" value="${esc(c)}" data-multi-field="campanha"><span>${esc(c)}</span></label>`).join('')
+    : `<div class="combo-empty" style="padding:12px">Sem campanhas cadastradas para essa caixa no exemplo.</div>`;
+  document.querySelectorAll('[data-multi-menu="campanha"] .multi-list').forEach(list=>{list.innerHTML=rows;});
+  document.querySelectorAll('[data-multi-input="campanha"]').forEach(input=>{input.placeholder=options.length?'Todos':'Sem campanhas';});
+  document.querySelectorAll('[data-multi-field="campanha"]').forEach(cb=>{
+    if(cb.dataset.boundCampaign)return;
+    cb.dataset.boundCampaign='1';
+    cb.addEventListener('change',()=>{
+      state.campanha=uniq([...document.querySelectorAll('[data-multi-field="campanha"]:checked')].map(x=>x.value));
+      renderAll();
+    });
+  });
+}
 function ctrl(field,label,opts,cosmetic){
   const isPeriod=field==='periodo';
   const sorted=isPeriod?opts:sortAlpha(opts);
@@ -739,7 +783,7 @@ function buildFilters(){
   const etiquetaTabItems=sortAlpha(Object.values(classificacaoMap)).map(v=>({tipo:'Classificação',label:v,value:'Classificação||'+v}));
   const PERIODO=["Mês atual","Mês anterior","Personalizado"];
   const caixas=sortAlpha(uniq(DATA.map(r=>r.caixa)));
-  const camps=sortAlpha([...CAMPANHAS,"Demanda espontânea"]);
+  const camps=campanhasDisponiveis();
   const statusConversaOptions=['Abertas','Fechadas'];
   const campanhaItems=camps.map(c=>({tipo:'Campanha',label:c,value:c}));
   const statusItems=statusConversaOptions.map(s=>({tipo:'Status',label:s,value:s}));
@@ -923,7 +967,9 @@ function selectedLabel(arr,emptyLabel,singular,plural){
   return `${arr.length} ${plural||singular+'s'} selecionadas`;
 }
 function pctPair(n,total){return `${fmtPct(n,total)} do total`;}
-function miniMetric(label,n,total,tone){return `<div class="mini-metric" style="--tone:${tone}"><div class="mn">${fmtPct(n,total)}</div><div class="ml">${esc(label)}</div><div class="mp"><b>${n}</b> ${n===1?'conversa':'conversas'}</div></div>`;}
+function miniMetric(label,n,total,tone,baseText){
+  return `<div class="mini-metric" style="--tone:${tone}"><div class="mn">${fmtPct(n,total)}</div><div class="ml">${esc(label)}</div><div class="mp"><b>${n}</b> ${n===1?'conversa':'conversas'}${baseText?` · ${esc(baseText)}`:''}</div></div>`;
+}
 function renderOverviewGroups(base){
   const total=base.length||0;
   const abertas=cnt(base,r=>r.statusConversa==='Abertas');
@@ -931,17 +977,18 @@ function renderOverviewGroups(base){
 
   const ativa=base.filter(r=>r.origem==='Campanha');
   const ativaTotal=ativa.length||0;
-  const ativaRespondidas=cnt(ativa,r=>r.respondeu==='Sim');
-  const ativaAndamento=cnt(ativa,r=>r.statusFinal==='Pendente'||r.statusFinal==='Iniciou e parou de responder');
   const ativaSemRetorno=cnt(ativa,r=>r.statusFinal==='Recebeu e não respondeu');
   const ativaFalhas=cnt(ativa,r=>r.statusFinal==='Falha de envio');
+  const ativaRespondidas=Math.max(ativaTotal-ativaSemRetorno-ativaFalhas,0);
+  const ativaAbertas=cnt(ativa,r=>r.statusConversa==='Abertas');
+  const ativaFechadas=cnt(ativa,r=>r.statusConversa==='Fechadas');
   const ativaTransbordo=cnt(ativa,r=>r.statusFinal==='Transbordado');
 
   const reativa=base.filter(r=>r.origem==='Demanda espontânea');
   const reativaTotal=reativa.length||0;
-  const reativaResolvidasFechadas=cnt(reativa,r=>r.statusFinal==='Resolvido'||r.statusConversa==='Fechadas');
+  const reativaFechadas=cnt(reativa,r=>r.statusConversa==='Fechadas');
+  const reativaAndamento=cnt(reativa,r=>r.statusConversa==='Abertas');
   const reativaAguardandoAgente=cnt(reativa,r=>r.statusConversa==='Abertas' && r.statusFinal==='Pendente' && r.respondeu==='Sim');
-  const reativaAndamento=cnt(reativa,r=>r.statusConversa==='Abertas' && r.statusFinal!=='Transbordado' && !(r.statusFinal==='Pendente' && r.respondeu==='Sim'));
   const reativaTransbordo=cnt(reativa,r=>r.statusFinal==='Transbordado');
 
   const transbordosTotal=ativaTransbordo+reativaTransbordo;
@@ -952,7 +999,7 @@ function renderOverviewGroups(base){
   $('overview-groups').innerHTML=`
     <section class="overview-card" style="--tone:var(--blue)">
       <div class="overview-head">
-        <div><div class="overview-kicker">Caixa(s) selecionada(s)</div><div class="overview-title">${esc(caixaTitulo)}</div><div class="overview-sub">As conversas fecham a base entre ativas e receptivas. Transbordos ficam separados por serem um desfecho operacional.</div></div>
+        <div><div class="overview-kicker">Caixa(s) selecionada(s)</div><div class="overview-title">${esc(caixaTitulo)}</div><div class="overview-sub">A base fecha em ativas + receptivas e em abertas + fechadas. Transbordos são exibidos à parte, sobre o total de conversas da(s) caixa(s).</div></div>
         <div class="overview-total"><b>${total}</b><span>total de conversas</span></div>
       </div>
       <div class="metric-row">
@@ -964,45 +1011,50 @@ function renderOverviewGroups(base){
         ${miniMetric('Abertas',abertas,total,'var(--blue)')}
         ${miniMetric('Fechadas',fechadas,total,'var(--green)')}
         ${sep}
-        ${miniMetric('Transbordos realizados',transbordosTotal,total,'var(--purple)')}
+        ${miniMetric('Transbordos realizados',transbordosTotal,total,'var(--purple)','sobre o total')}
       </div>
     </section>
 
     <section class="overview-card" style="--tone:var(--cyan)">
       <div class="overview-head">
-        <div><div class="overview-kicker">Ativas · campanha/template</div><div class="overview-title">${esc(campanhaTitulo)}</div><div class="overview-sub">Alunos impactados por campanhas ou templates ativos.</div></div>
+        <div><div class="overview-kicker">Ativas · campanha/template</div><div class="overview-title">${esc(campanhaTitulo)}</div><div class="overview-sub">Base de alunos impactados por campanhas/templates. Respondidas + sem retorno + falhas fecham 100% das ativas.</div></div>
         <div class="overview-total"><b>${ativaTotal}</b><span>ativas total</span></div>
       </div>
       <div class="metric-row">
         ${miniMetric('Total ativas',ativaTotal,ativaTotal,'var(--cyan)')}
         ${sep}
-        ${miniMetric('Respondidas pelo aluno',ativaRespondidas,ativaTotal,'var(--green)')}
-        ${miniMetric('Andamento',ativaAndamento,ativaTotal,'var(--blue)')}
+        ${miniMetric('Respondidas',ativaRespondidas,ativaTotal,'var(--green)')}
         ${miniMetric('Sem retorno',ativaSemRetorno,ativaTotal,'var(--yellow)')}
         ${miniMetric('Falhas de envio',ativaFalhas,ativaTotal,'var(--red)')}
         ${sep}
-        ${miniMetric('Transbordos',ativaTransbordo,ativaTotal,'var(--purple)')}
+        ${miniMetric('Abertas / andamento',ativaAbertas,ativaTotal,'var(--blue)')}
+        ${miniMetric('Fechadas',ativaFechadas,ativaTotal,'var(--green)')}
+        ${sep}
+        ${miniMetric('Transbordos / total ativas',ativaTransbordo,ativaTotal,'var(--purple)')}
+        ${miniMetric('Transbordos / respondidas',ativaTransbordo,ativaRespondidas,'var(--purple)')}
       </div>
-      <div class="group-note">Ativas = conversas originadas por campanha/template. A base de cálculo deste bloco é o total de ativas do recorte filtrado.</div>
+      <div class="group-note">Transbordo em ativas aparece em duas bases: sobre o total de ativas e sobre as ativas que tiveram resposta/interação do aluno.</div>
     </section>
 
     <section class="overview-card" style="--tone:var(--orange)">
       <div class="overview-head">
-        <div><div class="overview-kicker">Receptivas · entrada própria</div><div class="overview-title">Alunos que entraram em contato por conta própria</div><div class="overview-sub">Conversas sem campanha direta, geradas por demanda espontânea.</div></div>
+        <div><div class="overview-kicker">Receptivas · entrada própria</div><div class="overview-title">Alunos que entraram em contato por conta própria</div><div class="overview-sub">Base de conversas sem campanha direta. Resolvidas/fechadas + andamento fecham 100% das receptivas.</div></div>
         <div class="overview-total"><b>${reativaTotal}</b><span>receptivas total</span></div>
       </div>
       <div class="metric-row">
         ${miniMetric('Total receptivas',reativaTotal,reativaTotal,'var(--orange)')}
         ${sep}
-        ${miniMetric('Resolvidas / fechadas',reativaResolvidasFechadas,reativaTotal,'var(--green)')}
-        ${miniMetric('Aguardando resposta agente',reativaAguardandoAgente,reativaTotal,'var(--yellow)')}
+        ${miniMetric('Resolvidas / fechadas',reativaFechadas,reativaTotal,'var(--green)')}
         ${miniMetric('Andamento',reativaAndamento,reativaTotal,'var(--blue)')}
         ${sep}
-        ${miniMetric('Transbordos',reativaTransbordo,reativaTotal,'var(--purple)')}
+        ${miniMetric('Aguardando resposta agente',reativaAguardandoAgente,reativaTotal,'var(--yellow)')}
+        ${sep}
+        ${miniMetric('Transbordos',reativaTransbordo,reativaTotal,'var(--purple)','sobre receptivas')}
       </div>
-      <div class="group-note">“Aguardando resposta agente” representa conversas abertas em que o aluno já respondeu e ainda há pendência de retorno da IA/colaborador. “Andamento” representa conversas abertas que não estão nessa fila de retorno direto.</div>
+      <div class="group-note">“Andamento” representa todas as receptivas abertas. “Aguardando resposta agente” é um recorte dentro das abertas em que há pendência de retorno da IA/colaborador.</div>
     </section>`;
 }
+
 function renderStatus(base){
   const tot=base.length||1;
   const rows=STATUSES.map(s=>{const n=cnt(base,r=>r.statusFinal===s);const pct=(n/tot*100);return {s,n,pct};})
@@ -1018,11 +1070,13 @@ function renderCaixa(base){
   $('tbl-caixa').innerHTML=`<div class="scrolly">${tableHTML(["Caixa","Conversas","Responderam","% Resp.","Sem resposta","% Sem resp.","Abandonaram","Transbordados","% Transb.","Resolvidos","% Resol.","Falhas"],rows)}</div>`;
 }
 function renderCampanha(base){
-  const labels=uniq(base.map(campLabel));
-  const rows=labels.map(cp=>{const g=base.filter(r=>campLabel(r)===cp);const total=g.length||0;const enviados=cnt(g,isEnviado);const n=f=>cnt(g,f);return {cp,g,html:
+  const baseCampanhas=base.filter(r=>r.origem==='Campanha');
+  const labels=uniq(baseCampanhas.map(r=>r.campanha));
+  const rows=labels.map(cp=>{const g=baseCampanhas.filter(r=>r.campanha===cp);const total=g.length||0;const enviados=cnt(g,isEnviado);const n=f=>cnt(g,f);return {cp,g,html:
     `<tr><td class="name-cell">${esc(cp)}</td><td class="num">${g.length}</td><td class="num">${enviados}</td><td class="num">${fmtPct(enviados,total)}</td><td class="num">${n(r=>r.respondeu==="Sim")}</td><td class="num">${fmtPct(n(r=>r.respondeu==="Sim"),enviados||total)}</td><td class="num">${n(r=>r.statusFinal==="Recebeu e não respondeu")}</td><td class="num">${n(r=>r.statusFinal==="Transbordado")}</td><td class="num">${fmtPct(n(r=>r.statusFinal==="Transbordado"),total)}</td><td class="num">${n(r=>r.statusFinal==="Resolvido")}</td><td class="num">${fmtPct(n(r=>r.statusFinal==="Resolvido"),total)}</td><td class="num t-fail">${n(r=>r.statusFinal==="Falha de envio")}</td></tr>`};})
     .sort((a,b)=>b.g.length-a.g.length).map(x=>x.html);
-  $('tbl-campanha').innerHTML=tableHTML(["Campanha","Conversas","Templates enviados","% Envios","Responderam","% Resposta","Sem resposta","Transbordados","% Transb.","Resolvidos","% Resol.","Falhas"],rows);
+  const empty=`<tr><td colspan="12" class="t-muted" style="text-align:center;padding:22px">Sem campanhas cadastradas/ativas para a caixa ou filtros selecionados.</td></tr>`;
+  $('tbl-campanha').innerHTML=tableHTML(["Campanha","Conversas","Templates enviados","% Envios","Responderam","% Resposta","Sem resposta","Transbordados","% Transb.","Resolvidos","% Resol.","Falhas"],rows.length?rows:[empty]);
 }
 function renderMotivo(base){
   const f=base.filter(r=>r.statusFinal==="Falha de envio");
@@ -1040,39 +1094,28 @@ function renderChartGeral(base){
   const total=base.length||0;
   const ativa=base.filter(r=>r.origem==='Campanha');
   const reativa=base.filter(r=>r.origem==='Demanda espontânea');
-  const items=[
-    {label:'Ativas',n:ativa.length,tone:'var(--cyan)'},
-    {label:'Receptivas',n:reativa.length,tone:'var(--orange)'},
-    {label:'Abertas',n:cnt(base,r=>r.statusConversa==='Abertas'),tone:'var(--blue)'},
-    {label:'Fechadas',n:cnt(base,r=>r.statusConversa==='Fechadas'),tone:'var(--green)'},
-    {label:'Transbordos realizados',n:cnt(base,r=>r.statusFinal==='Transbordado'),tone:'var(--purple)'}
-  ];
-  $('chart-geral').innerHTML=`<div class="chart-title"><b>Composição geral da caixa</b><span>ativas/receptivas, abertas/fechadas e transbordos</span></div>${hbarHTML(items,total)}`;
-}
-function renderChartAtivas(base){
-  const ativa=base.filter(r=>r.origem==='Campanha');
-  const total=ativa.length||0;
-  const items=[
-    {label:'Respondidas pelo aluno',n:cnt(ativa,r=>r.respondeu==='Sim'),tone:'var(--green)'},
-    {label:'Andamento',n:cnt(ativa,r=>r.statusFinal==='Pendente'||r.statusFinal==='Iniciou e parou de responder'),tone:'var(--blue)'},
-    {label:'Sem retorno',n:cnt(ativa,r=>r.statusFinal==='Recebeu e não respondeu'),tone:'var(--yellow)'},
-    {label:'Falhas de envio',n:cnt(ativa,r=>r.statusFinal==='Falha de envio'),tone:'var(--red)'},
-    {label:'Transbordos',n:cnt(ativa,r=>r.statusFinal==='Transbordado'),tone:'var(--purple)'}
-  ];
-  $('chart-ativas').innerHTML=`<div class="chart-title"><b>Performance das ativas</b><span>% sobre alunos que receberam campanha/template</span></div>${hbarHTML(items,total)}`;
-}
-function renderChartReceptivas(base){
-  const reativa=base.filter(r=>r.origem==='Demanda espontânea');
-  const total=reativa.length||0;
-  const aguardando=cnt(reativa,r=>r.statusConversa==='Abertas' && r.statusFinal==='Pendente' && r.respondeu==='Sim');
-  const andamento=cnt(reativa,r=>r.statusConversa==='Abertas' && r.statusFinal!=='Transbordado' && !(r.statusFinal==='Pendente' && r.respondeu==='Sim'));
-  const items=[
-    {label:'Resolvidas / fechadas',n:cnt(reativa,r=>r.statusFinal==='Resolvido'||r.statusConversa==='Fechadas'),tone:'var(--green)'},
-    {label:'Aguardando resposta agente',n:aguardando,tone:'var(--yellow)'},
-    {label:'Andamento',n:andamento,tone:'var(--blue)'},
-    {label:'Transbordos',n:cnt(reativa,r=>r.statusFinal==='Transbordado'),tone:'var(--purple)'}
-  ];
-  $('chart-reativas').innerHTML=`<div class="chart-title"><b>Performance das receptivas</b><span>% sobre alunos que entraram por conta própria</span></div>${hbarHTML(items,total)}`;
+  const transbordos=base.filter(r=>r.statusFinal==='Transbordado');
+  const byMotivo={};
+  transbordos.forEach(r=>{const m=r.motivoTransbordo||'Motivo não identificado';byMotivo[m]=(byMotivo[m]||0)+1;});
+  const motivoItems=Object.entries(byMotivo).sort((a,b)=>b[1]-a[1]).map(([label,n])=>({label,n,tone:'var(--purple)'}));
+  const html=`
+    <div class="chart-title"><b>Composição geral da caixa</b><span>ativas/receptivas, abertas/fechadas e transbordos por motivo</span></div>
+    <div class="hbar-subtitle">Tipo de entrada</div>
+    ${hbarHTML([
+      {label:'Ativas',n:ativa.length,tone:'var(--cyan)'},
+      {label:'Receptivas',n:reativa.length,tone:'var(--orange)'}
+    ],total)}
+    <div class="hbar-divider"></div>
+    <div class="hbar-subtitle">Status Chatwoot</div>
+    ${hbarHTML([
+      {label:'Abertas',n:cnt(base,r=>r.statusConversa==='Abertas'),tone:'var(--blue)'},
+      {label:'Fechadas',n:cnt(base,r=>r.statusConversa==='Fechadas'),tone:'var(--green)'}
+    ],total)}
+    <div class="hbar-divider"></div>
+    <div class="hbar-subtitle">Transbordos realizados por motivo</div>
+    ${hbarHTML(motivoItems,total)}
+  `;
+  $('chart-geral').innerHTML=html;
 }
 
 /* ===== OPERAÇÃO ===== */
@@ -1092,10 +1135,10 @@ function renderAnalitico(base){
     <td>${esc(r.dataEntrada)}</td><td>${esc(r.tipoEntrada)}</td><td class="name-cell">${esc(r.nome)}</td><td>${esc(r.telefone)}</td><td>${esc(r.email)}</td><td class="link">${esc(r.id)}</td>
     <td>${esc(r.caixa)}</td><td>${esc(r.campanha)}</td><td>${esc(r.origem)}</td><td>${esc(r.statusConversa)}</td><td>${esc(r.tabulacao)}</td><td>${tagsHTML(r.etiquetas)}</td>
     <td>${badge(r.statusFinal)}</td><td>${r.agente==="Sem agente"?'<span class="t-muted">—</span>':esc(r.agente)}</td>
-    <td>${r.time==="Sem time"?'<span class="t-muted">—</span>':esc(r.time)}</td><td>${r.motivo?`<span class="t-fail">${esc(r.motivo)}</span>`:'<span class="t-muted">—</span>'}</td>
+    <td>${r.time==="Sem time"?'<span class="t-muted">—</span>':esc(r.time)}</td><td>${r.motivo?`<span class="t-fail">${esc(r.motivo)}</span>`:'<span class="t-muted">—</span>'}</td><td>${r.motivoTransbordo?esc(r.motivoTransbordo):'<span class="t-muted">—</span>'}</td>
   </tr>`);
-  const foot=`<tr><td colspan="16">Total · ${base.length} ${base.length===1?'conversa':'conversas'}</td></tr>`;
-  $('tbl-analitico').innerHTML=`<div class="scrolly">${tableHTML(["Data entrada","Entrada","Nome","Telefone","E-mail","ID conversa","Caixa","Campanha","Origem","Status Chatwoot","Tabulação","Etiquetas","Status da conversa","Agente","Time","Motivo da falha"],rows,foot)}</div>`;
+  const foot=`<tr><td colspan="17">Total · ${base.length} ${base.length===1?'conversa':'conversas'}</td></tr>`;
+  $('tbl-analitico').innerHTML=`<div class="scrolly">${tableHTML(["Data entrada","Entrada","Nome","Telefone","E-mail","ID conversa","Caixa","Campanha","Origem","Status Chatwoot","Tabulação","Etiquetas","Status da conversa","Agente","Time","Motivo da falha","Motivo transbordo"],rows,foot)}</div>`;
 }
 function renderObjetivo(base){
   const by={};
@@ -1167,12 +1210,12 @@ function csvCell(v){
 }
 function exportarListaFiltrada(){
   const base=applyFilters(DATA);
-  const cols=["Data entrada","Entrada","Caixa","Campanha","Origem","Status Chatwoot","Tabulação","Etiquetas","Etiqueta por","Status da conversa","Nome","Telefone","E-mail","ID conversa","Agente","Time","Status envio","Respondeu","Motivo da falha"];
+  const cols=["Data entrada","Entrada","Caixa","Campanha","Origem","Status Chatwoot","Tabulação","Etiquetas","Etiqueta por","Status da conversa","Nome","Telefone","E-mail","ID conversa","Agente","Time","Status envio","Respondeu","Motivo da falha","Motivo transbordo"];
   const lines=[cols.join(';')];
   base.forEach(r=>{
     const etiquetas=r.etiquetas.map(e=>e.t).join(' | ');
     const etiquetaPor=r.etiquetas.map(e=>`${e.t}: ${e.por}`).join(' | ');
-    lines.push([r.dataEntrada,r.tipoEntrada,r.caixa,r.campanha,r.origem,r.statusConversa,r.tabulacao,etiquetas,etiquetaPor,r.statusFinal,r.nome,r.telefone,r.email,r.id,r.agente,r.time,r.statusEnvio,r.respondeu,r.motivo||''].map(csvCell).join(';'));
+    lines.push([r.dataEntrada,r.tipoEntrada,r.caixa,r.campanha,r.origem,r.statusConversa,r.tabulacao,etiquetas,etiquetaPor,r.statusFinal,r.nome,r.telefone,r.email,r.id,r.agente,r.time,r.statusEnvio,r.respondeu,r.motivo||'',r.motivoTransbordo||''].map(csvCell).join(';'));
   });
   const blob=new Blob(['\uFEFF'+lines.join('\n')],{type:'text/csv;charset=utf-8;'});
   const url=URL.createObjectURL(blob);
@@ -1185,10 +1228,11 @@ function exportarListaFiltrada(){
 
 /* ===== RENDER ALL ===== */
 function renderAll(){
+  updateCampanhaOptions();
   const base=applyFilters(DATA);
   const note=`Exibindo <b>${base.length}</b> de <b>${DATA.length}</b> conversas${Object.values(state).some(v=>Array.isArray(v)?v.length>0:Boolean(v))?' · filtros aplicados':''}`;
   $('note-dash').innerHTML=note;$('note-op').innerHTML=note;
-  renderOverviewGroups(base);renderChartGeral(base);renderChartAtivas(base);renderChartReceptivas(base);renderStatus(base);renderCampanha(base);renderMotivo(base);
+  renderOverviewGroups(base);renderChartGeral(base);renderStatus(base);renderCampanha(base);renderMotivo(base);
   renderCardsOp(base);renderCaixa(base);renderAnalitico(base);renderAgente(base);renderTime(base);renderTags(base);renderTagSource(base);
   syncFilters();
 }
