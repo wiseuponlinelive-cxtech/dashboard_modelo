@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diretoria "AI" | CX Tech Wiser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1220;--card:#101827;--card2:#111c2f;--border:#273449;
+    --text:#f8fafc;--muted:#94a3b8;
+    --blue:#2EA3F2;--cyan:#38c8f4;--green:#43F3AE;--orange:#FF8A3D;
+    --yellow:#F7D648;--purple:#7C5CFF;--red:#ef4444;--grey:#64748b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* DATA STUDIO TOP BAR (claro) */
+  header.topbar{background:#f5f7fa;border-bottom:1px solid #e2e8f0}
+  .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 24px}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .logo-badge{width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;font-weight:800;font-size:12px;color:#04121f;background:linear-gradient(135deg,var(--cyan),var(--blue) 55%,var(--purple))}
+  .brand h1{font-size:15px;font-weight:600;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .head-actions{display:flex;gap:8px;flex:none}
+  .btn{font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:7px 14px}
+  .btn:hover{background:#f1f5f9}
+  .btn.ghost{border-color:transparent;color:#94a3b8;background:transparent;cursor:default}
+  .btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+  .btn.primary:hover{background:#1d4ed8}
+
+  /* TABS / PÁGINAS */
+  nav.tabs{background:var(--bg);border-bottom:1px solid var(--border)}
+  .tabs-inner{display:flex;justify-content:center;gap:36px;padding:10px 0 0}
+  .tab{appearance:none;border:0;background:transparent;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;font-weight:500;color:var(--muted);padding:8px 6px 12px;position:relative}
+  .tab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+  .tab:hover{color:var(--text)}
+  .tab.active{color:var(--text)}
+  .tab.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--blue)}
+
+  main{padding:28px 0 60px}
+  .view{display:none}
+  .view.active{display:block;animation:fade .18s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+
+  .page-title{font-size:23px;font-weight:700;letter-spacing:-.3px}
+  .page-sub{font-size:13px;color:var(--muted);margin:3px 0 0}
+
+  /* FILTROS (controles Data Studio) */
+  .filters{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:18px 0 6px}
+  .fctrl{display:flex;flex-direction:column;gap:3px}
+  .fctrl label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600;padding-left:2px}
+  .fctrl select{font-family:inherit;font-size:12.5px;font-weight:500;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 30px 8px 11px;cursor:pointer;appearance:none;min-width:150px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+  .fctrl select:focus{outline:none;border-color:var(--blue)}
+  .fclear{align-self:flex-end;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);background:transparent;border:0;cursor:pointer;padding:8px 4px;text-decoration:underline;text-underline-offset:2px}
+  .fclear:hover{color:var(--text)}
+  .count-note{font-size:12px;color:var(--muted);margin-bottom:20px}
+  .count-note b{color:var(--text)}
+
+  /* LEGENDA caixa x campanha */
+  .legend{display:flex;flex-wrap:wrap;gap:18px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:26px;font-size:12px;color:var(--muted)}
+  .legend b{color:var(--text);font-weight:600}
+  .legend .li{max-width:520px}
+
+  .block{margin-top:34px}
+  .block h3{font-size:16px;font-weight:700;margin-bottom:12px}
+  .block .cap{font-size:12px;color:var(--muted);font-weight:400;margin-left:8px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+
+  /* SCORECARDS */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .cards.small{grid-template-columns:repeat(5,1fr)}
+  .cardx{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px 16px;position:relative}
+  .cardx::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:3px;background:var(--tone,var(--blue))}
+  .cardx .cn{font-size:27px;font-weight:800;letter-spacing:-.5px;line-height:1;color:var(--tone,var(--text))}
+  .cards.small .cardx .cn{font-size:22px}
+  .cardx .cl{font-size:12.5px;font-weight:600;margin-top:7px}
+  .cardx .cd{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.3}
+
+  /* TABELAS */
+  .tbl{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .scrolly{max-height:440px;overflow:auto}
+  table{width:100%;border-collapse:collapse;background:var(--card)}
+  .tbl.wide{overflow-x:auto}
+  .tbl.wide table{min-width:1120px}
+  thead th{text-align:left;vertical-align:bottom;font-size:11.5px;font-weight:700;color:#fff;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.14);white-space:nowrap;position:sticky;top:0;background:var(--card2)}
+  tbody td{padding:10px 14px;font-size:12.5px;color:#e2e8f0;vertical-align:top;line-height:1.35;border-bottom:1px solid rgba(255,255,255,.05)}
+  tbody tr:nth-child(even) td{background:rgba(255,255,255,.022)}
+  td.name-cell{font-weight:600;color:#fff;white-space:nowrap}
+  td.num{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+  td.link{color:#93c5fd;white-space:nowrap}
+  .t-fail{color:var(--red);font-weight:700}
+  .t-muted{color:var(--muted)}
+  tfoot td{padding:11px 14px;font-size:12px;font-weight:700;color:#fff;border-top:1px solid rgba(255,255,255,.16);background:var(--card2);position:sticky;bottom:0}
+
+  /* barra de % na tabela de status */
+  .pctbar{display:flex;align-items:center;gap:9px;min-width:150px}
+  .pctbar .track{flex:1;height:7px;border-radius:5px;background:var(--card2);overflow:hidden}
+  .pctbar .fill{height:100%;border-radius:5px;background:var(--tone,var(--blue))}
+  .pctbar .pv{font-variant-numeric:tabular-nums;font-weight:600;font-size:12px;width:44px;text-align:right}
+
+  /* BADGES */
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap;background:color-mix(in srgb,var(--bc) 15%,transparent);color:var(--bc);border:1px solid color-mix(in srgb,var(--bc) 35%,transparent)}
+  .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--bc)}
+  .b-resolvido{--bc:var(--green)}
+  .b-falhadeenvio{--bc:var(--red)}
+  .b-transbordado{--bc:var(--purple)}
+  .b-recebeuenaorespondeu{--bc:var(--yellow)}
+  .b-inicioueparouderesponder{--bc:var(--orange)}
+  .b-pendente{--bc:var(--blue)}
+  .tags{display:flex;flex-wrap:wrap;gap:4px;max-width:220px}
+  .tg{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;color:var(--muted);background:var(--card2);border:1px solid var(--border);border-radius:5px;padding:2px 6px;white-space:nowrap}
+  .tg .src{font-size:8.5px;font-weight:800;letter-spacing:.3px;padding:1px 4px;border-radius:4px;color:#04121f}
+  .tg .src.ia{background:var(--cyan)}
+  .tg .src.col{background:var(--purple);color:#fff}
+  .taglegend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:11.5px;color:var(--muted);margin:0 0 12px}
+  .taglegend .li{display:inline-flex;align-items:center;gap:6px}
+  .taglegend .src{font-size:8.5px;font-weight:800;padding:1px 4px;border-radius:4px;color:#04121f}
+  .taglegend .src.ia{background:var(--cyan)}
+  .taglegend .src.col{background:var(--purple);color:#fff}
+
+  .note{margin-top:30px;font-size:12px;color:var(--muted);border-left:3px solid var(--border);padding:2px 0 2px 14px;max-width:900px}
+  /* GUIA */
+  .guide-lead{font-size:14px;color:var(--muted);max-width:820px;line-height:1.6;margin:16px 0 6px}
+  .guide-lead b{color:var(--text);font-weight:600}
+  .pages-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .pagecard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+  .pagecard .pc-h{display:flex;align-items:center;gap:9px;font-weight:700;font-size:14px;margin-bottom:6px}
+  .pagecard .pc-ic{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-size:14px;background:color-mix(in srgb,var(--tone,var(--blue)) 18%,transparent)}
+  .pagecard p{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .steps{list-style:none;counter-reset:s;display:grid;gap:10px;margin-top:6px;max-width:820px}
+  .steps li{counter-increment:s;position:relative;padding:12px 16px 12px 50px;background:var(--card);border:1px solid var(--border);border-radius:10px;font-size:13px;line-height:1.5}
+  .steps li::before{content:counter(s);position:absolute;left:14px;top:11px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;color:#04121f;background:var(--blue)}
+  .steps li b{color:var(--text);font-weight:600}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
+  .fstep{font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;background:var(--card2);border:1px solid var(--border);color:var(--text)}
+  .fstep.tone{color:var(--tone);border-color:color-mix(in srgb,var(--tone) 45%,var(--border))}
+  .farrow{color:var(--muted);font-size:14px}
+  .fbranch{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
+  .exemplos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ex{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:12.5px}
+  .ex .exl{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+  .ex .exl:last-child{border-bottom:0}
+  .ex .exk{color:var(--muted)}
+  .ex .exv{font-weight:600;text-align:right}
+  @media (max-width:700px){.pages-two,.exemplos{grid-template-columns:1fr}}
+  .note b{color:var(--text);font-weight:600}
+  footer{border-top:1px solid var(--border);padding:20px 0;margin-top:40px}
+  footer p{font-size:12px;color:var(--muted);text-align:center}
+
+  @media (max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}.cards.small{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}}
+  @media (max-width:560px){.cards,.cards.small{grid-template-columns:1fr}.tabs-inner{gap:24px}.head-actions .btn:not(.primary){display:none}.fctrl select{min-width:130px}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><div class="logo-badge">AI</div><h1>Diretoria "AI" | CX Tech Wiser</h1></div>
+    <div class="head-actions"><button class="btn ghost">↺ Redefinir</button><button class="btn primary">Compartilhar ▾</button></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner">
+    <button class="tab active" data-view="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</button>
+    <button class="tab" data-view="operacao"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-6M22 20H2"/></svg>Operação</button>
+    <button class="tab" data-view="guia"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>Guia</button>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <!-- ================= DASHBOARD ================= -->
+    <div class="view active" id="dashboard">
+      <div class="page-title">Visão geral</div>
+      <div class="page-sub">O que aconteceu nas conversas no período selecionado.</div>
+
+      <div class="filters" id="filters-dash"></div>
+      <div class="count-note" id="note-dash"></div>
+
+      <div class="legend">
+        <div class="li"><b>Caixa</b> — onde a conversa entrou/está no Chatwoot (ex.: WOL RA - 5057).</div>
+        <div class="li"><b>Campanha</b> — o disparo/régua de origem (ex.: CS WOL — Campanha Onboarding). Conversas por demanda espontânea entram na caixa sem campanha.</div>
+      </div>
+
+      <div class="cards" id="cards-dash"></div>
+
+      <div class="block">
+        <h3>Resumo por status da conversa</h3>
+        <div class="tbl" id="tbl-status"></div>
+      </div>
+
+      <div class="block">
+        <h3>Resumo por caixa <span class="cap">onde a conversa está no Chatwoot</span></h3>
+        <div class="tbl wide" id="tbl-caixa"></div>
+      </div>
+
+      <div class="block">
+        <h3>Resumo por campanha <span class="cap">disparo/régua de origem</span></h3>
+        <div class="tbl wide" id="tbl-campanha"></div>
+      </div>
+
+      <div class="block">
+        <h3>Falhas de envio por motivo</h3>
+        <div class="tbl" id="tbl-motivo"></div>
+      </div>
+
+      <p class="note"><b>Linguagem do painel.</b> Indicadores em termos operacionais simples — ex.: <b>Transbordado</b> no lugar de "encaminhado para humano" — sem "fechado ganho", "fechado perdido" ou "oportunidade".</p>
+    </div>
+
+    <!-- ================= OPERAÇÃO ================= -->
+    <div class="view" id="operacao">
+      <div class="page-title">Operação</div>
+      <div class="page-sub">Quem são os alunos/conversas que compõem os números.</div>
+
+      <div class="filters" id="filters-op"></div>
+      <div class="count-note" id="note-op"></div>
+
+      <div class="cards small" id="cards-op"></div>
+
+      <div class="block">
+        <h3>Lista analítica das conversas <span class="cap">respeita os filtros · exporte pela própria tabela do Data Studio</span></h3>
+        <div class="tbl wide" id="tbl-analitico"></div>
+      </div>
+
+      <div class="grid2 block">
+        <div><h3>Conversas por agente</h3><div class="tbl" id="tbl-agente"></div></div>
+        <div><h3>Conversas por time</h3><div class="tbl" id="tbl-time"></div></div>
+      </div>
+
+      <div class="grid2 block">
+        <div>
+          <h3>Etiquetas no período <span class="cap">total e origem de aplicação</span></h3>
+          <div class="taglegend">
+            <span class="li"><span class="src ia">IA</span> aplicada automaticamente pelo fluxo/robô</span>
+            <span class="li"><span class="src col">Col</span> aplicada manualmente por colaborador</span>
+          </div>
+          <div class="tbl" id="tbl-tags"></div>
+        </div>
+        <div>
+          <h3>Origem das etiquetas <span class="cap">quem aplicou</span></h3>
+          <div class="tbl" id="tbl-tag-source"></div>
+          <p class="note" style="margin-top:14px">Essa visão ajuda a identificar se a classificação veio automaticamente da IA/fluxo ou se foi ajustada por um colaborador durante a tratativa.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= GUIA ================= -->
+    <div class="view" id="guia">
+      <div class="page-title">Como ler o painel</div>
+      <div class="page-sub">Guia rápido para qualquer pessoa da operação.</div>
+
+      <p class="guide-lead">Este painel mostra, de forma automática, <b>o que aconteceu com cada conversa/aluno</b> no período — sem precisar abrir conversa por conversa no Chatwoot. Você escolhe os filtros no topo, lê os números e, quando precisa saber <b>quem</b> são os alunos por trás de um número, vai para a página Operação.</p>
+
+      <div class="block">
+        <h3>As duas páginas</h3>
+        <div class="pages-two">
+          <div class="pagecard" style="--tone:var(--blue)">
+            <div class="pc-h"><span class="pc-ic">▦</span> Dashboard — visão geral</div>
+            <p>Responde <b>o que aconteceu</b>: os números do período em cards e as tabelas de resumo por status, por caixa, por campanha e as falhas por motivo. Use para ter o panorama rápido.</p>
+          </div>
+          <div class="pagecard" style="--tone:var(--purple)">
+            <div class="pc-h"><span class="pc-ic">▤</span> Operação — visão analítica</div>
+            <p>Responde <b>quem são</b> os alunos que compõem os números. Traz a lista analítica (nome, telefone, e-mail, caixa, status, etiquetas…) que respeita os filtros e é exportada pela própria tabela.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Como usar os filtros</h3>
+        <ol class="steps">
+          <li>Comece pela <b>Caixa</b> — é onde a conversa está no Chatwoot. Nem toda conversa tem campanha, então a caixa vem primeiro.</li>
+          <li>Se quiser, adicione a <b>Campanha</b> (o disparo/régua de origem) para olhar só um envio específico.</li>
+          <li>Refine com <b>Etiqueta</b>, <b>Status</b>, e — na página Operação — também <b>Agente</b>, <b>Time</b> e <b>Origem</b>.</li>
+          <li>Leia os cards e tabelas. Para ver os alunos, vá para <b>Operação</b>; para baixar a lista, use o export da própria tabela (recurso do Data Studio). A exportação respeita os filtros aplicados.</li>
+        </ol>
+      </div>
+
+      <div class="block">
+        <h3>Como ler as etiquetas</h3>
+        <p class="guide-lead" style="margin-top:0">As etiquetas aparecem com a origem de aplicação para diferenciar o que foi classificado automaticamente pelo fluxo/IA e o que foi ajustado manualmente por um colaborador.</p>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Marcação</th><th>Origem</th><th>Como interpretar</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tg"><span class="src ia">IA</span>sem_retorno</span></td><td>Automática</td><td>Etiqueta aplicada pela IA, fluxo ou regra automática do atendimento.</td></tr>
+              <tr><td><span class="tg"><span class="src col">Col</span>transbordo</span></td><td>Colaborador</td><td>Etiqueta aplicada ou ajustada manualmente por uma pessoa da operação.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>A jornada da conversa</h3>
+        <div class="flow">
+          <span class="fstep tone" style="--tone:var(--blue)">Conversa na caixa</span>
+          <span class="farrow">→</span>
+          <span class="fstep tone" style="--tone:var(--cyan)">Template enviado</span>
+          <span class="farrow">→</span>
+          <span class="fstep tone" style="--tone:var(--green)">Respondeu</span>
+          <span class="farrow">→</span>
+          <span class="fstep tone" style="--tone:var(--green)">Resolvido</span>
+          <div class="fbranch">
+            <span class="t-muted" style="font-size:11.5px;align-self:center">Desfechos possíveis:</span>
+            <span class="fstep tone" style="--tone:var(--purple)">Transbordado</span>
+            <span class="fstep tone" style="--tone:var(--yellow)">Recebeu e não respondeu</span>
+            <span class="fstep tone" style="--tone:var(--orange)">Iniciou e parou</span>
+            <span class="fstep tone" style="--tone:var(--red)">Falha de envio</span>
+            <span class="fstep tone" style="--tone:var(--blue)">Pendente</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>O que cada status significa</h3>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Status</th><th>O que significa</th><th>Ação típica</th></tr></thead>
+            <tbody>
+              <tr><td><span class="badge b-recebeuenaorespondeu">Recebeu e não respondeu</span></td><td>O template foi entregue, mas o aluno não retornou.</td><td>Reengajar</td></tr>
+              <tr><td><span class="badge b-inicioueparouderesponder">Iniciou e parou de responder</span></td><td>O aluno começou o atendimento e abandonou no meio.</td><td>Retomar contato</td></tr>
+              <tr><td><span class="badge b-transbordado">Transbordado</span></td><td>Conversa direcionada para atendimento humano / outro time.</td><td>Assumir conversa</td></tr>
+              <tr><td><span class="badge b-resolvido">Resolvido</span></td><td>Atendimento concluído corretamente.</td><td>Nenhuma</td></tr>
+              <tr><td><span class="badge b-falhadeenvio">Falha de envio</span></td><td>O template não foi enviado ou não foi entregue.</td><td>Corrigir contato</td></tr>
+              <tr><td><span class="badge b-pendente">Pendente</span></td><td>Conversa aberta ou sem conclusão.</td><td>Aguardar / dar sequência</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Os principais indicadores</h3>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Indicador</th><th>O que conta</th></tr></thead>
+            <tbody>
+              <tr><td class="name-cell">Conversas na caixa</td><td>Total de conversas que entraram na caixa no período.</td></tr>
+              <tr><td class="name-cell">Templates enviados</td><td>Comunicações efetivamente enviadas (não conta demanda espontânea nem falhas).</td></tr>
+              <tr><td class="name-cell">Responderam</td><td>Alunos que interagiram após o envio.</td></tr>
+              <tr><td class="name-cell">Recebeu e não respondeu</td><td>Recebeu o template, mas não retornou.</td></tr>
+              <tr><td class="name-cell">Iniciou e parou</td><td>Começou a conversa e abandonou.</td></tr>
+              <tr><td class="name-cell">Transbordado</td><td>Direcionado para atendimento humano/outro time.</td></tr>
+              <tr><td class="name-cell">Resolvido</td><td>Conversa encerrada corretamente.</td></tr>
+              <tr><td class="name-cell">Falhas de envio</td><td>Templates que não foram enviados ou entregues.</td></tr>
+              <tr><td class="name-cell">Pendente</td><td>Conversa aberta ou sem conclusão.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Caixa não é campanha</h3>
+        <p class="guide-lead" style="margin-top:0"><b>Caixa</b> é onde a conversa entrou/está no Chatwoot. <b>Campanha</b> é o disparo/régua que originou a conversa. A mesma caixa pode receber conversas de campanha e por demanda espontânea (quando o aluno chega por conta própria, sem disparo).</p>
+        <div class="exemplos">
+          <div class="ex">
+            <div class="exl"><span class="exk">Caixa</span><span class="exv">WOL RA - 5057</span></div>
+            <div class="exl"><span class="exk">Origem</span><span class="exv">Demanda espontânea</span></div>
+            <div class="exl"><span class="exk">Campanha</span><span class="exv">Não se aplica</span></div>
+            <div class="exl"><span class="exk">Status</span><span class="exv"><span class="badge b-transbordado">Transbordado</span></span></div>
+            <div class="exl"><span class="exk">Etiqueta</span><span class="exv">ra_procon</span></div>
+          </div>
+          <div class="ex">
+            <div class="exl"><span class="exk">Caixa</span><span class="exv">WOL Onboarding 5531</span></div>
+            <div class="exl"><span class="exk">Origem</span><span class="exv">Campanha</span></div>
+            <div class="exl"><span class="exk">Campanha</span><span class="exv">CS WOL — Campanha Onboarding</span></div>
+            <div class="exl"><span class="exk">Status</span><span class="exv"><span class="badge b-recebeuenaorespondeu">Recebeu e não respondeu</span></span></div>
+            <div class="exl"><span class="exk">Etiqueta</span><span class="exv">onboarding_35</span></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="note"><b>Dica de leitura.</b> Quer saber quem são os alunos de um número? Aplique o mesmo filtro na página <b>Operação</b> e olhe a <b>Lista analítica</b> — ela sempre reflete os filtros ativos e é o que você exporta.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer><div class="wrap"><p>Diretoria "AI" | CX Tech Wiser · Protótipo visual (modelo Data Studio) — dados fictícios</p></div></footer>
+
+<script>
+/* ===== DATASET FICTÍCIO (determinístico) ===== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rand=mulberry32(20260703);
+const pick=a=>a[Math.floor(rand()*a.length)];
+function weighted(p){const t=p.reduce((s,x)=>s+x[1],0);let r=rand()*t;for(const[v,w]of p){if((r-=w)<0)return v;}return p[0][0];}
+function slug(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'');}
+
+const FIRST=["Ana","João","Larissa","Pedro","Amanda","Carlos","Fernanda","Lucas","Juliana","Rafael","Beatriz","Diego","Camila","Marina","Bruno","Patrícia","Rodrigo","Gabriela","Thiago","Aline","Vinícius","Letícia","Felipe","Mariana","Gustavo","Bianca","Eduardo","Natália","André","Priscila","Yago","Welington","Magnólia","Fabrício","Clarice","Renata","Otávio","Sabrina","Márcio","Vanessa"];
+const LAST=["Silva","Souza","Lima","Pereira","Ferreira","Rocha","Alves","Martins","Gomes","Dias","Castro","Andrade","Costa","Ribeiro","Carvalho","Almeida","Barbosa","Nunes","Moreira","Teixeira"];
+
+const CAIXAS_W=[
+["WOL Onboarding 5531",20],["WOL FAQ - 2139 - MENU",10],["WOL FAQ - 4054 - MENU",8],["WOL FAQ - 5003 - MENU",7],
+["WOL FAQ Marinha - 0418",5],["WOL RA - 5057",9],["WOL Renovacao - 5537 - MENU",12],["WOL Renovacao - 0394",6],
+["WOL Reversão - 5022 - MENU",8],["MENU/SITE - WOL Reversão - 3714",5],["WOL - Inadimplencia - 0926",11],
+["Wol Inadimplência IA - 4809",12],["LIVE - Inadimplência - 0423",7],["LIVE - Inadimplência MD - 6286",5],
+["LIVE FAQ - 0951 - MENU",6],["Wol / Live / LiveMD Inadimplência - 5028",6],["WOL Auditoria - 0772 - MENU",4],
+["Disparos Wupday - 2615",9],["Operacional - Franquias - 0623",4],["Wiser Educação - G&G - 0174",3],
+["Wiser Empreende - 0123",3],["Testes Onboarding Live - 3746",2]
+];
+const CAIXAS=CAIXAS_W.map(x=>x[0]);
+const CAMPANHAS=["CS WOL — Campanha Onboarding","CS WOL — 9D","CS WOL — 15D","CS WOL — 30D","CS WOL — 72D","Retomada","WOL Renovação"];
+const TPL={"CS WOL — Campanha Onboarding":"wol_onb_boasvindas","CS WOL — 9D":"wol_9d_apoio","CS WOL — 15D":"wol_15d_checkin","CS WOL — 30D":"wol_30d_retorno","CS WOL — 72D":"wol_72d_retomada","Retomada":"wol_retomada","WOL Renovação":"wol_renov_lembrete"};
+const TIMES=["CS","Onboarding","Orientações Acadêmicas","Retenção","Suporte","Financeiro"];
+const AGENTES=["Ana Paula","Beatriz Lima","Camila Rocha"];
+const MOTIVOS=["falha_ao_enviar_msg","contato_sem_wpp","template não entregue","janela expirada","erro de integração","opt-in ausente","telefone inválido","erro desconhecido"];
+const STATUSES=["Recebeu e não respondeu","Iniciou e parou de responder","Transbordado","Resolvido","Falha de envio","Pendente"];
+
+function phone(){const ac=pick(["41","11","21","31","47","51","85","62","19"]);return `+55 ${ac} 9${Math.floor(rand()*9)+1}xxx-${String(Math.floor(rand()*9000)+1000)}`;}
+
+// etiquetas tipicamente aplicadas automaticamente pela IA (fluxo/bot); as demais tendem a ser classificação manual do colaborador
+const IA_TAGS=new Set(["atendimento_iniciado","ia_deixou_de_responder","ia_erro_resposta","finalizado_ia_15m","fluxo_encerrado","generic_warning","generic_warning_10min","sem_retorno","contato-sem-sucesso","contato_sem_wpp","falha_ao_enviar_msg","erro_etq","onboarding_20","onboarding_35","onboarding_50","onboarding_65","onboarding_80","onboarding_100","cs_boas_vindas_concluido","wol_c_fup_inadimplencia_1h","wol_c_fup_renovacao_1h","az_agendada","finalizada","retorno_ativo"]);
+function tagSource(tag){
+  // IA_TAGS: ~88% IA; demais: ~82% colaborador
+  return IA_TAGS.has(tag)?weighted([["IA",88],["Colaborador",12]]):weighted([["Colaborador",82],["IA",18]]);
+}
+function tagsFor(status,origem,caixa){
+  const t=[];
+  if(status==="Falha de envio")t.push(pick(["falha_ao_enviar_msg","contato_sem_wpp","erro_etq"]));
+  else if(status==="Recebeu e não respondeu")t.push(pick(["sem_retorno","contato-sem-sucesso"]));
+  else if(status==="Iniciou e parou de responder")t.push(pick(["atendimento_iniciado","ia_deixou_de_responder","ia_erro_resposta"]));
+  else if(status==="Transbordado")t.push("transbordo");
+  else if(status==="Resolvido")t.push(pick(["resolvido","finalizada","finalizado_ia_15m","fluxo_encerrado"]));
+  else if(status==="Pendente")t.push(pick(["atendimento_iniciado","az_agendada"]));
+  if(caixa.includes("Onboarding")&&rand()<.6)t.push(pick(["onboarding_20","onboarding_35","onboarding_50","onboarding_65","onboarding_80","onboarding_100","cs_boas_vindas_concluido"]));
+  if((caixa.includes("Inadimpl"))&&rand()<.7)t.push(pick(["quero_pagar","quero_negociar","nao_quero_pagar","pago","pgto_pix","confirmar_pagamento","wol_c_fup_inadimplencia_1h"]));
+  if(caixa.includes("Renovacao")&&rand()<.6)t.push(pick(["renovado","desconhece_renovacao","wol_c_fup_renovacao_1h"]));
+  if(caixa.includes("Reversão")&&rand()<.6)t.push(pick(["revertido","cancelado","nao_contratei","nao_tem_interesse"]));
+  if(caixa.includes("RA")&&rand()<.7)t.push("ra_procon");
+  if(caixa.includes("FAQ")&&rand()<.5)t.push(pick(["nao_identificado","duplicidade-de-atendimento","fluxo_encerrado"]));
+  if(caixa.includes("Marinha")&&rand()<.8)t.push("aluno_marinha");
+  if(caixa.startsWith("LIVE")&&rand()<.8)t.push("aluno_live");
+  if(origem==="Demanda espontânea"&&rand()<.4)t.push("retorno_ativo");
+  return [...new Set(t)].slice(0,3).map(tag=>({t:tag,por:tagSource(tag)}));
+}
+
+function makeRow(){
+  const fn=pick(FIRST),ln=pick(LAST);
+  const origem=weighted([["Campanha",70],["Demanda espontânea",30]]);
+  let status=origem==="Demanda espontânea"
+    ? weighted([["Transbordado",30],["Resolvido",30],["Pendente",22],["Iniciou e parou de responder",18]])
+    : weighted([["Recebeu e não respondeu",29],["Resolvido",22],["Transbordado",13],["Pendente",13],["Iniciou e parou de responder",11],["Falha de envio",12]]);
+  const caixa=weighted(CAIXAS_W);
+  const campanha=origem==="Campanha"?pick(CAMPANHAS):"Não se aplica";
+  const template=origem==="Campanha"?TPL[campanha]:"—";
+  let statusEnvio,respondeu,motivo="";
+  if(status==="Falha de envio"){statusEnvio="Falha";respondeu="—";motivo=pick(MOTIVOS);}
+  else if(status==="Recebeu e não respondeu"){statusEnvio=weighted([["Entregue",80],["Enviado",20]]);respondeu="Não";}
+  else if(status==="Pendente"){statusEnvio=weighted([["Enviado",55],["Entregue",45]]);respondeu=weighted([["Não",55],["Sim",45]]);}
+  else{statusEnvio="Entregue";respondeu="Sim";}
+  if(origem==="Demanda espontânea"){statusEnvio=weighted([["Entregue",70],["Enviado",30]]);if(status!=="Pendente")respondeu="Sim";}
+  let agente,time;
+  if(status==="Transbordado"){agente=weighted([["Ana Paula",24],["Beatriz Lima",24],["Camila Rocha",22],["Sem agente",30]]);time=pick(TIMES);}
+  else{agente=weighted([["Sem agente",35],["Ana Paula",22],["Beatriz Lima",22],["Camila Rocha",21]]);time=weighted([["Sem time",26],["CS",18],["Onboarding",16],["Orientações Acadêmicas",13],["Retenção",11],["Suporte",9],["Financeiro",7]]);}
+  return {nome:`${fn} ${ln}`,telefone:phone(),email:`${slug(fn)}.${slug(ln)}@aluno.wiser.com`,id:String(720000+Math.floor(rand()*9999)),
+    caixa,campanha,origem,template,etiquetas:tagsFor(status,origem,caixa),agente,time,statusEnvio,respondeu,statusFinal:status,motivo};
+}
+const DATA=Array.from({length:180},makeRow);
+
+/* ===== HELPERS ===== */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uniq=a=>[...new Set(a)];
+const badge=s=>`<span class="badge b-${slug(s)}">${esc(s)}</span>`;
+const srcAbbr=p=>p==='IA'?'IA':'Col';
+const tagsHTML=a=>a.length?`<div class="tags">${a.map(o=>`<span class="tg" title="Etiqueta aplicada por ${esc(o.por)}"><span class="src ${o.por==='IA'?'ia':'col'}">${srcAbbr(o.por)}</span>${esc(o.t)}</span>`).join('')}</div>`:'<span class="t-muted">—</span>';
+const isEnviado=r=>r.template!=='—'&&(r.statusEnvio==='Entregue'||r.statusEnvio==='Enviado');
+const campLabel=r=>r.origem==='Demanda espontânea'?'Demanda espontânea':r.campanha;
+
+/* ===== FILTROS ===== */
+const state={caixa:'',campanha:'',etiqueta:'',etiquetaPor:'',statusFinal:'',agente:'',time:'',origem:''};
+function applyFilters(data){
+  return data.filter(r=>{
+    if(state.caixa&&r.caixa!==state.caixa)return false;
+    if(state.campanha){ if(state.campanha==='Demanda espontânea'){if(r.origem!=='Demanda espontânea')return false;} else if(r.campanha!==state.campanha)return false; }
+    if(state.etiqueta&&!r.etiquetas.some(e=>e.t===state.etiqueta))return false;
+    if(state.etiquetaPor&&!r.etiquetas.some(e=>e.por===state.etiquetaPor))return false;
+    if(state.statusFinal&&r.statusFinal!==state.statusFinal)return false;
+    if(state.agente&&r.agente!==state.agente)return false;
+    if(state.time&&r.time!==state.time)return false;
+    if(state.origem&&r.origem!==state.origem)return false;
+    return true;
+  });
+}
+function ctrl(field,label,opts,cosmetic){
+  const o=[`<option value="">${esc(label)}: todos</option>`].concat(opts.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`)).join('');
+  return `<div class="fctrl"><label>${esc(label)}</label><select data-field="${field}" data-cosmetic="${cosmetic?1:''}">${o}</select></div>`;
+}
+function buildFilters(){
+  const tagCounts={};DATA.forEach(r=>r.etiquetas.forEach(e=>tagCounts[e.t]=(tagCounts[e.t]||0)+1));
+  const topTags=Object.entries(tagCounts).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+  const PERIODO=["Últimos 30 dias","Últimos 7 dias","Últimos 15 dias","Este mês"];
+  const caixas=uniq(DATA.map(r=>r.caixa)).sort();
+  const camps=[...CAMPANHAS,"Demanda espontânea"];
+  const dash=ctrl('periodo','Período',PERIODO,true)+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('statusFinal','Status da conversa',STATUSES)+`<button class="fclear" data-clear>Limpar</button>`;
+  const op=ctrl('periodo','Período',PERIODO,true)+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('statusFinal','Status',STATUSES)+ctrl('agente','Agente',[...AGENTES,'Sem agente'])+ctrl('time','Time',[...TIMES,'Sem time'])+ctrl('origem','Origem',['Campanha','Demanda espontânea'])+`<button class="fclear" data-clear>Limpar</button>`;
+  $('filters-dash').innerHTML=dash;$('filters-op').innerHTML=op;
+  document.querySelectorAll('.filters select').forEach(s=>s.addEventListener('change',()=>{
+    if(!s.dataset.cosmetic)state[s.dataset.field]=s.value;
+    renderAll();
+  }));
+  document.querySelectorAll('[data-clear]').forEach(b=>b.addEventListener('click',()=>{
+    for(const k in state)state[k]='';
+    document.querySelectorAll('.filters select').forEach(s=>s.value='');
+    renderAll();
+  }));
+}
+function syncFilters(){document.querySelectorAll('.filters select').forEach(s=>{if(!s.dataset.cosmetic)s.value=state[s.dataset.field]||'';});}
+
+/* ===== RENDER TABELA GENÉRICA ===== */
+function tableHTML(headers,rows,foot,align){
+  const th=headers.map((h,i)=>`<th${align&&align[i]?` style="text-align:${align[i]}"`:''}>${h}</th>`).join('');
+  return `<table><thead><tr>${th}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}" class="t-muted" style="text-align:center;padding:22px">Sem dados para os filtros aplicados.</td></tr>`}</tbody>${foot?`<tfoot>${foot}</tfoot>`:''}</table>`;
+}
+const cnt=(arr,f)=>arr.filter(f).length;
+
+/* ===== DASHBOARD ===== */
+const TONE={"Recebeu e não respondeu":"var(--yellow)","Iniciou e parou de responder":"var(--orange)","Transbordado":"var(--purple)","Resolvido":"var(--green)","Falha de envio":"var(--red)","Pendente":"var(--blue)"};
+function renderCardsDash(base){
+  const c=f=>cnt(base,f);
+  const cards=[
+    [base.length,"Conversas na caixa","Entraram na caixa no período","var(--blue)"],
+    [c(isEnviado),"Templates enviados","Comunicações efetivamente enviadas","var(--cyan)"],
+    [c(r=>r.respondeu==="Sim"),"Responderam","Interagiram após o envio","var(--green)"],
+    [c(r=>r.statusFinal==="Recebeu e não respondeu"),"Recebeu e não respondeu","Recebeu o template e não retornou","var(--yellow)"],
+    [c(r=>r.statusFinal==="Iniciou e parou de responder"),"Iniciou e parou","Começou o atendimento e abandonou","var(--orange)"],
+    [c(r=>r.statusFinal==="Transbordado"),"Transbordado","Direcionado para atendimento humano/outro time","var(--purple)"],
+    [c(r=>r.statusFinal==="Resolvido"),"Resolvido","Conversa encerrada corretamente","var(--green)"],
+    [c(r=>r.statusFinal==="Falha de envio"),"Falhas de envio","Não foram enviados ou entregues","var(--red)"],
+    [c(r=>r.statusFinal==="Pendente"),"Pendente","Conversa aberta ou sem conclusão","var(--grey)"],
+  ];
+  $('cards-dash').innerHTML=cards.map(([n,l,d,t])=>`<div class="cardx" style="--tone:${t}"><div class="cn">${n}</div><div class="cl">${esc(l)}</div><div class="cd">${esc(d)}</div></div>`).join('');
+}
+function renderStatus(base){
+  const tot=base.length||1;
+  const rows=STATUSES.map(s=>{const n=cnt(base,r=>r.statusFinal===s);const pct=(n/tot*100);return {s,n,pct};})
+    .sort((a,b)=>b.n-a.n)
+    .map(({s,n,pct})=>`<tr><td>${badge(s)}</td><td class="num">${n}</td><td><div class="pctbar" style="--tone:${TONE[s]}"><div class="track"><div class="fill" style="width:${pct.toFixed(1)}%"></div></div><span class="pv">${pct.toFixed(1)}%</span></div></td></tr>`);
+  $('tbl-status').innerHTML=tableHTML(["Status","Quantidade","%"],rows,`<tr><td>Total</td><td class="num">${base.length}</td><td></td></tr>`);
+}
+function renderCaixa(base){
+  const caixas=uniq(base.map(r=>r.caixa));
+  const rows=caixas.map(cx=>{const g=base.filter(r=>r.caixa===cx);const n=f=>cnt(g,f);return {cx,g,html:
+    `<tr><td class="name-cell">${esc(cx)}</td><td class="num">${g.length}</td><td class="num">${n(r=>r.respondeu==="Sim")}</td><td class="num">${n(r=>r.statusFinal==="Recebeu e não respondeu")}</td><td class="num">${n(r=>r.statusFinal==="Iniciou e parou de responder")}</td><td class="num">${n(r=>r.statusFinal==="Transbordado")}</td><td class="num">${n(r=>r.statusFinal==="Resolvido")}</td><td class="num t-fail">${n(r=>r.statusFinal==="Falha de envio")}</td></tr>`};})
+    .sort((a,b)=>b.g.length-a.g.length).map(x=>x.html);
+  $('tbl-caixa').innerHTML=`<div class="scrolly">${tableHTML(["Caixa","Conversas","Responderam","Sem resposta","Abandonaram","Transbordados","Resolvidos","Falhas"],rows)}</div>`;
+}
+function renderCampanha(base){
+  const labels=uniq(base.map(campLabel));
+  const rows=labels.map(cp=>{const g=base.filter(r=>campLabel(r)===cp);const n=f=>cnt(g,f);return {cp,g,html:
+    `<tr><td class="name-cell">${esc(cp)}</td><td class="num">${g.length}</td><td class="num">${n(isEnviado)}</td><td class="num">${n(r=>r.respondeu==="Sim")}</td><td class="num">${n(r=>r.statusFinal==="Recebeu e não respondeu")}</td><td class="num">${n(r=>r.statusFinal==="Transbordado")}</td><td class="num">${n(r=>r.statusFinal==="Resolvido")}</td><td class="num t-fail">${n(r=>r.statusFinal==="Falha de envio")}</td></tr>`};})
+    .sort((a,b)=>b.g.length-a.g.length).map(x=>x.html);
+  $('tbl-campanha').innerHTML=tableHTML(["Campanha","Conversas","Templates enviados","Responderam","Sem resposta","Transbordados","Resolvidos","Falhas"],rows);
+}
+function renderMotivo(base){
+  const f=base.filter(r=>r.statusFinal==="Falha de envio");
+  const by={};MOTIVOS.forEach(m=>by[m]=0);f.forEach(r=>by[r.motivo]=(by[r.motivo]||0)+1);
+  const rows=Object.entries(by).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]).map(([m,n])=>`<tr><td class="name-cell">${esc(m)}</td><td class="num t-fail">${n}</td></tr>`);
+  $('tbl-motivo').innerHTML=tableHTML(["Motivo da falha","Quantidade"],rows,`<tr><td>Total de falhas</td><td class="num">${f.length}</td></tr>`);
+}
+
+/* ===== OPERAÇÃO ===== */
+function renderCardsOp(base){
+  const c=f=>cnt(base,f);
+  const cards=[
+    [base.length,"Total filtrado","var(--blue)"],
+    [c(r=>r.statusFinal==="Resolvido"),"Resolvidos","var(--green)"],
+    [c(r=>r.statusFinal==="Transbordado"),"Transbordados","var(--purple)"],
+    [c(r=>r.statusFinal==="Recebeu e não respondeu"),"Sem resposta","var(--yellow)"],
+    [c(r=>r.statusFinal==="Falha de envio"),"Falhas","var(--red)"],
+  ];
+  $('cards-op').innerHTML=cards.map(([n,l,t])=>`<div class="cardx" style="--tone:${t}"><div class="cn">${n}</div><div class="cl">${esc(l)}</div></div>`).join('');
+}
+function renderAnalitico(base){
+  const rows=base.map(r=>`<tr>
+    <td class="name-cell">${esc(r.nome)}</td><td>${esc(r.telefone)}</td><td>${esc(r.email)}</td><td class="link">${esc(r.id)}</td>
+    <td>${esc(r.caixa)}</td><td>${esc(r.campanha)}</td><td>${esc(r.origem)}</td><td>${tagsHTML(r.etiquetas)}</td>
+    <td>${badge(r.statusFinal)}</td><td>${r.agente==="Sem agente"?'<span class="t-muted">—</span>':esc(r.agente)}</td>
+    <td>${r.time==="Sem time"?'<span class="t-muted">—</span>':esc(r.time)}</td><td>${r.motivo?`<span class="t-fail">${esc(r.motivo)}</span>`:'<span class="t-muted">—</span>'}</td>
+  </tr>`);
+  const foot=`<tr><td colspan="12">Total · ${base.length} ${base.length===1?'conversa':'conversas'}</td></tr>`;
+  $('tbl-analitico').innerHTML=`<div class="scrolly">${tableHTML(["Nome","Telefone","E-mail","ID conversa","Caixa","Campanha","Origem","Etiquetas","Status","Agente","Time","Motivo da falha"],rows,foot)}</div>`;
+}
+function renderAgente(base){
+  const order=[...AGENTES,"Sem agente"];
+  const rows=order.map(a=>{const g=base.filter(r=>r.agente===a);const n=f=>cnt(g,f);return `<tr><td class="name-cell">${a==="Sem agente"?'<span class="t-muted">Sem agente atribuído</span>':esc(a)}</td><td class="num">${g.length}</td><td class="num">${n(r=>r.statusFinal==="Resolvido")}</td><td class="num">${n(r=>r.statusFinal==="Pendente")}</td><td class="num">${n(r=>r.statusFinal==="Transbordado")}</td></tr>`;});
+  $('tbl-agente').innerHTML=tableHTML(["Agente","Conversas","Resolvidas","Pendentes","Transbordadas"],rows);
+}
+function renderTime(base){
+  const order=[...TIMES,"Sem time"];
+  const rows=order.map(t=>{const g=base.filter(r=>r.time===t);const n=f=>cnt(g,f);return `<tr><td class="name-cell">${t==="Sem time"?'<span class="t-muted">Sem time atribuído</span>':esc(t)}</td><td class="num">${g.length}</td><td class="num">${n(r=>r.statusFinal==="Resolvido")}</td><td class="num">${n(r=>r.statusFinal==="Pendente")}</td><td class="num">${n(r=>r.statusFinal==="Transbordado")}</td></tr>`;});
+  $('tbl-time').innerHTML=tableHTML(["Time","Conversas","Resolvidas","Pendentes","Transbordadas"],rows);
+}
+function renderTags(base){
+  const by={};
+  base.forEach(r=>r.etiquetas.forEach(e=>{
+    if(!by[e.t])by[e.t]={total:0,ia:0,col:0};
+    by[e.t].total++;
+    if(e.por==="IA")by[e.t].ia++; else by[e.t].col++;
+  }));
+  const rows=Object.entries(by).sort((a,b)=>b[1].total-a[1].total).map(([t,o])=>`
+    <tr>
+      <td class="name-cell">${esc(t)}</td>
+      <td class="num">${o.total}</td>
+      <td class="num"><span class="tg"><span class="src ia">IA</span>${o.ia}</span></td>
+      <td class="num"><span class="tg"><span class="src col">Col</span>${o.col}</span></td>
+    </tr>`);
+  $('tbl-tags').innerHTML=`<div class="scrolly">${tableHTML(["Etiqueta","Total","Aplicada por IA","Aplicada por colaborador"],rows)}</div>`;
+}
+function renderTagSource(base){
+  let ia=0,col=0;
+  const convIA=new Set(),convCol=new Set();
+  base.forEach((r,idx)=>r.etiquetas.forEach(e=>{
+    if(e.por==="IA"){ia++;convIA.add(idx);} else {col++;convCol.add(idx);}
+  }));
+  const total=ia+col||1;
+  const rows=[
+    `<tr><td class="name-cell"><span class="tg"><span class="src ia">IA</span>Automática</span></td><td class="num">${ia}</td><td class="num">${convIA.size}</td><td><div class="pctbar" style="--tone:var(--cyan)"><div class="track"><div class="fill" style="width:${(ia/total*100).toFixed(1)}%"></div></div><span class="pv">${(ia/total*100).toFixed(1)}%</span></div></td></tr>`,
+    `<tr><td class="name-cell"><span class="tg"><span class="src col">Col</span>Colaborador</span></td><td class="num">${col}</td><td class="num">${convCol.size}</td><td><div class="pctbar" style="--tone:var(--purple)"><div class="track"><div class="fill" style="width:${(col/total*100).toFixed(1)}%"></div></div><span class="pv">${(col/total*100).toFixed(1)}%</span></div></td></tr>`
+  ];
+  $('tbl-tag-source').innerHTML=tableHTML(["Origem","Aplicações","Conversas","%"],rows);
+}
+
+/* ===== RENDER ALL ===== */
+function renderAll(){
+  const base=applyFilters(DATA);
+  const note=`Exibindo <b>${base.length}</b> de <b>${DATA.length}</b> conversas${Object.values(state).some(Boolean)?' · filtros aplicados':''}`;
+  $('note-dash').innerHTML=note;$('note-op').innerHTML=note;
+  renderCardsDash(base);renderStatus(base);renderCaixa(base);renderCampanha(base);renderMotivo(base);
+  renderCardsOp(base);renderAnalitico(base);renderAgente(base);renderTime(base);renderTags(base);renderTagSource(base);
+  syncFilters();
+}
+
+/* ===== TABS ===== */
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===t.dataset.view));
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* ===== INIT ===== */
+buildFilters();
+renderAll();
+</script>
+</body>
+</html>
