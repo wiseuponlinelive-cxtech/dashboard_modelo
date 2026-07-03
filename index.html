@@ -54,6 +54,42 @@
   .fctrl label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600;padding-left:2px}
   .fctrl select{font-family:inherit;font-size:12.5px;font-weight:500;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 30px 8px 11px;cursor:pointer;appearance:none;min-width:150px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
   .fctrl select:focus{outline:none;border-color:var(--blue)}
+  .fsearch{font-family:inherit;font-size:11.5px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 9px;margin-bottom:6px;width:100%}
+  .fsearch::placeholder{color:var(--muted)}
+  .fsearch:focus{outline:none;border-color:var(--blue)}
+  .combo{position:relative;min-width:150px}
+  .combo-input{font-family:inherit;font-size:12.5px;font-weight:500;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 30px 8px 11px;min-width:150px;width:100%;height:36px}
+  .combo-input::placeholder{color:var(--text)}
+  .combo-input:focus{outline:none;border-color:var(--blue)}
+  .combo::after{content:'⌄';position:absolute;right:10px;top:18px;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none}
+  .combo-menu{display:none;position:absolute;z-index:90;top:calc(100% + 6px);left:0;width:300px;max-width:90vw;max-height:250px;overflow:auto;background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:0 18px 40px rgba(0,0,0,.35);padding:6px}
+  .combo.open .combo-menu{display:block}
+  .combo-option{display:block;width:100%;text-align:left;font-family:inherit;font-size:12px;color:var(--text);background:transparent;border:0;border-radius:7px;padding:8px 9px;cursor:pointer}
+  .combo-option:hover,.combo-option.active{background:rgba(46,163,242,.12);color:#fff}
+  .combo-empty{font-size:12px;color:var(--muted);padding:9px}
+  .multiwrap{position:relative;min-width:250px}
+  .multi-field{position:relative;min-width:250px}
+  .multi-field::after{content:'⌄';position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none}
+  .multi-input{font-family:inherit;font-size:12.5px;font-weight:500;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 30px 8px 11px;min-width:250px;width:100%;cursor:text;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .multi-input::placeholder{color:var(--text);opacity:1}
+  .multi-input:focus{outline:none;border-color:var(--blue)}
+  .multi-menu{display:none;position:absolute;z-index:80;left:0;top:calc(100% + 6px);width:340px;max-width:90vw;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+  .multi-menu.open{display:block}
+  .multi-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 8px;font-size:11px;color:var(--muted)}
+  .multi-actions button{font-family:inherit;font-size:11.5px;font-weight:600;color:var(--blue);background:transparent;border:0;cursor:pointer;padding:0}
+  .multi-list{max-height:230px;overflow:auto;display:flex;flex-direction:column;gap:2px}
+  .multi-option{display:flex;align-items:center;gap:8px;padding:7px 6px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--text)}
+  .multi-option:hover{background:rgba(255,255,255,.04)}
+  .multi-option input{accent-color:var(--blue)}
+  .multi-kind{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;border-radius:5px;padding:2px 5px;background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+  .multi-kind.tag{color:var(--cyan);border-color:color-mix(in srgb,var(--cyan) 35%,var(--border))}
+  .multi-kind.tab{color:var(--purple);border-color:color-mix(in srgb,var(--purple) 35%,var(--border))}
+  .fctrl.periodctrl{min-width:260px}
+  .period-picker{display:none;align-items:center;gap:7px;margin-top:6px;padding:8px;background:var(--card2);border:1px solid var(--border);border-radius:8px}
+  .period-picker.open{display:flex}
+  .period-picker span{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+  .period-picker input{font-family:inherit;font-size:12px;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:6px 8px;color-scheme:dark;width:136px}
+  .period-picker input:focus{outline:none;border-color:var(--blue)}
   .fclear{align-self:flex-end;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);background:transparent;border:0;cursor:pointer;padding:8px 4px;text-decoration:underline;text-underline-offset:2px}
   .fclear:hover{color:var(--text)}
   .exportbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
@@ -222,17 +258,11 @@
         <h3>Gráficos de performance <span class="cap">percentuais recalculados conforme os filtros</span></h3>
         <div id="chart-status" class="chartbox"></div>
         <div id="chart-diario" class="chartbox"></div>
-        <div id="chart-objetivo" class="chartbox"></div>
       </div>
 
       <div class="block">
         <h3>Resumo por status da conversa</h3>
         <div class="tbl" id="tbl-status"></div>
-      </div>
-
-      <div class="block">
-        <h3>Resumo por caixa <span class="cap">onde a conversa está no Chatwoot</span></h3>
-        <div class="tbl wide" id="tbl-caixa"></div>
       </div>
 
       <div class="block">
@@ -243,11 +273,6 @@
       <div class="block">
         <h3>Falhas de envio por motivo</h3>
         <div class="tbl" id="tbl-motivo"></div>
-      </div>
-
-      <div class="block">
-        <h3>Tabulações e objetivo do atendimento <span class="cap">assuntos classificados no contato</span></h3>
-        <div class="tbl wide" id="tbl-tabulacao"></div>
       </div>
 
       <p class="note"><b>Linguagem do painel.</b> Indicadores em termos operacionais simples — ex.: <b>Transbordado</b> no lugar de "encaminhado para humano" — sem "fechado ganho", "fechado perdido" ou "oportunidade".</p>
@@ -264,14 +289,14 @@
       <div class="cards small" id="cards-op"></div>
 
       <div class="block">
-        <h3>Resumo por tabulação <span class="cap">assunto e resultado do objetivo</span></h3>
-        <div class="tbl wide" id="tbl-tabulacao-op"></div>
+        <h3>Resumo por caixa <span class="cap">onde a conversa está no Chatwoot</span></h3>
+        <div class="tbl wide" id="tbl-caixa"></div>
       </div>
 
       <div class="block">
         <h3>Lista analítica das conversas <span class="cap">respeita os filtros aplicados</span></h3>
         <div class="exportbar">
-          <div class="exptext"><b>Exportação da lista filtrada.</b> Depois de selecionar período, caixa, campanha, etiqueta, tabulação, status, agente ou time, clique para baixar uma exportação fake com todos os alunos/conversas desta visão.</div>
+          <div class="exptext"><b>Exportação da lista filtrada.</b> Depois de selecionar período, caixa, campanha, etiqueta/tabulação, status, agente ou time, clique para baixar uma exportação fake com todos os alunos/conversas desta visão.</div>
           <button class="exportbtn" id="export-csv">Exportar lista filtrada CSV</button>
         </div>
         <div class="tbl wide" id="tbl-analitico"></div>
@@ -284,10 +309,11 @@
 
       <div class="grid2 block">
         <div>
-          <h3>Etiquetas no período <span class="cap">total e origem de aplicação</span></h3>
+          <h3>Etiquetas / Tabulações no período <span class="cap">classificações aplicadas no atendimento</span></h3>
           <div class="taglegend">
-            <span class="li"><span class="src ia">IA</span> aplicada automaticamente pelo fluxo/robô</span>
-            <span class="li"><span class="src col">Col</span> aplicada manualmente por colaborador</span>
+            <span class="li"><span class="src ia">IA</span> etiqueta automática do fluxo/robô</span>
+            <span class="li"><span class="src col">Col</span> etiqueta manual do colaborador</span>
+            <span class="li"><span class="src col" style="background:var(--card2);color:var(--muted)">Tab</span> tabulação/assunto do contato</span>
           </div>
           <div class="tbl" id="tbl-tags"></div>
         </div>
@@ -311,11 +337,11 @@
         <div class="pages-two">
           <div class="pagecard" style="--tone:var(--blue)">
             <div class="pc-h"><span class="pc-ic">▦</span> Dashboard — visão geral</div>
-            <p>Responde <b>o que aconteceu</b>: os números do período em cards e as tabelas de resumo por status, por caixa, por campanha e as falhas por motivo. Use para ter o panorama rápido.</p>
+            <p>Responde <b>o que aconteceu</b>: os números do período em cards com quantidade e %, gráficos de performance e tabelas de resumo por status, campanha e falhas por motivo. O resumo por caixa fica na página Operação para não poluir a leitura geral. Use para ter o panorama rápido.</p>
           </div>
           <div class="pagecard" style="--tone:var(--purple)">
             <div class="pc-h"><span class="pc-ic">▤</span> Operação — visão analítica</div>
-            <p>Responde <b>quem são</b> os alunos que compõem os números. Traz a lista analítica (nome, telefone, e-mail, data de entrada, data de entrada, caixa, campanha, tabulação, status, etiquetas…) que respeita os filtros e pode ser exportada em CSV.</p>
+            <p>Responde <b>quem são</b> os alunos que compõem os números. Traz a lista analítica (data de entrada, entrada ativo/reativo, nome, telefone, e-mail, ID da conversa, caixa, campanha, status, etiquetas e tabulação) que respeita os filtros e pode ser exportada em CSV.</p>
           </div>
         </div>
       </div>
@@ -323,12 +349,27 @@
       <div class="block">
         <h3>Como usar os filtros</h3>
         <ol class="steps">
-          <li>Selecione o <b>Período</b>. Use os presets ou escolha <b>Personalizado</b> dentro do próprio controle de período, sem criar campos separados de data.</li>
+          <li>Selecione o <b>Período</b>. Use os presets ou escolha <b>Personalizado</b>; ao selecionar essa opção, as datas de início e fim aparecem dentro do próprio controle de período para escolher qualquer intervalo.</li>
           <li>Comece pela <b>Caixa</b> — é onde a conversa está no Chatwoot. Nem toda conversa tem campanha, então a caixa vem primeiro.</li>
           <li>Se quiser, adicione a <b>Campanha</b> (o disparo/régua de origem) para olhar só um envio específico.</li>
-          <li>Refine com <b>Etiqueta</b>, <b>Status</b>, e — na página Operação — também <b>Agente</b>, <b>Time</b> e <b>Origem</b>.</li>
+          <li>Refine com <b>Etiqueta / Tabulação</b> e <b>Status</b>. Na página Operação, use também <b>Agente</b>, <b>Time</b> e <b>Origem</b>. Os filtros Campanha, Status, Etiqueta / Tabulação e Falha de envio permitem selecionar uma, várias ou todas as opções.</li>
           <li>Leia os cards e tabelas. Para ver os alunos, vá para <b>Operação</b>; para baixar a lista, clique em <b>Exportar lista filtrada CSV</b>. A exportação respeita os filtros aplicados.</li>
         </ol>
+      </div>
+
+      <div class="block">
+        <h3>Como ler gráficos e percentuais</h3>
+        <p class="guide-lead" style="margin-top:0">Os percentuais são recalculados automaticamente conforme os filtros aplicados. Assim, ao escolher uma caixa, campanha, etiqueta/tabulação ou período, os cards, gráficos e tabelas passam a mostrar a performance apenas daquele recorte.</p>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Análise</th><th>Base de cálculo</th><th>Exemplo de leitura</th></tr></thead>
+            <tbody>
+              <tr><td class="name-cell">% Resolvidos</td><td>Total de conversas filtradas</td><td>Mostra quanto da entrada do período foi concluída.</td></tr>
+              <tr><td class="name-cell">% Transbordados</td><td>Total de conversas filtradas</td><td>Mostra quanto precisou sair do fluxo e ir para atendimento humano/outro time.</td></tr>
+              <tr><td class="name-cell">% Resposta</td><td>Templates enviados</td><td>Mostra a eficiência do disparo/comunicação.</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="block">
@@ -343,6 +384,11 @@
             </tbody>
           </table>
         </div>
+      </div>
+      <div class="block">
+        <h3>Como interpretar etiquetas e tabulações</h3>
+        <p class="guide-lead" style="margin-top:0"><b>Etiqueta</b> mostra uma marcação da conversa, podendo vir do fluxo/IA ou de um colaborador. <b>Tabulação</b> mostra o assunto ou resultado registrado no atendimento, como pagou, link de pagamento enviado, sem retorno, cancelamento solicitado ou AZ agendada.</p>
+        <p class="guide-lead" style="margin-top:0">Para não depender de uma medição complexa de “objetivo realizado”, o painel junta <b>Etiqueta / Tabulação</b> em um único filtro. Assim, a operação consegue selecionar uma ou várias classificações e exportar todos os alunos relacionados.</p>
       </div>
 
       <div class="block">
@@ -457,7 +503,7 @@ const CAMPANHAS=["CS WOL — Campanha Onboarding","CS WOL — 9D","CS WOL — 15
 const TPL={"CS WOL — Campanha Onboarding":"wol_onb_boasvindas","CS WOL — 9D":"wol_9d_apoio","CS WOL — 15D":"wol_15d_checkin","CS WOL — 30D":"wol_30d_retorno","CS WOL — 72D":"wol_72d_retomada","Retomada":"wol_retomada","WOL Renovação":"wol_renov_lembrete"};
 const TIMES=["CS","Onboarding","Orientações Acadêmicas","Retenção","Suporte","Financeiro"];
 const AGENTES=["Ana Paula","Beatriz Lima","Camila Rocha"];
-const MOTIVOS=["falha_ao_enviar_msg","contato_sem_wpp","template não entregue","janela expirada","erro de integração","opt-in ausente","telefone inválido","erro desconhecido"];
+const MOTIVOS=["131026: Message undeliverable","131049: This message was not delivered to maintain healthy ecosystem engagement","130472: User's number is part of an experiment","falha_ao_enviar_msg","contato_sem_wpp","template não entregue","janela expirada","erro de integração","opt-in ausente","telefone inválido","erro desconhecido"];
 const STATUSES=["Recebeu e não respondeu","Iniciou e parou de responder","Transbordado","Resolvido","Falha de envio","Pendente"];
 
 function phone(){const ac=pick(["41","11","21","31","47","51","85","62","19"]);return `+55 ${ac} 9${Math.floor(rand()*9)+1}xxx-${String(Math.floor(rand()*9000)+1000)}`;}
@@ -554,8 +600,9 @@ function makeRow(){
   const tipoEntrada=origem==="Demanda espontânea"?weighted([["Reativo",65],["Ativo",35]]):weighted([["Ativo",78],["Reativo",22]]);
   const dt=dataEntradaInfo();
   const tab=tabulacaoFor(status,origem,caixa,campanha);
+  const statusConversa=status==='Resolvido'||(status==='Falha de envio'&&rand()<0.7)?'Fechadas':'Abertas';
   return {nome:`${fn} ${ln}`,telefone:phone(),email:`${slug(fn)}.${slug(ln)}@aluno.wiser.com`,id:String(720000+Math.floor(rand()*9999)),
-    dataEntrada:dt.texto,dataISO:dt.iso,tipoEntrada,caixa,campanha,origem,template,etiquetas:tagsFor(status,origem,caixa),
+    dataEntrada:dt.texto,dataISO:dt.iso,tipoEntrada,caixa,campanha,origem,template,statusConversa,etiquetas:tagsFor(status,origem,caixa),
     tabulacao:tab.tabulacao,resultadoObjetivo:tab.resultadoObjetivo,objetivoCampanha:tab.objetivoCampanha,
     agente,time,statusEnvio,respondeu,statusFinal:status,motivo};
 }
@@ -572,14 +619,17 @@ const isEnviado=r=>r.template!=='—'&&(r.statusEnvio==='Entregue'||r.statusEnvi
 const campLabel=r=>r.origem==='Demanda espontânea'?'Demanda espontânea':r.campanha;
 
 /* ===== FILTROS ===== */
-const state={periodo:'',caixa:'',campanha:'',etiqueta:'',etiquetaPor:'',tabulacao:'',resultadoObjetivo:'',statusFinal:'',agente:'',time:'',origem:''};
+const state={periodo:'',periodoInicio:'',periodoFim:'',caixa:'',campanha:[],statusConversa:[],etiquetaTab:[],etiquetaPor:'',falhaEnvio:[],agente:'',time:'',origem:''};
 function presetRange(p){
   const end='2026-07-03';
-  if(p==='Últimos 7 dias')return {start:'2026-06-27',end};
-  if(p==='Últimos 15 dias')return {start:'2026-06-19',end};
-  if(p==='Últimos 30 dias')return {start:'2026-06-04',end};
-  if(p==='Este mês')return {start:'2026-07-01',end};
-  if(String(p).startsWith('Personalizado'))return {start:'2026-06-20',end:'2026-07-03'};
+  if(p==='Mês atual')return {start:'2026-07-01',end};
+  if(p==='Mês anterior')return {start:'2026-06-01',end:'2026-06-30'};
+  if(p==='Personalizado'){
+    const start=state.periodoInicio||'0000-01-01';
+    const end=state.periodoFim||'9999-12-31';
+    if(!state.periodoInicio&&!state.periodoFim)return null;
+    return {start,end};
+  }
   return null;
 }
 function applyFilters(data){
@@ -587,43 +637,198 @@ function applyFilters(data){
     const range=presetRange(state.periodo);
     if(range){ if(r.dataISO<range.start||r.dataISO>range.end)return false; }
     if(state.caixa&&r.caixa!==state.caixa)return false;
-    if(state.campanha){ if(state.campanha==='Demanda espontânea'){if(r.origem!=='Demanda espontânea')return false;} else if(r.campanha!==state.campanha)return false; }
-    if(state.etiqueta&&!r.etiquetas.some(e=>e.t===state.etiqueta))return false;
+    if(state.campanha&&state.campanha.length){
+      const ok=state.campanha.some(cp=>cp==='Demanda espontânea'?r.origem==='Demanda espontânea':r.campanha===cp);
+      if(!ok)return false;
+    }
+    if(state.etiquetaTab&&state.etiquetaTab.length){
+      const ok=state.etiquetaTab.some(v=>{
+        const [tipo,nome]=v.split('||');
+        if(tipo==='Etiqueta')return r.etiquetas.some(e=>e.t===nome);
+        if(tipo==='Tabulação'){
+          if(nome==='Responderam')return r.respondeu==='Sim';
+          if(nome==='Recebeu e não respondeu')return r.statusFinal==='Recebeu e não respondeu';
+          if(nome==='Iniciou e parou de responder')return r.statusFinal==='Iniciou e parou de responder';
+          if(nome==='Transbordado')return r.statusFinal==='Transbordado';
+          if(nome==='Resolvido')return r.statusFinal==='Resolvido';
+          if(nome==='Pendente')return r.statusFinal==='Pendente';
+          if(nome==='Falha de envio')return r.statusFinal==='Falha de envio';
+          return r.tabulacao===nome;
+        }
+        return false;
+      });
+      if(!ok)return false;
+    }
     if(state.etiquetaPor&&!r.etiquetas.some(e=>e.por===state.etiquetaPor))return false;
-    if(state.tabulacao&&r.tabulacao!==state.tabulacao)return false;
-    if(state.resultadoObjetivo&&r.resultadoObjetivo!==state.resultadoObjetivo)return false;
-    if(state.statusFinal&&r.statusFinal!==state.statusFinal)return false;
+    if(state.statusConversa&&state.statusConversa.length&&!state.statusConversa.includes(r.statusConversa))return false;
+    if(state.falhaEnvio&&state.falhaEnvio.length&&!state.falhaEnvio.includes(r.motivo))return false;
     if(state.agente&&r.agente!==state.agente)return false;
     if(state.time&&r.time!==state.time)return false;
     if(state.origem&&r.origem!==state.origem)return false;
     return true;
   });
 }
+function sortAlpha(arr){return [...arr].sort((a,b)=>String(a).localeCompare(String(b),'pt-BR',{sensitivity:'base'}));}
+function optHTML(opts){return [`<option value="">Todos</option>`].concat(opts.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`)).join('');}
 function ctrl(field,label,opts,cosmetic){
-  const o=[`<option value="">Todos</option>`].concat(opts.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`)).join('');
-  return `<div class="fctrl"><label>${esc(label)}</label><select data-field="${field}" data-cosmetic="${cosmetic?1:''}">${o}</select></div>`;
+  const isPeriod=field==='periodo';
+  const sorted=isPeriod?opts:sortAlpha(opts);
+  const o=optHTML(sorted);
+  if(isPeriod){
+    return `<div class="fctrl periodctrl"><label>${esc(label)}</label><select data-field="${field}" data-cosmetic="${cosmetic?1:''}" data-options='${JSON.stringify(sorted)}'>${o}</select><div class="period-picker" data-period-picker><span>Início</span><input type="date" data-field="periodoInicio"><span>Fim</span><input type="date" data-field="periodoFim"></div></div>`;
+  }
+  const options=sorted.map(v=>`<button type="button" class="combo-option" data-combo-value="${esc(v)}">${esc(v)}</button>`).join('');
+  return `<div class="fctrl"><label>${esc(label)}</label><div class="combo" data-combo="${field}" data-options='${JSON.stringify(sorted)}'><input class="combo-input" type="text" data-combo-input="${field}" placeholder="Todos" autocomplete="off"><div class="combo-menu"><button type="button" class="combo-option" data-combo-value="">Todos</button>${options}</div></div></div>`;
+}
+function ctrlMulti(field,label,items){
+  const sorted=[...items].sort((a,b)=>String(a.label).localeCompare(String(b.label),'pt-BR',{sensitivity:'base'}));
+  const rows=sorted.map(item=>{
+    const tipo=item.tipo||'';
+    const kindClass=tipo==='Etiqueta'?'tag':(tipo==='Tabulação'?'tab':'');
+    const kind=tipo?`<span class="multi-kind ${kindClass}">${esc(tipo==='Etiqueta'?'Etq':tipo==='Tabulação'?'Tab':tipo)}</span>`:'';
+    return `<label class="multi-option" data-label="${esc(item.label)}" data-type="${esc(tipo)}"><input type="checkbox" value="${esc(item.value)}" data-multi-field="${field}">${kind}<span>${esc(item.label)}</span></label>`;
+  }).join('');
+  return `<div class="fctrl multiwrap"><label>${esc(label)}</label><div class="multi-field"><input class="multi-input" type="text" data-multi-input="${field}" placeholder="Todos" autocomplete="off"><div class="multi-menu" data-multi-menu="${field}"><div class="multi-actions"><span>Selecione uma, várias ou todas</span><span><button type="button" data-multi-all="${field}">Selecionar todas</button> · <button type="button" data-multi-clear="${field}">Limpar</button></span></div><div class="multi-list">${rows}</div></div></div></div>`;
 }
 function buildFilters(){
   const tagCounts={};DATA.forEach(r=>r.etiquetas.forEach(e=>tagCounts[e.t]=(tagCounts[e.t]||0)+1));
-  const topTags=Object.entries(tagCounts).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
-  const PERIODO=["Últimos 30 dias","Últimos 7 dias","Últimos 15 dias","Este mês","Personalizado: 20/06/2026 a 03/07/2026"];
-  const caixas=uniq(DATA.map(r=>r.caixa)).sort();
-  const camps=[...CAMPANHAS,"Demanda espontânea"];
-  const tabs=uniq(DATA.map(r=>r.tabulacao)).sort();
-  const dash=ctrl('periodo','Período',PERIODO)+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('tabulacao','Tabulação',tabs)+ctrl('resultadoObjetivo','Resultado objetivo',RESULTADOS_OBJ)+ctrl('statusFinal','Status da conversa',STATUSES)+`<button class="fclear" data-clear>Limpar</button>`;
-  const op=ctrl('periodo','Período',PERIODO)+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('tabulacao','Tabulação',tabs)+ctrl('resultadoObjetivo','Resultado objetivo',RESULTADOS_OBJ)+ctrl('statusFinal','Status',STATUSES)+ctrl('agente','Agente',[...AGENTES,'Sem agente'])+ctrl('time','Time',[...TIMES,'Sem time'])+ctrl('origem','Origem',['Campanha','Demanda espontânea'])+`<button class="fclear" data-clear>Limpar</button>`;
+  const topTags=sortAlpha(Object.keys(tagCounts));
+  const tabs=sortAlpha(uniq(DATA.map(r=>r.tabulacao)));
+  const tabulacoesOperacionais=['Recebeu e não respondeu','Iniciou e parou de responder','Responderam','Transbordado','Resolvido','Pendente','Falha de envio'];
+  const todasTabulacoes=sortAlpha(uniq([...tabulacoesOperacionais,...tabs]));
+  const etiquetaTabItems=[...topTags.map(t=>({tipo:'Etiqueta',label:t,value:'Etiqueta||'+t})),...todasTabulacoes.map(t=>({tipo:'Tabulação',label:t,value:'Tabulação||'+t}))];
+  const PERIODO=["Mês atual","Mês anterior","Personalizado"];
+  const caixas=sortAlpha(uniq(DATA.map(r=>r.caixa)));
+  const camps=sortAlpha([...CAMPANHAS,"Demanda espontânea"]);
+  const statusConversaOptions=['Abertas','Fechadas'];
+  const campanhaItems=camps.map(c=>({tipo:'Campanha',label:c,value:c}));
+  const statusItems=statusConversaOptions.map(s=>({tipo:'Status',label:s,value:s}));
+  const falhaItems=sortAlpha(MOTIVOS).map(m=>({tipo:'Falha',label:m,value:m}));
+  const dash=ctrl('periodo','Período',PERIODO)+ctrl('caixa','Caixa',caixas)+ctrlMulti('campanha','Campanha',campanhaItems)+ctrlMulti('statusConversa','Status',statusItems)+ctrlMulti('etiquetaTab','Etiquetas / Tabulações',etiquetaTabItems)+ctrl('etiquetaPor','Etiqueta / Tabulação por',['IA','Colaborador'])+ctrlMulti('falhaEnvio','Falha de envio',falhaItems)+`<button class="fclear" data-clear>Limpar filtros</button>`;
+  const op=ctrl('periodo','Período',PERIODO)+ctrl('caixa','Caixa',caixas)+ctrlMulti('campanha','Campanha',campanhaItems)+ctrlMulti('statusConversa','Status',statusItems)+ctrlMulti('etiquetaTab','Etiquetas / Tabulações',etiquetaTabItems)+ctrl('etiquetaPor','Etiqueta / Tabulação por',['IA','Colaborador'])+ctrlMulti('falhaEnvio','Falha de envio',falhaItems)+ctrl('agente','Agente',[...AGENTES,'Sem agente'])+ctrl('time','Time',[...TIMES,'Sem time'])+ctrl('origem','Origem',['Campanha','Demanda espontânea'])+`<button class="fclear" data-clear>Limpar filtros</button>`;
   $('filters-dash').innerHTML=dash;$('filters-op').innerHTML=op;
   document.querySelectorAll('.filters select').forEach(el=>el.addEventListener('change',()=>{
     state[el.dataset.field]=el.value;
+    if(el.dataset.field==='periodo' && el.value!=='Personalizado'){
+      state.periodoInicio='';
+      state.periodoFim='';
+    }
+    renderAll();
+  }));
+  document.querySelectorAll('.filters input[type="date"]').forEach(el=>el.addEventListener('change',()=>{
+    state[el.dataset.field]=el.value;
+    if(state.periodoInicio||state.periodoFim)state.periodo='Personalizado';
+    renderAll();
+  }));
+  function comboNormalize(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();}
+  document.querySelectorAll('[data-combo]').forEach(combo=>{
+    const field=combo.dataset.combo;
+    const input=combo.querySelector('.combo-input');
+    const menu=combo.querySelector('.combo-menu');
+    const all=JSON.parse(combo.dataset.options||'[]');
+    const renderOptions=(q='')=>{
+      const nq=comboNormalize(q);
+      const opts=all.filter(v=>comboNormalize(v).includes(nq));
+      menu.innerHTML=`<button type="button" class="combo-option" data-combo-value="">Todos</button>` + (opts.length?opts.map(v=>`<button type="button" class="combo-option" data-combo-value="${esc(v)}">${esc(v)}</button>`).join(''):`<div class="combo-empty">Nenhum resultado</div>`);
+    };
+    input.addEventListener('focus',()=>{renderOptions(input.value);combo.classList.add('open');});
+    input.addEventListener('input',()=>{state[field]='';renderOptions(input.value);combo.classList.add('open');});
+    input.addEventListener('keydown',e=>{if(e.key==='Escape'){combo.classList.remove('open');input.value=state[field]||'';}});
+    menu.addEventListener('click',e=>{
+      const opt=e.target.closest('[data-combo-value]');
+      if(!opt)return;
+      state[field]=opt.dataset.comboValue||'';
+      input.value=state[field];
+      combo.classList.remove('open');
+      renderAll();
+    });
+  });
+  document.addEventListener('click',e=>{
+    document.querySelectorAll('[data-combo]').forEach(combo=>{
+      if(!combo.contains(e.target)){
+        combo.classList.remove('open');
+        const field=combo.dataset.combo;
+        const input=combo.querySelector('.combo-input');
+        if(input)input.value=state[field]||'';
+      }
+    });
+  });
+  function normText(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();}
+  function refreshMultiSearch(input){
+    const q=normText(input.value);
+    const menu=input.closest('.multi-field').querySelector('.multi-menu');
+    menu.querySelectorAll('.multi-option').forEach(row=>{
+      const label=normText(row.dataset.label||'');
+      const type=normText(row.dataset.type||'');
+      row.style.display=(label.includes(q)||type.includes(q))?'flex':'none';
+    });
+  }
+  document.querySelectorAll('[data-multi-input]').forEach(inp=>{
+    inp.addEventListener('focus',()=>{
+      const field=inp.dataset.multiInput;
+      inp.value='';
+      document.querySelectorAll('.multi-menu').forEach(m=>{if(m.dataset.multiMenu!==field)m.classList.remove('open')});
+      inp.closest('.multi-field').querySelector('.multi-menu').classList.add('open');
+      refreshMultiSearch(inp);
+    });
+    inp.addEventListener('input',()=>refreshMultiSearch(inp));
+    inp.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){
+        inp.closest('.multi-field').querySelector('.multi-menu').classList.remove('open');
+        syncFilters();
+      }
+    });
+  });
+  document.querySelectorAll('.multi-menu').forEach(menu=>menu.addEventListener('click',e=>e.stopPropagation()));
+  document.addEventListener('click',e=>{
+    document.querySelectorAll('.multi-field').forEach(field=>{
+      if(!field.contains(e.target))field.querySelector('.multi-menu').classList.remove('open');
+    });
+    syncFilters();
+  });
+  document.querySelectorAll('[data-multi-field]').forEach(cb=>cb.addEventListener('change',()=>{
+    const field=cb.dataset.multiField;
+    state[field]=uniq([...document.querySelectorAll(`[data-multi-field="${field}"]:checked`)].map(x=>x.value));
+    renderAll();
+  }));
+  document.querySelectorAll('[data-multi-all]').forEach(btn=>btn.addEventListener('click',()=>{
+    const field=btn.dataset.multiAll;
+    const visible=[...document.querySelectorAll(`[data-multi-field="${field}"]`)].filter(cb=>cb.closest('.multi-option').style.display!=='none');
+    visible.forEach(cb=>cb.checked=true);
+    state[field]=uniq([...document.querySelectorAll(`[data-multi-field="${field}"]:checked`)].map(x=>x.value));
+    renderAll();
+  }));
+  document.querySelectorAll('[data-multi-clear]').forEach(btn=>btn.addEventListener('click',()=>{
+    const field=btn.dataset.multiClear;
+    state[field]=[];
+    document.querySelectorAll(`[data-multi-field="${field}"]`).forEach(cb=>cb.checked=false);
+    const input=document.querySelector(`[data-multi-input="${field}"]`); if(input)input.value='';
     renderAll();
   }));
   document.querySelectorAll('[data-clear]').forEach(b=>b.addEventListener('click',()=>{
-    for(const k in state)state[k]='';
-    document.querySelectorAll('.filters select').forEach(el=>el.value='');
+    for(const k in state)state[k]=Array.isArray(state[k])?[]:'';
+    document.querySelectorAll('.filters select').forEach(s=>s.value='');
+    document.querySelectorAll('.filters input[type="date"], .filters .combo-input, .filters .multi-input').forEach(i=>i.value='');
+    document.querySelectorAll('[data-multi-field]').forEach(cb=>cb.checked=false);
     renderAll();
   }));
 }
-function syncFilters(){document.querySelectorAll('.filters select').forEach(el=>{el.value=state[el.dataset.field]||'';});}
+function syncFilters(){
+  document.querySelectorAll('.filters select').forEach(el=>{el.value=state[el.dataset.field]||'';});
+  document.querySelectorAll('[data-combo-input]').forEach(inp=>{inp.value=state[inp.dataset.comboInput]||'';});
+  document.querySelectorAll('.filters input[type="date"]').forEach(el=>{el.value=state[el.dataset.field]||'';});
+  document.querySelectorAll('[data-period-picker]').forEach(el=>el.classList.toggle('open',state.periodo==='Personalizado'));
+  document.querySelectorAll('[data-multi-input]').forEach(inp=>{
+    const field=inp.dataset.multiInput;
+    const selected=state[field]||[];
+    if(!document.activeElement || document.activeElement!==inp){
+      if(!selected.length)inp.value='';
+      else if(selected.length===1)inp.value=selected[0].includes('||')?selected[0].split('||')[1]:selected[0];
+      else inp.value=`${selected.length} selecionada(s)`;
+    }
+  });
+  document.querySelectorAll('[data-multi-field]').forEach(cb=>{cb.checked=(state[cb.dataset.multiField]||[]).includes(cb.value);});
+}
 
 /* ===== RENDER TABELA GENÉRICA ===== */
 function tableHTML(headers,rows,foot,align){
@@ -696,7 +901,7 @@ function renderChartObjetivo(base){
   const labels=uniq(base.map(r=>r.resultadoObjetivo));
   const toneMap={"Realizado":"var(--green)","Parcial":"var(--yellow)","Não realizado":"var(--red)","Pendente":"var(--orange)","Não se aplica":"var(--grey)"};
   const items=labels.map(l=>({label:l,n:cnt(base,r=>r.resultadoObjetivo===l),tone:toneMap[l]||'var(--blue)'})).sort((a,b)=>b.n-a.n);
-  $('chart-objetivo').innerHTML=`<div class="chart-title"><b>Resultado do objetivo do atendimento</b><span>ex.: pagou, link enviado, negou pagar, negociação, sem retorno</span></div>${hbarHTML(items,total)}`;
+  $('chart-objetivo').innerHTML=`<div class="chart-title"><b>Resultado do objetivo do atendimento</b><span>resultado dentro do recorte filtrado</span></div>${hbarHTML(items,total)}`;
 }
 function renderChartDiario(base){
   const by={};
@@ -722,12 +927,30 @@ function renderCardsOp(base){
 function renderAnalitico(base){
   const rows=base.map(r=>`<tr>
     <td>${esc(r.dataEntrada)}</td><td>${esc(r.tipoEntrada)}</td><td class="name-cell">${esc(r.nome)}</td><td>${esc(r.telefone)}</td><td>${esc(r.email)}</td><td class="link">${esc(r.id)}</td>
-    <td>${esc(r.caixa)}</td><td>${esc(r.campanha)}</td><td>${esc(r.origem)}</td><td>${esc(r.objetivoCampanha)}</td><td>${esc(r.tabulacao)}</td><td>${esc(r.resultadoObjetivo)}</td><td>${tagsHTML(r.etiquetas)}</td>
+    <td>${esc(r.caixa)}</td><td>${esc(r.campanha)}</td><td>${esc(r.origem)}</td><td>${esc(r.statusConversa)}</td><td>${esc(r.tabulacao)}</td><td>${tagsHTML(r.etiquetas)}</td>
     <td>${badge(r.statusFinal)}</td><td>${r.agente==="Sem agente"?'<span class="t-muted">—</span>':esc(r.agente)}</td>
     <td>${r.time==="Sem time"?'<span class="t-muted">—</span>':esc(r.time)}</td><td>${r.motivo?`<span class="t-fail">${esc(r.motivo)}</span>`:'<span class="t-muted">—</span>'}</td>
   </tr>`);
-  const foot=`<tr><td colspan="17">Total · ${base.length} ${base.length===1?'conversa':'conversas'}</td></tr>`;
-  $('tbl-analitico').innerHTML=`<div class="scrolly">${tableHTML(["Data entrada","Entrada","Nome","Telefone","E-mail","ID conversa","Caixa","Campanha","Origem","Objetivo","Tabulação","Resultado objetivo","Etiquetas","Status","Agente","Time","Motivo da falha"],rows,foot)}</div>`;
+  const foot=`<tr><td colspan="16">Total · ${base.length} ${base.length===1?'conversa':'conversas'}</td></tr>`;
+  $('tbl-analitico').innerHTML=`<div class="scrolly">${tableHTML(["Data entrada","Entrada","Nome","Telefone","E-mail","ID conversa","Caixa","Campanha","Origem","Status Chatwoot","Tabulação","Etiquetas","Status da conversa","Agente","Time","Motivo da falha"],rows,foot)}</div>`;
+}
+function renderObjetivo(base){
+  const by={};
+  base.forEach(r=>{
+    const k=r.objetivoCampanha;
+    if(!by[k])by[k]={obj:k,total:0,real:0,parcial:0,nao:0,pend:0,na:0};
+    by[k].total++;
+    if(r.resultadoObjetivo==='Realizado')by[k].real++;
+    else if(r.resultadoObjetivo==='Parcial')by[k].parcial++;
+    else if(r.resultadoObjetivo==='Não realizado')by[k].nao++;
+    else if(r.resultadoObjetivo==='Pendente')by[k].pend++;
+    else by[k].na++;
+  });
+  const rows=Object.values(by).sort((a,b)=>a.obj.localeCompare(b.obj,'pt-BR',{sensitivity:'base'})).map(o=>{
+    const pct=fmtPct(o.real,o.total);
+    return `<tr><td class="name-cell">${esc(o.obj)}</td><td class="num">${o.total}</td><td class="num">${o.real}</td><td class="num">${pct}</td><td class="num">${o.parcial}</td><td class="num">${o.nao}</td><td class="num">${o.pend}</td><td class="num">${o.na}</td></tr>`;
+  });
+  $('tbl-objetivo').innerHTML=tableHTML(["Objetivo","Base elegível","Realizados","% Realizado","Parciais","Não realizados","Pendentes","Não se aplica"],rows);
 }
 function renderTabulacao(base,target){
   const by={};
@@ -737,7 +960,7 @@ function renderTabulacao(base,target){
     by[k].total++;
   });
   const total=base.length||1;
-  const rows=Object.values(by).sort((a,b)=>b.total-a.total).map(o=>`<tr><td class="name-cell">${esc(o.tab)}</td><td>${esc(o.obj)}</td><td>${esc(o.res)}</td><td class="num">${o.total}</td><td><div class="pctbar" style="--tone:var(--blue)"><div class="track"><div class="fill" style="width:${(o.total/total*100).toFixed(1)}%"></div></div><span class="pv">${(o.total/total*100).toFixed(1)}%</span></div></td></tr>`);
+  const rows=Object.values(by).sort((a,b)=>a.tab.localeCompare(b.tab,'pt-BR',{sensitivity:'base'}) || a.obj.localeCompare(b.obj,'pt-BR',{sensitivity:'base'})).map(o=>`<tr><td class="name-cell">${esc(o.tab)}</td><td>${esc(o.obj)}</td><td>${esc(o.res)}</td><td class="num">${o.total}</td><td><div class="pctbar" style="--tone:var(--blue)"><div class="track"><div class="fill" style="width:${(o.total/total*100).toFixed(1)}%"></div></div><span class="pv">${(o.total/total*100).toFixed(1)}%</span></div></td></tr>`);
   $(target).innerHTML=tableHTML(["Tabulação","Objetivo","Resultado","Conversas","%"],rows);
 }
 function renderAgente(base){
@@ -753,18 +976,25 @@ function renderTime(base){
 function renderTags(base){
   const by={};
   base.forEach(r=>r.etiquetas.forEach(e=>{
-    if(!by[e.t])by[e.t]={total:0,ia:0,col:0};
-    by[e.t].total++;
-    if(e.por==="IA")by[e.t].ia++; else by[e.t].col++;
+    const k='Etiqueta||'+e.t;
+    if(!by[k])by[k]={tipo:'Etiqueta',nome:e.t,total:0,ia:0,col:0};
+    by[k].total++;
+    if(e.por==="IA")by[k].ia++; else by[k].col++;
   }));
-  const rows=Object.entries(by).sort((a,b)=>b[1].total-a[1].total).map(([t,o])=>`
+  base.forEach(r=>{
+    const k='Tabulação||'+r.tabulacao;
+    if(!by[k])by[k]={tipo:'Tabulação',nome:r.tabulacao,total:0,ia:null,col:null};
+    by[k].total++;
+  });
+  const rows=Object.values(by).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'}) || a.tipo.localeCompare(b.tipo,'pt-BR',{sensitivity:'base'})).map(o=>`
     <tr>
-      <td class="name-cell">${esc(t)}</td>
+      <td><span class="tg"><span class="src ${o.tipo==='Etiqueta'?'ia':'col'}" style="${o.tipo==='Tabulação'?'background:var(--card2);color:var(--muted)':''}">${o.tipo==='Etiqueta'?'Etq':'Tab'}</span>${esc(o.tipo)}</span></td>
+      <td class="name-cell">${esc(o.nome)}</td>
       <td class="num">${o.total}</td>
-      <td class="num"><span class="tg"><span class="src ia">IA</span>${o.ia}</span></td>
-      <td class="num"><span class="tg"><span class="src col">Col</span>${o.col}</span></td>
+      <td class="num">${o.ia===null?'<span class="t-muted">—</span>':`<span class="tg"><span class="src ia">IA</span>${o.ia}</span>`}</td>
+      <td class="num">${o.col===null?'<span class="t-muted">—</span>':`<span class="tg"><span class="src col">Col</span>${o.col}</span>`}</td>
     </tr>`);
-  $('tbl-tags').innerHTML=`<div class="scrolly">${tableHTML(["Etiqueta","Total","Aplicada por IA","Aplicada por colaborador"],rows)}</div>`;
+  $('tbl-tags').innerHTML=`<div class="scrolly">${tableHTML(["Tipo","Etiqueta / Tabulação","Total","Aplicada por IA","Aplicada por colaborador"],rows)}</div>`;
 }
 function renderTagSource(base){
   let ia=0,col=0;
@@ -786,12 +1016,12 @@ function csvCell(v){
 }
 function exportarListaFiltrada(){
   const base=applyFilters(DATA);
-  const cols=["Data entrada","Entrada","Caixa","Campanha","Origem","Objetivo","Tabulação","Resultado objetivo","Etiquetas","Etiqueta por","Status da conversa","Nome","Telefone","E-mail","ID conversa","Agente","Time","Status envio","Respondeu","Motivo da falha"];
+  const cols=["Data entrada","Entrada","Caixa","Campanha","Origem","Status Chatwoot","Tabulação","Etiquetas","Etiqueta por","Status da conversa","Nome","Telefone","E-mail","ID conversa","Agente","Time","Status envio","Respondeu","Motivo da falha"];
   const lines=[cols.join(';')];
   base.forEach(r=>{
     const etiquetas=r.etiquetas.map(e=>e.t).join(' | ');
     const etiquetaPor=r.etiquetas.map(e=>`${e.t}: ${e.por}`).join(' | ');
-    lines.push([r.dataEntrada,r.tipoEntrada,r.caixa,r.campanha,r.origem,r.objetivoCampanha,r.tabulacao,r.resultadoObjetivo,etiquetas,etiquetaPor,r.statusFinal,r.nome,r.telefone,r.email,r.id,r.agente,r.time,r.statusEnvio,r.respondeu,r.motivo||''].map(csvCell).join(';'));
+    lines.push([r.dataEntrada,r.tipoEntrada,r.caixa,r.campanha,r.origem,r.statusConversa,r.tabulacao,etiquetas,etiquetaPor,r.statusFinal,r.nome,r.telefone,r.email,r.id,r.agente,r.time,r.statusEnvio,r.respondeu,r.motivo||''].map(csvCell).join(';'));
   });
   const blob=new Blob(['\uFEFF'+lines.join('\n')],{type:'text/csv;charset=utf-8;'});
   const url=URL.createObjectURL(blob);
@@ -805,10 +1035,10 @@ function exportarListaFiltrada(){
 /* ===== RENDER ALL ===== */
 function renderAll(){
   const base=applyFilters(DATA);
-  const note=`Exibindo <b>${base.length}</b> de <b>${DATA.length}</b> conversas${Object.values(state).some(Boolean)?' · filtros aplicados':''}`;
+  const note=`Exibindo <b>${base.length}</b> de <b>${DATA.length}</b> conversas${Object.values(state).some(v=>Array.isArray(v)?v.length>0:Boolean(v))?' · filtros aplicados':''}`;
   $('note-dash').innerHTML=note;$('note-op').innerHTML=note;
-  renderCardsDash(base);renderChartStatus(base);renderChartDiario(base);renderChartObjetivo(base);renderStatus(base);renderCaixa(base);renderCampanha(base);renderMotivo(base);renderTabulacao(base,'tbl-tabulacao');
-  renderCardsOp(base);renderTabulacao(base,'tbl-tabulacao-op');renderAnalitico(base);renderAgente(base);renderTime(base);renderTags(base);renderTagSource(base);
+  renderCardsDash(base);renderChartStatus(base);renderChartDiario(base);renderStatus(base);renderCampanha(base);renderMotivo(base);
+  renderCardsOp(base);renderCaixa(base);renderAnalitico(base);renderAgente(base);renderTime(base);renderTags(base);renderTagSource(base);
   syncFilters();
 }
 
