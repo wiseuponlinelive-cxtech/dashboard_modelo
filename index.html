@@ -52,10 +52,16 @@
   .filters{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:18px 0 6px}
   .fctrl{display:flex;flex-direction:column;gap:3px}
   .fctrl label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600;padding-left:2px}
-  .fctrl select{font-family:inherit;font-size:12.5px;font-weight:500;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 30px 8px 11px;cursor:pointer;appearance:none;min-width:150px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
-  .fctrl select:focus{outline:none;border-color:var(--blue)}
+  .fctrl select,.fctrl input[type=date]{font-family:inherit;font-size:12.5px;font-weight:500;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 30px 8px 11px;cursor:pointer;appearance:none;min-width:150px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+  .fctrl select:focus,.fctrl input[type=date]:focus{outline:none;border-color:var(--blue)}
+  .fctrl input[type=date]{min-width:140px;background-image:none;padding-right:11px;color-scheme:dark}
   .fclear{align-self:flex-end;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);background:transparent;border:0;cursor:pointer;padding:8px 4px;text-decoration:underline;text-underline-offset:2px}
   .fclear:hover{color:var(--text)}
+  .exportbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+  .exportbar .exptext{font-size:12px;color:var(--muted);line-height:1.45}
+  .exportbar .exptext b{color:var(--text);font-weight:600}
+  .exportbtn{font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;border:1px solid var(--blue);background:var(--blue);color:#04121f;border-radius:8px;padding:9px 14px;white-space:nowrap}
+  .exportbtn:hover{filter:brightness(1.08)}
   .count-note{font-size:12px;color:var(--muted);margin-bottom:20px}
   .count-note b{color:var(--text)}
 
@@ -67,7 +73,7 @@
   .block{margin-top:34px}
   .block h3{font-size:16px;font-weight:700;margin-bottom:12px}
   .block .cap{font-size:12px;color:var(--muted);font-weight:400;margin-left:8px}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .grid2{display:grid;grid-template-columns:1fr;gap:26px}
 
   /* SCORECARDS */
   .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
@@ -150,7 +156,7 @@
   footer{border-top:1px solid var(--border);padding:20px 0;margin-top:40px}
   footer p{font-size:12px;color:var(--muted);text-align:center}
 
-  @media (max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}.cards.small{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}}
+  @media (max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}.cards.small{grid-template-columns:repeat(3,1fr)}}
   @media (max-width:560px){.cards,.cards.small{grid-template-columns:1fr}.tabs-inner{gap:24px}.head-actions .btn:not(.primary){display:none}.fctrl select{min-width:130px}}
 </style>
 </head>
@@ -209,6 +215,11 @@
         <div class="tbl" id="tbl-motivo"></div>
       </div>
 
+      <div class="block">
+        <h3>Tabulações e objetivo do atendimento <span class="cap">assuntos classificados no contato</span></h3>
+        <div class="tbl wide" id="tbl-tabulacao"></div>
+      </div>
+
       <p class="note"><b>Linguagem do painel.</b> Indicadores em termos operacionais simples — ex.: <b>Transbordado</b> no lugar de "encaminhado para humano" — sem "fechado ganho", "fechado perdido" ou "oportunidade".</p>
     </div>
 
@@ -223,7 +234,16 @@
       <div class="cards small" id="cards-op"></div>
 
       <div class="block">
-        <h3>Lista analítica das conversas <span class="cap">respeita os filtros · exporte pela própria tabela do Data Studio</span></h3>
+        <h3>Resumo por tabulação <span class="cap">assunto e resultado do objetivo</span></h3>
+        <div class="tbl wide" id="tbl-tabulacao-op"></div>
+      </div>
+
+      <div class="block">
+        <h3>Lista analítica das conversas <span class="cap">respeita os filtros aplicados</span></h3>
+        <div class="exportbar">
+          <div class="exptext"><b>Exportação da lista filtrada.</b> Depois de selecionar período, caixa, campanha, etiqueta, tabulação, status, agente ou time, clique para baixar uma exportação fake com todos os alunos/conversas desta visão.</div>
+          <button class="exportbtn" id="export-csv">Exportar lista filtrada CSV</button>
+        </div>
         <div class="tbl wide" id="tbl-analitico"></div>
       </div>
 
@@ -265,7 +285,7 @@
           </div>
           <div class="pagecard" style="--tone:var(--purple)">
             <div class="pc-h"><span class="pc-ic">▤</span> Operação — visão analítica</div>
-            <p>Responde <b>quem são</b> os alunos que compõem os números. Traz a lista analítica (nome, telefone, e-mail, caixa, status, etiquetas…) que respeita os filtros e é exportada pela própria tabela.</p>
+            <p>Responde <b>quem são</b> os alunos que compõem os números. Traz a lista analítica (nome, telefone, e-mail, data de entrada, data de entrada, caixa, campanha, tabulação, status, etiquetas…) que respeita os filtros e pode ser exportada em CSV.</p>
           </div>
         </div>
       </div>
@@ -273,10 +293,11 @@
       <div class="block">
         <h3>Como usar os filtros</h3>
         <ol class="steps">
+          <li>Selecione o <b>Período</b>. Use os presets ou escolha <b>Personalizado</b> e preencha as datas específicas.</li>
           <li>Comece pela <b>Caixa</b> — é onde a conversa está no Chatwoot. Nem toda conversa tem campanha, então a caixa vem primeiro.</li>
           <li>Se quiser, adicione a <b>Campanha</b> (o disparo/régua de origem) para olhar só um envio específico.</li>
           <li>Refine com <b>Etiqueta</b>, <b>Status</b>, e — na página Operação — também <b>Agente</b>, <b>Time</b> e <b>Origem</b>.</li>
-          <li>Leia os cards e tabelas. Para ver os alunos, vá para <b>Operação</b>; para baixar a lista, use o export da própria tabela (recurso do Data Studio). A exportação respeita os filtros aplicados.</li>
+          <li>Leia os cards e tabelas. Para ver os alunos, vá para <b>Operação</b>; para baixar a lista, clique em <b>Exportar lista filtrada CSV</b>. A exportação respeita os filtros aplicados.</li>
         </ol>
       </div>
 
@@ -373,7 +394,7 @@
         </div>
       </div>
 
-      <p class="note"><b>Dica de leitura.</b> Quer saber quem são os alunos de um número? Aplique o mesmo filtro na página <b>Operação</b> e olhe a <b>Lista analítica</b> — ela sempre reflete os filtros ativos e é o que você exporta.</p>
+      <p class="note"><b>Dica de leitura.</b> Quer saber quem são os alunos de um número? Aplique o mesmo filtro na página <b>Operação</b> e olhe a <b>Lista analítica</b> — ela sempre reflete os filtros ativos e é a base exportável em CSV.</p>
     </div>
 
   </div>
@@ -410,6 +431,15 @@ const MOTIVOS=["falha_ao_enviar_msg","contato_sem_wpp","template não entregue",
 const STATUSES=["Recebeu e não respondeu","Iniciou e parou de responder","Transbordado","Resolvido","Falha de envio","Pendente"];
 
 function phone(){const ac=pick(["41","11","21","31","47","51","85","62","19"]);return `+55 ${ac} 9${Math.floor(rand()*9)+1}xxx-${String(Math.floor(rand()*9000)+1000)}`;}
+function dataEntradaInfo(){
+  const d=Math.floor(rand()*16)+18;
+  const dia=d>30?d-30:d;
+  const mes=d>30?"07":"06";
+  const h=String(Math.floor(rand()*13)+8).padStart(2,"0");
+  const m=String(Math.floor(rand()*60)).padStart(2,"0");
+  const dd=String(dia).padStart(2,"0");
+  return {texto:`${dd}/${mes}/2026 ${h}:${m}`,iso:`2026-${mes}-${dd}`};
+}
 
 // etiquetas tipicamente aplicadas automaticamente pela IA (fluxo/bot); as demais tendem a ser classificação manual do colaborador
 const IA_TAGS=new Set(["atendimento_iniciado","ia_deixou_de_responder","ia_erro_resposta","finalizado_ia_15m","fluxo_encerrado","generic_warning","generic_warning_10min","sem_retorno","contato-sem-sucesso","contato_sem_wpp","falha_ao_enviar_msg","erro_etq","onboarding_20","onboarding_35","onboarding_50","onboarding_65","onboarding_80","onboarding_100","cs_boas_vindas_concluido","wol_c_fup_inadimplencia_1h","wol_c_fup_renovacao_1h","az_agendada","finalizada","retorno_ativo"]);
@@ -417,6 +447,42 @@ function tagSource(tag){
   // IA_TAGS: ~88% IA; demais: ~82% colaborador
   return IA_TAGS.has(tag)?weighted([["IA",88],["Colaborador",12]]):weighted([["Colaborador",82],["IA",18]]);
 }
+const TABULACOES=["Pagou","Link de pagamento enviado","Negou pagar","Solicitou negociação","Sem retorno","Atendimento iniciado","Transbordo realizado","Resolvido","Falha no envio","Cancelamento solicitado","Cancelamento revertido","Onboarding avançou","AZ agendada","AZ concluída","RA/PROCON","Atualização cadastral","Dúvida de acesso","Não identificado"];
+const RESULTADOS_OBJ=["Realizado","Parcial","Não realizado","Pendente","Não se aplica"];
+function tabulacaoFor(status,origem,caixa,campanha){
+  let tab="Atendimento iniciado", resultado="Pendente", objetivo="Atender solicitação";
+  if(caixa.includes("Inadimpl")){
+    objetivo="Regularizar pagamento / inadimplência";
+    tab=weighted([["Pagou",18],["Link de pagamento enviado",34],["Negou pagar",18],["Solicitou negociação",18],["Sem retorno",12]]);
+    resultado=tab==="Pagou"?"Realizado":(tab==="Link de pagamento enviado"||tab==="Solicitou negociação"?"Parcial":(tab==="Negou pagar"?"Não realizado":"Pendente"));
+  }else if(caixa.includes("Renovacao")||campanha==="WOL Renovação"){
+    objetivo="Renovação / atualização cadastral";
+    tab=weighted([["Atualização cadastral",22],["Solicitou negociação",20],["Sem retorno",25],["Negou pagar",12],["Resolvido",21]]);
+    resultado=tab==="Resolvido"||tab==="Atualização cadastral"?"Realizado":(tab==="Solicitou negociação"?"Parcial":(tab==="Negou pagar"?"Não realizado":"Pendente"));
+  }else if(caixa.includes("Onboarding")||campanha.includes("Onboarding")){
+    objetivo="Concluir etapa de onboarding";
+    tab=weighted([["Onboarding avançou",28],["AZ agendada",22],["AZ concluída",18],["Sem retorno",22],["Dúvida de acesso",10]]);
+    resultado=tab==="AZ concluída"||tab==="Onboarding avançou"?"Realizado":(tab==="AZ agendada"||tab==="Dúvida de acesso"?"Parcial":"Pendente");
+  }else if(caixa.includes("RA")){
+    objetivo="Tratar RA/PROCON";
+    tab=weighted([["RA/PROCON",45],["Transbordo realizado",25],["Resolvido",20],["Sem retorno",10]]);
+    resultado=tab==="Resolvido"?"Realizado":(tab==="Transbordo realizado"?"Parcial":"Pendente");
+  }else if(caixa.includes("Reversão")){
+    objetivo="Reversão / retenção";
+    tab=weighted([["Cancelamento revertido",22],["Cancelamento solicitado",26],["Solicitou negociação",18],["Sem retorno",20],["Resolvido",14]]);
+    resultado=tab==="Cancelamento revertido"||tab==="Resolvido"?"Realizado":(tab==="Solicitou negociação"?"Parcial":(tab==="Cancelamento solicitado"?"Não realizado":"Pendente"));
+  }else if(status==="Falha de envio"){
+    objetivo="Enviar comunicação"; tab="Falha no envio"; resultado="Não realizado";
+  }else if(status==="Transbordado"){
+    objetivo="Atender solicitação"; tab="Transbordo realizado"; resultado="Parcial";
+  }else if(status==="Resolvido"){
+    objetivo="Atender solicitação"; tab="Resolvido"; resultado="Realizado";
+  }else if(status==="Recebeu e não respondeu"){
+    objetivo="Obter retorno"; tab="Sem retorno"; resultado="Pendente";
+  }
+  return {tabulacao:tab,resultadoObjetivo:resultado,objetivoCampanha:objetivo};
+}
+
 function tagsFor(status,origem,caixa){
   const t=[];
   if(status==="Falha de envio")t.push(pick(["falha_ao_enviar_msg","contato_sem_wpp","erro_etq"]));
@@ -455,8 +521,13 @@ function makeRow(){
   let agente,time;
   if(status==="Transbordado"){agente=weighted([["Ana Paula",24],["Beatriz Lima",24],["Camila Rocha",22],["Sem agente",30]]);time=pick(TIMES);}
   else{agente=weighted([["Sem agente",35],["Ana Paula",22],["Beatriz Lima",22],["Camila Rocha",21]]);time=weighted([["Sem time",26],["CS",18],["Onboarding",16],["Orientações Acadêmicas",13],["Retenção",11],["Suporte",9],["Financeiro",7]]);}
+  const tipoEntrada=origem==="Demanda espontânea"?weighted([["Reativo",65],["Ativo",35]]):weighted([["Ativo",78],["Reativo",22]]);
+  const dt=dataEntradaInfo();
+  const tab=tabulacaoFor(status,origem,caixa,campanha);
   return {nome:`${fn} ${ln}`,telefone:phone(),email:`${slug(fn)}.${slug(ln)}@aluno.wiser.com`,id:String(720000+Math.floor(rand()*9999)),
-    caixa,campanha,origem,template,etiquetas:tagsFor(status,origem,caixa),agente,time,statusEnvio,respondeu,statusFinal:status,motivo};
+    dataEntrada:dt.texto,dataISO:dt.iso,tipoEntrada,caixa,campanha,origem,template,etiquetas:tagsFor(status,origem,caixa),
+    tabulacao:tab.tabulacao,resultadoObjetivo:tab.resultadoObjetivo,objetivoCampanha:tab.objetivoCampanha,
+    agente,time,statusEnvio,respondeu,statusFinal:status,motivo};
 }
 const DATA=Array.from({length:180},makeRow);
 
@@ -471,13 +542,25 @@ const isEnviado=r=>r.template!=='—'&&(r.statusEnvio==='Entregue'||r.statusEnvi
 const campLabel=r=>r.origem==='Demanda espontânea'?'Demanda espontânea':r.campanha;
 
 /* ===== FILTROS ===== */
-const state={caixa:'',campanha:'',etiqueta:'',etiquetaPor:'',statusFinal:'',agente:'',time:'',origem:''};
+const state={periodo:'',dataInicio:'',dataFim:'',caixa:'',campanha:'',etiqueta:'',etiquetaPor:'',tabulacao:'',resultadoObjetivo:'',statusFinal:'',agente:'',time:'',origem:''};
+function presetRange(p){
+  const end='2026-07-03';
+  if(p==='Últimos 7 dias')return {start:'2026-06-27',end};
+  if(p==='Últimos 15 dias')return {start:'2026-06-19',end};
+  if(p==='Últimos 30 dias')return {start:'2026-06-04',end};
+  if(p==='Este mês')return {start:'2026-07-01',end};
+  return null;
+}
 function applyFilters(data){
   return data.filter(r=>{
+    const range=(state.dataInicio||state.dataFim)?{start:state.dataInicio||'0000-01-01',end:state.dataFim||'9999-12-31'}:presetRange(state.periodo);
+    if(range){ if(r.dataISO<range.start||r.dataISO>range.end)return false; }
     if(state.caixa&&r.caixa!==state.caixa)return false;
     if(state.campanha){ if(state.campanha==='Demanda espontânea'){if(r.origem!=='Demanda espontânea')return false;} else if(r.campanha!==state.campanha)return false; }
     if(state.etiqueta&&!r.etiquetas.some(e=>e.t===state.etiqueta))return false;
     if(state.etiquetaPor&&!r.etiquetas.some(e=>e.por===state.etiquetaPor))return false;
+    if(state.tabulacao&&r.tabulacao!==state.tabulacao)return false;
+    if(state.resultadoObjetivo&&r.resultadoObjetivo!==state.resultadoObjetivo)return false;
     if(state.statusFinal&&r.statusFinal!==state.statusFinal)return false;
     if(state.agente&&r.agente!==state.agente)return false;
     if(state.time&&r.time!==state.time)return false;
@@ -489,26 +572,31 @@ function ctrl(field,label,opts,cosmetic){
   const o=[`<option value="">${esc(label)}: todos</option>`].concat(opts.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`)).join('');
   return `<div class="fctrl"><label>${esc(label)}</label><select data-field="${field}" data-cosmetic="${cosmetic?1:''}">${o}</select></div>`;
 }
+function dateCtrl(field,label){
+  return `<div class="fctrl"><label>${esc(label)}</label><input type="date" data-field="${field}" min="2026-06-18" max="2026-07-03"></div>`;
+}
 function buildFilters(){
   const tagCounts={};DATA.forEach(r=>r.etiquetas.forEach(e=>tagCounts[e.t]=(tagCounts[e.t]||0)+1));
   const topTags=Object.entries(tagCounts).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
-  const PERIODO=["Últimos 30 dias","Últimos 7 dias","Últimos 15 dias","Este mês"];
+  const PERIODO=["Últimos 30 dias","Últimos 7 dias","Últimos 15 dias","Este mês","Personalizado"];
   const caixas=uniq(DATA.map(r=>r.caixa)).sort();
   const camps=[...CAMPANHAS,"Demanda espontânea"];
-  const dash=ctrl('periodo','Período',PERIODO,true)+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('statusFinal','Status da conversa',STATUSES)+`<button class="fclear" data-clear>Limpar</button>`;
-  const op=ctrl('periodo','Período',PERIODO,true)+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('statusFinal','Status',STATUSES)+ctrl('agente','Agente',[...AGENTES,'Sem agente'])+ctrl('time','Time',[...TIMES,'Sem time'])+ctrl('origem','Origem',['Campanha','Demanda espontânea'])+`<button class="fclear" data-clear>Limpar</button>`;
+  const tabs=uniq(DATA.map(r=>r.tabulacao)).sort();
+  const dash=ctrl('periodo','Período',PERIODO)+dateCtrl('dataInicio','De')+dateCtrl('dataFim','Até')+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('tabulacao','Tabulação',tabs)+ctrl('resultadoObjetivo','Resultado objetivo',RESULTADOS_OBJ)+ctrl('statusFinal','Status da conversa',STATUSES)+`<button class="fclear" data-clear>Limpar</button>`;
+  const op=ctrl('periodo','Período',PERIODO)+dateCtrl('dataInicio','De')+dateCtrl('dataFim','Até')+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('tabulacao','Tabulação',tabs)+ctrl('resultadoObjetivo','Resultado objetivo',RESULTADOS_OBJ)+ctrl('statusFinal','Status',STATUSES)+ctrl('agente','Agente',[...AGENTES,'Sem agente'])+ctrl('time','Time',[...TIMES,'Sem time'])+ctrl('origem','Origem',['Campanha','Demanda espontânea'])+`<button class="fclear" data-clear>Limpar</button>`;
   $('filters-dash').innerHTML=dash;$('filters-op').innerHTML=op;
-  document.querySelectorAll('.filters select').forEach(s=>s.addEventListener('change',()=>{
-    if(!s.dataset.cosmetic)state[s.dataset.field]=s.value;
+  document.querySelectorAll('.filters select,.filters input').forEach(el=>el.addEventListener('change',()=>{
+    state[el.dataset.field]=el.value;
+    if(el.dataset.field==='dataInicio'||el.dataset.field==='dataFim'){state.periodo='Personalizado';}
     renderAll();
   }));
   document.querySelectorAll('[data-clear]').forEach(b=>b.addEventListener('click',()=>{
     for(const k in state)state[k]='';
-    document.querySelectorAll('.filters select').forEach(s=>s.value='');
+    document.querySelectorAll('.filters select,.filters input').forEach(el=>el.value='');
     renderAll();
   }));
 }
-function syncFilters(){document.querySelectorAll('.filters select').forEach(s=>{if(!s.dataset.cosmetic)s.value=state[s.dataset.field]||'';});}
+function syncFilters(){document.querySelectorAll('.filters select,.filters input').forEach(el=>{el.value=state[el.dataset.field]||'';});}
 
 /* ===== RENDER TABELA GENÉRICA ===== */
 function tableHTML(headers,rows,foot,align){
@@ -576,13 +664,24 @@ function renderCardsOp(base){
 }
 function renderAnalitico(base){
   const rows=base.map(r=>`<tr>
-    <td class="name-cell">${esc(r.nome)}</td><td>${esc(r.telefone)}</td><td>${esc(r.email)}</td><td class="link">${esc(r.id)}</td>
-    <td>${esc(r.caixa)}</td><td>${esc(r.campanha)}</td><td>${esc(r.origem)}</td><td>${tagsHTML(r.etiquetas)}</td>
+    <td>${esc(r.dataEntrada)}</td><td>${esc(r.tipoEntrada)}</td><td class="name-cell">${esc(r.nome)}</td><td>${esc(r.telefone)}</td><td>${esc(r.email)}</td><td class="link">${esc(r.id)}</td>
+    <td>${esc(r.caixa)}</td><td>${esc(r.campanha)}</td><td>${esc(r.origem)}</td><td>${esc(r.objetivoCampanha)}</td><td>${esc(r.tabulacao)}</td><td>${esc(r.resultadoObjetivo)}</td><td>${tagsHTML(r.etiquetas)}</td>
     <td>${badge(r.statusFinal)}</td><td>${r.agente==="Sem agente"?'<span class="t-muted">—</span>':esc(r.agente)}</td>
     <td>${r.time==="Sem time"?'<span class="t-muted">—</span>':esc(r.time)}</td><td>${r.motivo?`<span class="t-fail">${esc(r.motivo)}</span>`:'<span class="t-muted">—</span>'}</td>
   </tr>`);
-  const foot=`<tr><td colspan="12">Total · ${base.length} ${base.length===1?'conversa':'conversas'}</td></tr>`;
-  $('tbl-analitico').innerHTML=`<div class="scrolly">${tableHTML(["Nome","Telefone","E-mail","ID conversa","Caixa","Campanha","Origem","Etiquetas","Status","Agente","Time","Motivo da falha"],rows,foot)}</div>`;
+  const foot=`<tr><td colspan="17">Total · ${base.length} ${base.length===1?'conversa':'conversas'}</td></tr>`;
+  $('tbl-analitico').innerHTML=`<div class="scrolly">${tableHTML(["Data entrada","Entrada","Nome","Telefone","E-mail","ID conversa","Caixa","Campanha","Origem","Objetivo","Tabulação","Resultado objetivo","Etiquetas","Status","Agente","Time","Motivo da falha"],rows,foot)}</div>`;
+}
+function renderTabulacao(base,target){
+  const by={};
+  base.forEach(r=>{
+    const k=r.tabulacao+'||'+r.resultadoObjetivo+'||'+r.objetivoCampanha;
+    if(!by[k])by[k]={tab:r.tabulacao,res:r.resultadoObjetivo,obj:r.objetivoCampanha,total:0};
+    by[k].total++;
+  });
+  const total=base.length||1;
+  const rows=Object.values(by).sort((a,b)=>b.total-a.total).map(o=>`<tr><td class="name-cell">${esc(o.tab)}</td><td>${esc(o.obj)}</td><td>${esc(o.res)}</td><td class="num">${o.total}</td><td><div class="pctbar" style="--tone:var(--blue)"><div class="track"><div class="fill" style="width:${(o.total/total*100).toFixed(1)}%"></div></div><span class="pv">${(o.total/total*100).toFixed(1)}%</span></div></td></tr>`);
+  $(target).innerHTML=tableHTML(["Tabulação","Objetivo","Resultado","Conversas","%"],rows);
 }
 function renderAgente(base){
   const order=[...AGENTES,"Sem agente"];
@@ -624,13 +723,35 @@ function renderTagSource(base){
   $('tbl-tag-source').innerHTML=tableHTML(["Origem","Aplicações","Conversas","%"],rows);
 }
 
+function csvCell(v){
+  v=String(v??'');
+  return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;
+}
+function exportarListaFiltrada(){
+  const base=applyFilters(DATA);
+  const cols=["Data entrada","Entrada","Caixa","Campanha","Origem","Objetivo","Tabulação","Resultado objetivo","Etiquetas","Etiqueta por","Status da conversa","Nome","Telefone","E-mail","ID conversa","Agente","Time","Status envio","Respondeu","Motivo da falha"];
+  const lines=[cols.join(';')];
+  base.forEach(r=>{
+    const etiquetas=r.etiquetas.map(e=>e.t).join(' | ');
+    const etiquetaPor=r.etiquetas.map(e=>`${e.t}: ${e.por}`).join(' | ');
+    lines.push([r.dataEntrada,r.tipoEntrada,r.caixa,r.campanha,r.origem,r.objetivoCampanha,r.tabulacao,r.resultadoObjetivo,etiquetas,etiquetaPor,r.statusFinal,r.nome,r.telefone,r.email,r.id,r.agente,r.time,r.statusEnvio,r.respondeu,r.motivo||''].map(csvCell).join(';'));
+  });
+  const blob=new Blob(['\uFEFF'+lines.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const stamp=new Date().toISOString().slice(0,10);
+  a.href=url;a.download=`exportacao_fake_conversas_chatwoot_${stamp}.csv`;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),500);
+}
+
 /* ===== RENDER ALL ===== */
 function renderAll(){
   const base=applyFilters(DATA);
   const note=`Exibindo <b>${base.length}</b> de <b>${DATA.length}</b> conversas${Object.values(state).some(Boolean)?' · filtros aplicados':''}`;
   $('note-dash').innerHTML=note;$('note-op').innerHTML=note;
-  renderCardsDash(base);renderStatus(base);renderCaixa(base);renderCampanha(base);renderMotivo(base);
-  renderCardsOp(base);renderAnalitico(base);renderAgente(base);renderTime(base);renderTags(base);renderTagSource(base);
+  renderCardsDash(base);renderStatus(base);renderCaixa(base);renderCampanha(base);renderMotivo(base);renderTabulacao(base,'tbl-tabulacao');
+  renderCardsOp(base);renderTabulacao(base,'tbl-tabulacao-op');renderAnalitico(base);renderAgente(base);renderTime(base);renderTags(base);renderTagSource(base);
   syncFilters();
 }
 
@@ -640,6 +761,9 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===t.dataset.view));
   window.scrollTo({top:0,behavior:'smooth'});
 }));
+
+const exportBtn=$("export-csv");
+if(exportBtn){exportBtn.addEventListener("click",exportarListaFiltrada);}
 
 /* ===== INIT ===== */
 buildFilters();
