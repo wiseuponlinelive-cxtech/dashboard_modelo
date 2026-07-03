@@ -52,9 +52,8 @@
   .filters{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:18px 0 6px}
   .fctrl{display:flex;flex-direction:column;gap:3px}
   .fctrl label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600;padding-left:2px}
-  .fctrl select,.fctrl input[type=date]{font-family:inherit;font-size:12.5px;font-weight:500;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 30px 8px 11px;cursor:pointer;appearance:none;min-width:150px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
-  .fctrl select:focus,.fctrl input[type=date]:focus{outline:none;border-color:var(--blue)}
-  .fctrl input[type=date]{min-width:140px;background-image:none;padding-right:11px;color-scheme:dark}
+  .fctrl select{font-family:inherit;font-size:12.5px;font-weight:500;color:var(--text);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 30px 8px 11px;cursor:pointer;appearance:none;min-width:150px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+  .fctrl select:focus{outline:none;border-color:var(--blue)}
   .fclear{align-self:flex-end;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);background:transparent;border:0;cursor:pointer;padding:8px 4px;text-decoration:underline;text-underline-offset:2px}
   .fclear:hover{color:var(--text)}
   .exportbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
@@ -84,6 +83,30 @@
   .cards.small .cardx .cn{font-size:22px}
   .cardx .cl{font-size:12.5px;font-weight:600;margin-top:7px}
   .cardx .cd{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.3}
+
+  .cardx .cp{font-size:12px;font-weight:800;margin-top:8px;color:var(--tone,var(--text))}
+  .cardx .cp span{font-weight:600;color:var(--muted)}
+
+  /* GRÁFICOS SIMPLES (modelo Data Studio) */
+  .chartbox{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;overflow:hidden}
+  .chartbox + .chartbox{margin-top:16px}
+  .chart-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .chart-title b{font-size:14px}
+  .chart-title span{font-size:11.5px;color:var(--muted)}
+  .hbar-list{display:flex;flex-direction:column;gap:10px}
+  .hbar-row{display:grid;grid-template-columns:minmax(150px,240px) 1fr 92px;gap:12px;align-items:center;font-size:12px}
+  .hbar-label{font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hbar-track{height:12px;background:var(--card2);border:1px solid rgba(255,255,255,.05);border-radius:999px;overflow:hidden}
+  .hbar-fill{height:100%;background:var(--tone,var(--blue));border-radius:999px;min-width:2px}
+  .hbar-val{font-variant-numeric:tabular-nums;text-align:right;color:var(--muted);font-weight:700}
+  .daily-chart{display:flex;align-items:flex-end;gap:10px;height:210px;padding:12px 2px 0;border-bottom:1px solid var(--border);overflow-x:auto}
+  .day-col{min-width:72px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px}
+  .day-bars{height:160px;display:flex;align-items:flex-end;gap:4px;width:100%;justify-content:center}
+  .daybar{width:10px;border-radius:5px 5px 0 0;background:var(--tone);min-height:2px}
+  .day-label{font-size:10.5px;color:var(--muted);white-space:nowrap}
+  .chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--muted)}
+  .chart-legend .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:var(--tone)}
+  @media (max-width:700px){.hbar-row{grid-template-columns:1fr}.hbar-val{text-align:left}.daily-chart{height:180px}.day-bars{height:130px}}
 
   /* TABELAS */
   .tbl{border:1px solid var(--border);border-radius:12px;overflow:hidden}
@@ -196,6 +219,13 @@
       <div class="cards" id="cards-dash"></div>
 
       <div class="block">
+        <h3>Gráficos de performance <span class="cap">percentuais recalculados conforme os filtros</span></h3>
+        <div id="chart-status" class="chartbox"></div>
+        <div id="chart-diario" class="chartbox"></div>
+        <div id="chart-objetivo" class="chartbox"></div>
+      </div>
+
+      <div class="block">
         <h3>Resumo por status da conversa</h3>
         <div class="tbl" id="tbl-status"></div>
       </div>
@@ -293,7 +323,7 @@
       <div class="block">
         <h3>Como usar os filtros</h3>
         <ol class="steps">
-          <li>Selecione o <b>Período</b>. Use os presets ou escolha <b>Personalizado</b> e preencha as datas específicas.</li>
+          <li>Selecione o <b>Período</b>. Use os presets ou escolha <b>Personalizado</b> dentro do próprio controle de período, sem criar campos separados de data.</li>
           <li>Comece pela <b>Caixa</b> — é onde a conversa está no Chatwoot. Nem toda conversa tem campanha, então a caixa vem primeiro.</li>
           <li>Se quiser, adicione a <b>Campanha</b> (o disparo/régua de origem) para olhar só um envio específico.</li>
           <li>Refine com <b>Etiqueta</b>, <b>Status</b>, e — na página Operação — também <b>Agente</b>, <b>Time</b> e <b>Origem</b>.</li>
@@ -542,18 +572,19 @@ const isEnviado=r=>r.template!=='—'&&(r.statusEnvio==='Entregue'||r.statusEnvi
 const campLabel=r=>r.origem==='Demanda espontânea'?'Demanda espontânea':r.campanha;
 
 /* ===== FILTROS ===== */
-const state={periodo:'',dataInicio:'',dataFim:'',caixa:'',campanha:'',etiqueta:'',etiquetaPor:'',tabulacao:'',resultadoObjetivo:'',statusFinal:'',agente:'',time:'',origem:''};
+const state={periodo:'',caixa:'',campanha:'',etiqueta:'',etiquetaPor:'',tabulacao:'',resultadoObjetivo:'',statusFinal:'',agente:'',time:'',origem:''};
 function presetRange(p){
   const end='2026-07-03';
   if(p==='Últimos 7 dias')return {start:'2026-06-27',end};
   if(p==='Últimos 15 dias')return {start:'2026-06-19',end};
   if(p==='Últimos 30 dias')return {start:'2026-06-04',end};
   if(p==='Este mês')return {start:'2026-07-01',end};
+  if(String(p).startsWith('Personalizado'))return {start:'2026-06-20',end:'2026-07-03'};
   return null;
 }
 function applyFilters(data){
   return data.filter(r=>{
-    const range=(state.dataInicio||state.dataFim)?{start:state.dataInicio||'0000-01-01',end:state.dataFim||'9999-12-31'}:presetRange(state.periodo);
+    const range=presetRange(state.periodo);
     if(range){ if(r.dataISO<range.start||r.dataISO>range.end)return false; }
     if(state.caixa&&r.caixa!==state.caixa)return false;
     if(state.campanha){ if(state.campanha==='Demanda espontânea'){if(r.origem!=='Demanda espontânea')return false;} else if(r.campanha!==state.campanha)return false; }
@@ -569,34 +600,30 @@ function applyFilters(data){
   });
 }
 function ctrl(field,label,opts,cosmetic){
-  const o=[`<option value="">${esc(label)}: todos</option>`].concat(opts.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`)).join('');
+  const o=[`<option value="">Todos</option>`].concat(opts.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`)).join('');
   return `<div class="fctrl"><label>${esc(label)}</label><select data-field="${field}" data-cosmetic="${cosmetic?1:''}">${o}</select></div>`;
-}
-function dateCtrl(field,label){
-  return `<div class="fctrl"><label>${esc(label)}</label><input type="date" data-field="${field}" min="2026-06-18" max="2026-07-03"></div>`;
 }
 function buildFilters(){
   const tagCounts={};DATA.forEach(r=>r.etiquetas.forEach(e=>tagCounts[e.t]=(tagCounts[e.t]||0)+1));
   const topTags=Object.entries(tagCounts).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
-  const PERIODO=["Últimos 30 dias","Últimos 7 dias","Últimos 15 dias","Este mês","Personalizado"];
+  const PERIODO=["Últimos 30 dias","Últimos 7 dias","Últimos 15 dias","Este mês","Personalizado: 20/06/2026 a 03/07/2026"];
   const caixas=uniq(DATA.map(r=>r.caixa)).sort();
   const camps=[...CAMPANHAS,"Demanda espontânea"];
   const tabs=uniq(DATA.map(r=>r.tabulacao)).sort();
-  const dash=ctrl('periodo','Período',PERIODO)+dateCtrl('dataInicio','De')+dateCtrl('dataFim','Até')+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('tabulacao','Tabulação',tabs)+ctrl('resultadoObjetivo','Resultado objetivo',RESULTADOS_OBJ)+ctrl('statusFinal','Status da conversa',STATUSES)+`<button class="fclear" data-clear>Limpar</button>`;
-  const op=ctrl('periodo','Período',PERIODO)+dateCtrl('dataInicio','De')+dateCtrl('dataFim','Até')+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('tabulacao','Tabulação',tabs)+ctrl('resultadoObjetivo','Resultado objetivo',RESULTADOS_OBJ)+ctrl('statusFinal','Status',STATUSES)+ctrl('agente','Agente',[...AGENTES,'Sem agente'])+ctrl('time','Time',[...TIMES,'Sem time'])+ctrl('origem','Origem',['Campanha','Demanda espontânea'])+`<button class="fclear" data-clear>Limpar</button>`;
+  const dash=ctrl('periodo','Período',PERIODO)+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('tabulacao','Tabulação',tabs)+ctrl('resultadoObjetivo','Resultado objetivo',RESULTADOS_OBJ)+ctrl('statusFinal','Status da conversa',STATUSES)+`<button class="fclear" data-clear>Limpar</button>`;
+  const op=ctrl('periodo','Período',PERIODO)+ctrl('caixa','Caixa',caixas)+ctrl('campanha','Campanha',camps)+ctrl('etiqueta','Etiqueta',topTags)+ctrl('etiquetaPor','Etiqueta por',['IA','Colaborador'])+ctrl('tabulacao','Tabulação',tabs)+ctrl('resultadoObjetivo','Resultado objetivo',RESULTADOS_OBJ)+ctrl('statusFinal','Status',STATUSES)+ctrl('agente','Agente',[...AGENTES,'Sem agente'])+ctrl('time','Time',[...TIMES,'Sem time'])+ctrl('origem','Origem',['Campanha','Demanda espontânea'])+`<button class="fclear" data-clear>Limpar</button>`;
   $('filters-dash').innerHTML=dash;$('filters-op').innerHTML=op;
-  document.querySelectorAll('.filters select,.filters input').forEach(el=>el.addEventListener('change',()=>{
+  document.querySelectorAll('.filters select').forEach(el=>el.addEventListener('change',()=>{
     state[el.dataset.field]=el.value;
-    if(el.dataset.field==='dataInicio'||el.dataset.field==='dataFim'){state.periodo='Personalizado';}
     renderAll();
   }));
   document.querySelectorAll('[data-clear]').forEach(b=>b.addEventListener('click',()=>{
     for(const k in state)state[k]='';
-    document.querySelectorAll('.filters select,.filters input').forEach(el=>el.value='');
+    document.querySelectorAll('.filters select').forEach(el=>el.value='');
     renderAll();
   }));
 }
-function syncFilters(){document.querySelectorAll('.filters select,.filters input').forEach(el=>{el.value=state[el.dataset.field]||'';});}
+function syncFilters(){document.querySelectorAll('.filters select').forEach(el=>{el.value=state[el.dataset.field]||'';});}
 
 /* ===== RENDER TABELA GENÉRICA ===== */
 function tableHTML(headers,rows,foot,align){
@@ -604,23 +631,27 @@ function tableHTML(headers,rows,foot,align){
   return `<table><thead><tr>${th}</tr></thead><tbody>${rows.join('')||`<tr><td colspan="${headers.length}" class="t-muted" style="text-align:center;padding:22px">Sem dados para os filtros aplicados.</td></tr>`}</tbody>${foot?`<tfoot>${foot}</tfoot>`:''}</table>`;
 }
 const cnt=(arr,f)=>arr.filter(f).length;
+const fmtPct=(n,d)=>`${(d? n/d*100 : 0).toFixed(1)}%`;
 
 /* ===== DASHBOARD ===== */
 const TONE={"Recebeu e não respondeu":"var(--yellow)","Iniciou e parou de responder":"var(--orange)","Transbordado":"var(--purple)","Resolvido":"var(--green)","Falha de envio":"var(--red)","Pendente":"var(--blue)"};
 function renderCardsDash(base){
   const c=f=>cnt(base,f);
+  const total=base.length||0;
+  const enviados=c(isEnviado);
+  const respondentes=c(r=>r.respondeu==="Sim");
   const cards=[
-    [base.length,"Conversas na caixa","Entraram na caixa no período","var(--blue)"],
-    [c(isEnviado),"Templates enviados","Comunicações efetivamente enviadas","var(--cyan)"],
-    [c(r=>r.respondeu==="Sim"),"Responderam","Interagiram após o envio","var(--green)"],
-    [c(r=>r.statusFinal==="Recebeu e não respondeu"),"Recebeu e não respondeu","Recebeu o template e não retornou","var(--yellow)"],
-    [c(r=>r.statusFinal==="Iniciou e parou de responder"),"Iniciou e parou","Começou o atendimento e abandonou","var(--orange)"],
-    [c(r=>r.statusFinal==="Transbordado"),"Transbordado","Direcionado para atendimento humano/outro time","var(--purple)"],
-    [c(r=>r.statusFinal==="Resolvido"),"Resolvido","Conversa encerrada corretamente","var(--green)"],
-    [c(r=>r.statusFinal==="Falha de envio"),"Falhas de envio","Não foram enviados ou entregues","var(--red)"],
-    [c(r=>r.statusFinal==="Pendente"),"Pendente","Conversa aberta ou sem conclusão","var(--grey)"],
+    {n:total,l:"Conversas na caixa",d:"Entraram na caixa no período",t:"var(--blue)",pct:"100%",base:"base"},
+    {n:enviados,l:"Templates enviados",d:"Comunicações efetivamente enviadas",t:"var(--cyan)",pct:fmtPct(enviados,total),base:"das entradas"},
+    {n:respondentes,l:"Responderam",d:"Interagiram após o envio",t:"var(--green)",pct:fmtPct(respondentes,enviados||total),base:enviados?"dos envios":"das entradas"},
+    {n:c(r=>r.statusFinal==="Recebeu e não respondeu"),l:"Recebeu e não respondeu",d:"Recebeu o template e não retornou",t:"var(--yellow)",pct:fmtPct(c(r=>r.statusFinal==="Recebeu e não respondeu"),total),base:"das entradas"},
+    {n:c(r=>r.statusFinal==="Iniciou e parou de responder"),l:"Iniciou e parou",d:"Começou o atendimento e abandonou",t:"var(--orange)",pct:fmtPct(c(r=>r.statusFinal==="Iniciou e parou de responder"),total),base:"das entradas"},
+    {n:c(r=>r.statusFinal==="Transbordado"),l:"Transbordado",d:"Direcionado para atendimento humano/outro time",t:"var(--purple)",pct:fmtPct(c(r=>r.statusFinal==="Transbordado"),total),base:"das entradas"},
+    {n:c(r=>r.statusFinal==="Resolvido"),l:"Resolvido",d:"Conversa encerrada corretamente",t:"var(--green)",pct:fmtPct(c(r=>r.statusFinal==="Resolvido"),total),base:"das entradas"},
+    {n:c(r=>r.statusFinal==="Falha de envio"),l:"Falhas de envio",d:"Não foram enviados ou entregues",t:"var(--red)",pct:fmtPct(c(r=>r.statusFinal==="Falha de envio"),total),base:"das entradas"},
+    {n:c(r=>r.statusFinal==="Pendente"),l:"Pendente",d:"Conversa aberta ou sem conclusão",t:"var(--grey)",pct:fmtPct(c(r=>r.statusFinal==="Pendente"),total),base:"das entradas"},
   ];
-  $('cards-dash').innerHTML=cards.map(([n,l,d,t])=>`<div class="cardx" style="--tone:${t}"><div class="cn">${n}</div><div class="cl">${esc(l)}</div><div class="cd">${esc(d)}</div></div>`).join('');
+  $('cards-dash').innerHTML=cards.map(k=>`<div class="cardx" style="--tone:${k.t}"><div class="cn">${k.n}</div><div class="cl">${esc(k.l)}</div><div class="cd">${esc(k.d)}</div><div class="cp">${k.pct} <span>${esc(k.base)}</span></div></div>`).join('');
 }
 function renderStatus(base){
   const tot=base.length||1;
@@ -631,23 +662,49 @@ function renderStatus(base){
 }
 function renderCaixa(base){
   const caixas=uniq(base.map(r=>r.caixa));
-  const rows=caixas.map(cx=>{const g=base.filter(r=>r.caixa===cx);const n=f=>cnt(g,f);return {cx,g,html:
-    `<tr><td class="name-cell">${esc(cx)}</td><td class="num">${g.length}</td><td class="num">${n(r=>r.respondeu==="Sim")}</td><td class="num">${n(r=>r.statusFinal==="Recebeu e não respondeu")}</td><td class="num">${n(r=>r.statusFinal==="Iniciou e parou de responder")}</td><td class="num">${n(r=>r.statusFinal==="Transbordado")}</td><td class="num">${n(r=>r.statusFinal==="Resolvido")}</td><td class="num t-fail">${n(r=>r.statusFinal==="Falha de envio")}</td></tr>`};})
+  const rows=caixas.map(cx=>{const g=base.filter(r=>r.caixa===cx);const total=g.length||0;const n=f=>cnt(g,f);return {cx,g,html:
+    `<tr><td class="name-cell">${esc(cx)}</td><td class="num">${g.length}</td><td class="num">${n(r=>r.respondeu==="Sim")}</td><td class="num">${fmtPct(n(r=>r.respondeu==="Sim"),total)}</td><td class="num">${n(r=>r.statusFinal==="Recebeu e não respondeu")}</td><td class="num">${fmtPct(n(r=>r.statusFinal==="Recebeu e não respondeu"),total)}</td><td class="num">${n(r=>r.statusFinal==="Iniciou e parou de responder")}</td><td class="num">${n(r=>r.statusFinal==="Transbordado")}</td><td class="num">${fmtPct(n(r=>r.statusFinal==="Transbordado"),total)}</td><td class="num">${n(r=>r.statusFinal==="Resolvido")}</td><td class="num">${fmtPct(n(r=>r.statusFinal==="Resolvido"),total)}</td><td class="num t-fail">${n(r=>r.statusFinal==="Falha de envio")}</td></tr>`};})
     .sort((a,b)=>b.g.length-a.g.length).map(x=>x.html);
-  $('tbl-caixa').innerHTML=`<div class="scrolly">${tableHTML(["Caixa","Conversas","Responderam","Sem resposta","Abandonaram","Transbordados","Resolvidos","Falhas"],rows)}</div>`;
+  $('tbl-caixa').innerHTML=`<div class="scrolly">${tableHTML(["Caixa","Conversas","Responderam","% Resp.","Sem resposta","% Sem resp.","Abandonaram","Transbordados","% Transb.","Resolvidos","% Resol.","Falhas"],rows)}</div>`;
 }
 function renderCampanha(base){
   const labels=uniq(base.map(campLabel));
-  const rows=labels.map(cp=>{const g=base.filter(r=>campLabel(r)===cp);const n=f=>cnt(g,f);return {cp,g,html:
-    `<tr><td class="name-cell">${esc(cp)}</td><td class="num">${g.length}</td><td class="num">${n(isEnviado)}</td><td class="num">${n(r=>r.respondeu==="Sim")}</td><td class="num">${n(r=>r.statusFinal==="Recebeu e não respondeu")}</td><td class="num">${n(r=>r.statusFinal==="Transbordado")}</td><td class="num">${n(r=>r.statusFinal==="Resolvido")}</td><td class="num t-fail">${n(r=>r.statusFinal==="Falha de envio")}</td></tr>`};})
+  const rows=labels.map(cp=>{const g=base.filter(r=>campLabel(r)===cp);const total=g.length||0;const enviados=cnt(g,isEnviado);const n=f=>cnt(g,f);return {cp,g,html:
+    `<tr><td class="name-cell">${esc(cp)}</td><td class="num">${g.length}</td><td class="num">${enviados}</td><td class="num">${fmtPct(enviados,total)}</td><td class="num">${n(r=>r.respondeu==="Sim")}</td><td class="num">${fmtPct(n(r=>r.respondeu==="Sim"),enviados||total)}</td><td class="num">${n(r=>r.statusFinal==="Recebeu e não respondeu")}</td><td class="num">${n(r=>r.statusFinal==="Transbordado")}</td><td class="num">${fmtPct(n(r=>r.statusFinal==="Transbordado"),total)}</td><td class="num">${n(r=>r.statusFinal==="Resolvido")}</td><td class="num">${fmtPct(n(r=>r.statusFinal==="Resolvido"),total)}</td><td class="num t-fail">${n(r=>r.statusFinal==="Falha de envio")}</td></tr>`};})
     .sort((a,b)=>b.g.length-a.g.length).map(x=>x.html);
-  $('tbl-campanha').innerHTML=tableHTML(["Campanha","Conversas","Templates enviados","Responderam","Sem resposta","Transbordados","Resolvidos","Falhas"],rows);
+  $('tbl-campanha').innerHTML=tableHTML(["Campanha","Conversas","Templates enviados","% Envios","Responderam","% Resposta","Sem resposta","Transbordados","% Transb.","Resolvidos","% Resol.","Falhas"],rows);
 }
 function renderMotivo(base){
   const f=base.filter(r=>r.statusFinal==="Falha de envio");
   const by={};MOTIVOS.forEach(m=>by[m]=0);f.forEach(r=>by[r.motivo]=(by[r.motivo]||0)+1);
   const rows=Object.entries(by).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]).map(([m,n])=>`<tr><td class="name-cell">${esc(m)}</td><td class="num t-fail">${n}</td></tr>`);
   $('tbl-motivo').innerHTML=tableHTML(["Motivo da falha","Quantidade"],rows,`<tr><td>Total de falhas</td><td class="num">${f.length}</td></tr>`);
+}
+
+
+function hbarHTML(items,base,limit){
+  const rows=items.slice(0,limit||12).map(o=>{const pct=base?o.n/base*100:0;return `<div class="hbar-row"><div class="hbar-label" title="${esc(o.label)}">${esc(o.label)}</div><div class="hbar-track"><div class="hbar-fill" style="--tone:${o.tone||'var(--blue)'};width:${pct.toFixed(1)}%"></div></div><div class="hbar-val">${o.n} · ${pct.toFixed(1)}%</div></div>`;}).join('');
+  return `<div class="hbar-list">${rows||'<div class="t-muted">Sem dados para os filtros aplicados.</div>'}</div>`;
+}
+function renderChartStatus(base){
+  const total=base.length||0;
+  const items=STATUSES.map(s=>({label:s,n:cnt(base,r=>r.statusFinal===s),tone:TONE[s]})).sort((a,b)=>b.n-a.n);
+  $('chart-status').innerHTML=`<div class="chart-title"><b>Distribuição por status da conversa</b><span>% sobre entradas filtradas</span></div>${hbarHTML(items,total)}`;
+}
+function renderChartObjetivo(base){
+  const total=base.length||0;
+  const labels=uniq(base.map(r=>r.resultadoObjetivo));
+  const toneMap={"Realizado":"var(--green)","Parcial":"var(--yellow)","Não realizado":"var(--red)","Pendente":"var(--orange)","Não se aplica":"var(--grey)"};
+  const items=labels.map(l=>({label:l,n:cnt(base,r=>r.resultadoObjetivo===l),tone:toneMap[l]||'var(--blue)'})).sort((a,b)=>b.n-a.n);
+  $('chart-objetivo').innerHTML=`<div class="chart-title"><b>Resultado do objetivo do atendimento</b><span>ex.: pagou, link enviado, negou pagar, negociação, sem retorno</span></div>${hbarHTML(items,total)}`;
+}
+function renderChartDiario(base){
+  const by={};
+  base.forEach(r=>{ if(!by[r.dataISO])by[r.dataISO]={total:0,res:0,trans:0,sem:0}; by[r.dataISO].total++; if(r.statusFinal==='Resolvido')by[r.dataISO].res++; if(r.statusFinal==='Transbordado')by[r.dataISO].trans++; if(r.statusFinal==='Recebeu e não respondeu')by[r.dataISO].sem++; });
+  const days=Object.entries(by).sort((a,b)=>a[0].localeCompare(b[0]));
+  const max=Math.max(1,...days.flatMap(([,o])=>[o.total,o.res,o.trans,o.sem]));
+  const bars=days.map(([iso,o])=>{const d=iso.slice(8,10)+'/'+iso.slice(5,7);return `<div class="day-col" title="${d}: ${o.total} entradas"><div class="day-bars"><span class="daybar" style="--tone:var(--blue);height:${(o.total/max*100).toFixed(1)}%"></span><span class="daybar" style="--tone:var(--green);height:${(o.res/max*100).toFixed(1)}%"></span><span class="daybar" style="--tone:var(--purple);height:${(o.trans/max*100).toFixed(1)}%"></span><span class="daybar" style="--tone:var(--yellow);height:${(o.sem/max*100).toFixed(1)}%"></span></div><div class="day-label">${d}</div></div>`;}).join('');
+  $('chart-diario').innerHTML=`<div class="chart-title"><b>Evolução diária</b><span>entradas, resolvidos, transbordados e sem resposta</span></div><div class="daily-chart">${bars||'<div class="t-muted">Sem dados para os filtros aplicados.</div>'}</div><div class="chart-legend"><span><i class="dot" style="--tone:var(--blue)"></i>Entradas</span><span><i class="dot" style="--tone:var(--green)"></i>Resolvidos</span><span><i class="dot" style="--tone:var(--purple)"></i>Transbordados</span><span><i class="dot" style="--tone:var(--yellow)"></i>Sem resposta</span></div>`;
 }
 
 /* ===== OPERAÇÃO ===== */
@@ -750,7 +807,7 @@ function renderAll(){
   const base=applyFilters(DATA);
   const note=`Exibindo <b>${base.length}</b> de <b>${DATA.length}</b> conversas${Object.values(state).some(Boolean)?' · filtros aplicados':''}`;
   $('note-dash').innerHTML=note;$('note-op').innerHTML=note;
-  renderCardsDash(base);renderStatus(base);renderCaixa(base);renderCampanha(base);renderMotivo(base);renderTabulacao(base,'tbl-tabulacao');
+  renderCardsDash(base);renderChartStatus(base);renderChartDiario(base);renderChartObjetivo(base);renderStatus(base);renderCaixa(base);renderCampanha(base);renderMotivo(base);renderTabulacao(base,'tbl-tabulacao');
   renderCardsOp(base);renderTabulacao(base,'tbl-tabulacao-op');renderAnalitico(base);renderAgente(base);renderTime(base);renderTags(base);renderTagSource(base);
   syncFilters();
 }
