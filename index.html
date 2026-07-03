@@ -204,13 +204,15 @@
   .overview-total{text-align:right;min-width:130px}
   .overview-total b{display:block;font-size:31px;line-height:1;font-weight:900;color:var(--tone,var(--blue))}
   .overview-total span{font-size:11.5px;color:var(--muted);font-weight:600}
-  .metric-row{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:10px}
-  .mini-metric{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:12px 13px;position:relative}
+  .metric-row{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px}
+  .mini-metric{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:12px 13px;position:relative;flex:1 1 135px;min-width:128px}
   .mini-metric::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--tone,var(--blue))}
   .mini-metric .mn{font-size:22px;font-weight:900;line-height:1;color:var(--tone,var(--text));font-variant-numeric:tabular-nums}
   .mini-metric .ml{font-size:11.5px;font-weight:700;margin-top:6px;color:#fff;line-height:1.25}
   .mini-metric .mp{font-size:11px;color:var(--muted);margin-top:4px;font-weight:700}
   .mini-metric .mp b{color:var(--tone,var(--text));font-weight:900}
+  .metric-sep{width:1px;min-height:78px;flex:0 0 1px;background:linear-gradient(180deg,transparent,rgba(148,163,184,.45),transparent);margin:0 4px}
+  .metric-sep::after{content:'|';position:relative;top:27px;left:-3px;color:var(--muted);font-weight:800;font-size:12px;background:var(--card);padding:0 1px}
   .etq-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
   .etq-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:999px;padding:7px 11px;font-size:12px;color:#e2e8f0}
   .etq-chip .kind{font-size:9px;font-weight:900;text-transform:uppercase;border-radius:999px;padding:2px 6px;background:var(--card2);color:var(--muted)}
@@ -218,8 +220,8 @@
   .etq-chip .kind.tab{background:rgba(124,92,255,.18);color:#b8a8ff;border:1px solid rgba(124,92,255,.28)}
   .etq-chip b{color:#fff;font-variant-numeric:tabular-nums}
   .group-note{font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}
-  @media(max-width:1060px){.metric-row{grid-template-columns:repeat(3,1fr)}}
-  @media(max-width:620px){.metric-row{grid-template-columns:1fr}.overview-total{text-align:left}.overview-head{display:block}.overview-total{margin-top:12px}}
+  @media(max-width:1060px){.mini-metric{flex-basis:30%}.metric-sep{display:none}}
+  @media(max-width:620px){.metric-row{display:grid;grid-template-columns:1fr}.mini-metric{min-width:0}.overview-total{text-align:left}.overview-head{display:block}.overview-total{margin-top:12px}.metric-sep{display:block;width:100%;height:1px;min-height:1px;margin:2px 0;background:rgba(148,163,184,.25)}.metric-sep::after{display:none}}
 
   /* GUIA */
   .guide-lead{font-size:14px;color:var(--muted);max-width:820px;line-height:1.6;margin:16px 0 6px}
@@ -290,8 +292,9 @@
 
       <div class="block">
         <h3>Gráficos de performance <span class="cap">percentuais recalculados conforme os filtros</span></h3>
-        <div id="chart-status" class="chartbox"></div>
-        <div id="chart-diario" class="chartbox"></div>
+        <div id="chart-geral" class="chartbox"></div>
+        <div id="chart-ativas" class="chartbox"></div>
+        <div id="chart-reativas" class="chartbox"></div>
       </div>
 
       <div class="block">
@@ -397,9 +400,9 @@
           <table>
             <thead><tr><th>Análise</th><th>Base de cálculo</th><th>Exemplo de leitura</th></tr></thead>
             <tbody>
-              <tr><td class="name-cell">% Resolvidos</td><td>Total de conversas filtradas</td><td>Mostra quanto da entrada do período foi concluída.</td></tr>
-              <tr><td class="name-cell">% Transbordados</td><td>Total de conversas filtradas</td><td>Mostra quanto precisou sair do fluxo e ir para atendimento humano/outro time.</td></tr>
-              <tr><td class="name-cell">% Resposta</td><td>Templates enviados</td><td>Mostra a eficiência do disparo/comunicação.</td></tr>
+              <tr><td class="name-cell">Composição geral</td><td>Total de conversas filtradas</td><td>Mostra o peso de ativas/receptivas, abertas/fechadas e transbordos no recorte.</td></tr>
+              <tr><td class="name-cell">Performance das ativas</td><td>Total de conversas de campanha/template</td><td>Mostra respondidas pelo aluno, andamento, sem retorno, falhas e transbordos.</td></tr>
+              <tr><td class="name-cell">Performance das receptivas</td><td>Total de conversas de demanda espontânea</td><td>Mostra resolvidas/fechadas, aguardando resposta agente, andamento e transbordos.</td></tr>
             </tbody>
           </table>
         </div>
@@ -931,87 +934,74 @@ function renderOverviewGroups(base){
   const ativaRespondidas=cnt(ativa,r=>r.respondeu==='Sim');
   const ativaAndamento=cnt(ativa,r=>r.statusFinal==='Pendente'||r.statusFinal==='Iniciou e parou de responder');
   const ativaSemRetorno=cnt(ativa,r=>r.statusFinal==='Recebeu e não respondeu');
-  const ativaTransbordo=cnt(ativa,r=>r.statusFinal==='Transbordado');
   const ativaFalhas=cnt(ativa,r=>r.statusFinal==='Falha de envio');
+  const ativaTransbordo=cnt(ativa,r=>r.statusFinal==='Transbordado');
 
   const reativa=base.filter(r=>r.origem==='Demanda espontânea');
   const reativaTotal=reativa.length||0;
-  const reativaResolvidas=cnt(reativa,r=>r.statusFinal==='Resolvido');
-  const reativaAguardando=cnt(reativa,r=>r.statusConversa==='Abertas' && r.statusFinal==='Pendente' && r.respondeu==='Sim');
-  const reativaAndamento=cnt(reativa,r=>r.statusFinal==='Pendente'||r.statusFinal==='Iniciou e parou de responder');
+  const reativaResolvidasFechadas=cnt(reativa,r=>r.statusFinal==='Resolvido'||r.statusConversa==='Fechadas');
+  const reativaAguardandoAgente=cnt(reativa,r=>r.statusConversa==='Abertas' && r.statusFinal==='Pendente' && r.respondeu==='Sim');
+  const reativaAndamento=cnt(reativa,r=>r.statusConversa==='Abertas' && r.statusFinal!=='Transbordado' && !(r.statusFinal==='Pendente' && r.respondeu==='Sim'));
   const reativaTransbordo=cnt(reativa,r=>r.statusFinal==='Transbordado');
 
+  const transbordosTotal=ativaTransbordo+reativaTransbordo;
   const caixaTitulo=state.caixa||'Todas as caixas';
   const campanhaTitulo=selectedLabel(state.campanha,'Todas as campanhas','campanha','campanhas');
-
-  const etqCounts={};
-  base.forEach(r=>{
-    const nomes=new Set();
-    r.etiquetas.forEach(e=>nomes.add(e.t));
-    nomes.add(r.tabulacao);
-    nomes.forEach(nome=>{
-      const k=normLabel(nome);
-      if(!etqCounts[k])etqCounts[k]={nome,total:0};
-      etqCounts[k].total++;
-    });
-  });
-  let etqItems=[];
-  if(state.etiquetaTab&&state.etiquetaTab.length){
-    etqItems=state.etiquetaTab.map(v=>{
-      const [,nome]=v.split('||');
-      const found=etqCounts[normLabel(nome)];
-      return {nome,total:found?found.total:0};
-    });
-  }else{
-    etqItems=Object.values(etqCounts);
-  }
-  etqItems.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'}));
-  const etqChips=etqItems.length?etqItems.map(o=>`<span class="etq-chip">${esc(o.nome)} <b>${o.total}</b></span>`).join(''):'<span class="t-muted">Nenhuma etiqueta ou tabulação encontrada no filtro aplicado.</span>';
+  const sep='<div class="metric-sep" aria-hidden="true"></div>';
 
   $('overview-groups').innerHTML=`
     <section class="overview-card" style="--tone:var(--blue)">
       <div class="overview-head">
-        <div><div class="overview-kicker">Caixa(s) selecionada(s)</div><div class="overview-title">${esc(caixaTitulo)}</div><div class="overview-sub">Visão consolidada das conversas no recorte filtrado.</div></div>
+        <div><div class="overview-kicker">Caixa(s) selecionada(s)</div><div class="overview-title">${esc(caixaTitulo)}</div><div class="overview-sub">As conversas fecham a base entre ativas e receptivas. Transbordos ficam separados por serem um desfecho operacional.</div></div>
         <div class="overview-total"><b>${total}</b><span>total de conversas</span></div>
       </div>
       <div class="metric-row">
-        ${miniMetric('Conversas totais',total,total,'var(--blue)')}
+        ${miniMetric('Total de conversas',total,total,'var(--blue)')}
+        ${sep}
         ${miniMetric('Ativas',ativaTotal,total,'var(--cyan)')}
         ${miniMetric('Receptivas',reativaTotal,total,'var(--orange)')}
-        ${miniMetric('Transbordos realizados',ativaTransbordo+reativaTransbordo,total,'var(--purple)')}
+        ${sep}
         ${miniMetric('Abertas',abertas,total,'var(--blue)')}
         ${miniMetric('Fechadas',fechadas,total,'var(--green)')}
+        ${sep}
+        ${miniMetric('Transbordos realizados',transbordosTotal,total,'var(--purple)')}
       </div>
     </section>
 
     <section class="overview-card" style="--tone:var(--cyan)">
       <div class="overview-head">
-        <div><div class="overview-kicker">Ativas · Campanha selecionada</div><div class="overview-title">${esc(campanhaTitulo)}</div><div class="overview-sub">Alunos impactados por campanhas/templates ativos.</div></div>
+        <div><div class="overview-kicker">Ativas · campanha/template</div><div class="overview-title">${esc(campanhaTitulo)}</div><div class="overview-sub">Alunos impactados por campanhas ou templates ativos.</div></div>
         <div class="overview-total"><b>${ativaTotal}</b><span>ativas total</span></div>
       </div>
       <div class="metric-row">
-        ${miniMetric('Respondidas',ativaRespondidas,ativaTotal,'var(--green)')}
+        ${miniMetric('Total ativas',ativaTotal,ativaTotal,'var(--cyan)')}
+        ${sep}
+        ${miniMetric('Respondidas pelo aluno',ativaRespondidas,ativaTotal,'var(--green)')}
         ${miniMetric('Andamento',ativaAndamento,ativaTotal,'var(--blue)')}
         ${miniMetric('Sem retorno',ativaSemRetorno,ativaTotal,'var(--yellow)')}
-        ${miniMetric('Transbordo',ativaTransbordo,ativaTotal,'var(--purple)')}
         ${miniMetric('Falhas de envio',ativaFalhas,ativaTotal,'var(--red)')}
+        ${sep}
+        ${miniMetric('Transbordos',ativaTransbordo,ativaTotal,'var(--purple)')}
       </div>
-      <div class="group-note">Ativas = conversas com origem em campanha/template. As porcentagens são calculadas sobre o total de ativas no recorte filtrado.</div>
+      <div class="group-note">Ativas = conversas originadas por campanha/template. A base de cálculo deste bloco é o total de ativas do recorte filtrado.</div>
     </section>
 
     <section class="overview-card" style="--tone:var(--orange)">
       <div class="overview-head">
-        <div><div class="overview-kicker">Receptivas · Entrada própria</div><div class="overview-title">Alunos que entraram em contato por conta própria</div><div class="overview-sub">Conversas sem campanha direta, geradas por demanda espontânea.</div></div>
-        <div class="overview-total"><b>${reativaTotal}</b><span>reativas total</span></div>
+        <div><div class="overview-kicker">Receptivas · entrada própria</div><div class="overview-title">Alunos que entraram em contato por conta própria</div><div class="overview-sub">Conversas sem campanha direta, geradas por demanda espontânea.</div></div>
+        <div class="overview-total"><b>${reativaTotal}</b><span>receptivas total</span></div>
       </div>
-      <div class="metric-row" style="grid-template-columns:repeat(4,minmax(130px,1fr))">
-        ${miniMetric('Resolvidas',reativaResolvidas,reativaTotal,'var(--green)')}
-        ${miniMetric('Aguardando resposta agente',reativaAguardando,reativaTotal,'var(--yellow)')}
+      <div class="metric-row">
+        ${miniMetric('Total receptivas',reativaTotal,reativaTotal,'var(--orange)')}
+        ${sep}
+        ${miniMetric('Resolvidas / fechadas',reativaResolvidasFechadas,reativaTotal,'var(--green)')}
+        ${miniMetric('Aguardando resposta agente',reativaAguardandoAgente,reativaTotal,'var(--yellow)')}
         ${miniMetric('Andamento',reativaAndamento,reativaTotal,'var(--blue)')}
-        ${miniMetric('Transbordo',reativaTransbordo,reativaTotal,'var(--purple)')}
+        ${sep}
+        ${miniMetric('Transbordos',reativaTransbordo,reativaTotal,'var(--purple)')}
       </div>
-      <div class="group-note">Reativas = alunos que chegaram por demanda espontânea. “Aguardando resposta agente” representa conversas abertas com resposta do aluno e pendência de tratativa pela IA/colaborador.</div>
-    </section>  `;
+      <div class="group-note">“Aguardando resposta agente” representa conversas abertas em que o aluno já respondeu e ainda há pendência de retorno da IA/colaborador. “Andamento” representa conversas abertas que não estão nessa fila de retorno direto.</div>
+    </section>`;
 }
 function renderStatus(base){
   const tot=base.length||1;
@@ -1046,25 +1036,43 @@ function hbarHTML(items,base,limit){
   const rows=items.slice(0,limit||12).map(o=>{const pct=base?o.n/base*100:0;return `<div class="hbar-row"><div class="hbar-label" title="${esc(o.label)}">${esc(o.label)}</div><div class="hbar-track"><div class="hbar-fill" style="--tone:${o.tone||'var(--blue)'};width:${pct.toFixed(1)}%"></div></div><div class="hbar-val">${o.n} · ${pct.toFixed(1)}%</div></div>`;}).join('');
   return `<div class="hbar-list">${rows||'<div class="t-muted">Sem dados para os filtros aplicados.</div>'}</div>`;
 }
-function renderChartStatus(base){
+function renderChartGeral(base){
   const total=base.length||0;
-  const items=STATUSES.map(s=>({label:s,n:cnt(base,r=>r.statusFinal===s),tone:TONE[s]})).sort((a,b)=>b.n-a.n);
-  $('chart-status').innerHTML=`<div class="chart-title"><b>Distribuição por status da conversa</b><span>% sobre entradas filtradas</span></div>${hbarHTML(items,total)}`;
+  const ativa=base.filter(r=>r.origem==='Campanha');
+  const reativa=base.filter(r=>r.origem==='Demanda espontânea');
+  const items=[
+    {label:'Ativas',n:ativa.length,tone:'var(--cyan)'},
+    {label:'Receptivas',n:reativa.length,tone:'var(--orange)'},
+    {label:'Abertas',n:cnt(base,r=>r.statusConversa==='Abertas'),tone:'var(--blue)'},
+    {label:'Fechadas',n:cnt(base,r=>r.statusConversa==='Fechadas'),tone:'var(--green)'},
+    {label:'Transbordos realizados',n:cnt(base,r=>r.statusFinal==='Transbordado'),tone:'var(--purple)'}
+  ];
+  $('chart-geral').innerHTML=`<div class="chart-title"><b>Composição geral da caixa</b><span>ativas/receptivas, abertas/fechadas e transbordos</span></div>${hbarHTML(items,total)}`;
 }
-function renderChartObjetivo(base){
-  const total=base.length||0;
-  const labels=uniq(base.map(r=>r.resultadoObjetivo));
-  const toneMap={"Realizado":"var(--green)","Parcial":"var(--yellow)","Não realizado":"var(--red)","Pendente":"var(--orange)","Não se aplica":"var(--grey)"};
-  const items=labels.map(l=>({label:l,n:cnt(base,r=>r.resultadoObjetivo===l),tone:toneMap[l]||'var(--blue)'})).sort((a,b)=>b.n-a.n);
-  $('chart-objetivo').innerHTML=`<div class="chart-title"><b>Resultado do objetivo do atendimento</b><span>resultado dentro do recorte filtrado</span></div>${hbarHTML(items,total)}`;
+function renderChartAtivas(base){
+  const ativa=base.filter(r=>r.origem==='Campanha');
+  const total=ativa.length||0;
+  const items=[
+    {label:'Respondidas pelo aluno',n:cnt(ativa,r=>r.respondeu==='Sim'),tone:'var(--green)'},
+    {label:'Andamento',n:cnt(ativa,r=>r.statusFinal==='Pendente'||r.statusFinal==='Iniciou e parou de responder'),tone:'var(--blue)'},
+    {label:'Sem retorno',n:cnt(ativa,r=>r.statusFinal==='Recebeu e não respondeu'),tone:'var(--yellow)'},
+    {label:'Falhas de envio',n:cnt(ativa,r=>r.statusFinal==='Falha de envio'),tone:'var(--red)'},
+    {label:'Transbordos',n:cnt(ativa,r=>r.statusFinal==='Transbordado'),tone:'var(--purple)'}
+  ];
+  $('chart-ativas').innerHTML=`<div class="chart-title"><b>Performance das ativas</b><span>% sobre alunos que receberam campanha/template</span></div>${hbarHTML(items,total)}`;
 }
-function renderChartDiario(base){
-  const by={};
-  base.forEach(r=>{ if(!by[r.dataISO])by[r.dataISO]={total:0,res:0,trans:0,sem:0}; by[r.dataISO].total++; if(r.statusFinal==='Resolvido')by[r.dataISO].res++; if(r.statusFinal==='Transbordado')by[r.dataISO].trans++; if(r.statusFinal==='Recebeu e não respondeu')by[r.dataISO].sem++; });
-  const days=Object.entries(by).sort((a,b)=>a[0].localeCompare(b[0]));
-  const max=Math.max(1,...days.flatMap(([,o])=>[o.total,o.res,o.trans,o.sem]));
-  const bars=days.map(([iso,o])=>{const d=iso.slice(8,10)+'/'+iso.slice(5,7);return `<div class="day-col" title="${d}: ${o.total} entradas"><div class="day-bars"><span class="daybar" style="--tone:var(--blue);height:${(o.total/max*100).toFixed(1)}%"></span><span class="daybar" style="--tone:var(--green);height:${(o.res/max*100).toFixed(1)}%"></span><span class="daybar" style="--tone:var(--purple);height:${(o.trans/max*100).toFixed(1)}%"></span><span class="daybar" style="--tone:var(--yellow);height:${(o.sem/max*100).toFixed(1)}%"></span></div><div class="day-label">${d}</div></div>`;}).join('');
-  $('chart-diario').innerHTML=`<div class="chart-title"><b>Evolução diária</b><span>entradas, resolvidos, transbordados e sem resposta</span></div><div class="daily-chart">${bars||'<div class="t-muted">Sem dados para os filtros aplicados.</div>'}</div><div class="chart-legend"><span><i class="dot" style="--tone:var(--blue)"></i>Entradas</span><span><i class="dot" style="--tone:var(--green)"></i>Resolvidos</span><span><i class="dot" style="--tone:var(--purple)"></i>Transbordados</span><span><i class="dot" style="--tone:var(--yellow)"></i>Sem resposta</span></div>`;
+function renderChartReceptivas(base){
+  const reativa=base.filter(r=>r.origem==='Demanda espontânea');
+  const total=reativa.length||0;
+  const aguardando=cnt(reativa,r=>r.statusConversa==='Abertas' && r.statusFinal==='Pendente' && r.respondeu==='Sim');
+  const andamento=cnt(reativa,r=>r.statusConversa==='Abertas' && r.statusFinal!=='Transbordado' && !(r.statusFinal==='Pendente' && r.respondeu==='Sim'));
+  const items=[
+    {label:'Resolvidas / fechadas',n:cnt(reativa,r=>r.statusFinal==='Resolvido'||r.statusConversa==='Fechadas'),tone:'var(--green)'},
+    {label:'Aguardando resposta agente',n:aguardando,tone:'var(--yellow)'},
+    {label:'Andamento',n:andamento,tone:'var(--blue)'},
+    {label:'Transbordos',n:cnt(reativa,r=>r.statusFinal==='Transbordado'),tone:'var(--purple)'}
+  ];
+  $('chart-reativas').innerHTML=`<div class="chart-title"><b>Performance das receptivas</b><span>% sobre alunos que entraram por conta própria</span></div>${hbarHTML(items,total)}`;
 }
 
 /* ===== OPERAÇÃO ===== */
@@ -1180,7 +1188,7 @@ function renderAll(){
   const base=applyFilters(DATA);
   const note=`Exibindo <b>${base.length}</b> de <b>${DATA.length}</b> conversas${Object.values(state).some(v=>Array.isArray(v)?v.length>0:Boolean(v))?' · filtros aplicados':''}`;
   $('note-dash').innerHTML=note;$('note-op').innerHTML=note;
-  renderOverviewGroups(base);renderChartStatus(base);renderChartDiario(base);renderStatus(base);renderCampanha(base);renderMotivo(base);
+  renderOverviewGroups(base);renderChartGeral(base);renderChartAtivas(base);renderChartReceptivas(base);renderStatus(base);renderCampanha(base);renderMotivo(base);
   renderCardsOp(base);renderCaixa(base);renderAnalitico(base);renderAgente(base);renderTime(base);renderTags(base);renderTagSource(base);
   syncFilters();
 }
