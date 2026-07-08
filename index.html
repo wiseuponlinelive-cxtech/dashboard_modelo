@@ -285,6 +285,22 @@ tbody tr:last-child td{border-bottom:0}
 ::-webkit-scrollbar{width:9px;height:9px}
 ::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
 ::-webkit-scrollbar-thumb:hover{background:#2c3d5e}
+
+/* ===== extras: resultado real + guia ===== */
+.bg-amber{background:rgba(251,191,36,.14);color:var(--amber)}
+.ext-note{font-size:12px;color:var(--txt-2);background:var(--panel);border:1px solid var(--line-soft);border-left:2px solid var(--amber);border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ext-badge{background:rgba(251,191,36,.16);color:var(--amber);font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.ext-block{border-top:2px solid rgba(251,191,36,.5)}
+.ext-src{font-size:11.5px;color:var(--txt-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+.ext-src b{color:var(--txt-2)}
+.guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.guide-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+.guide-card h3{font-family:"Oswald",sans-serif;font-size:16px;font-weight:500;margin:0 0 10px;color:var(--txt);letter-spacing:.3px}
+.guide-card p{font-size:13px;color:var(--txt-2);margin:0 0 8px;line-height:1.55}
+.guide-card ul{margin:8px 0 0;padding-left:18px}
+.guide-card li{font-size:12.5px;color:var(--txt-2);margin-bottom:6px;line-height:1.5}
+.guide-card .by{display:inline-block;font-weight:700;padding:1px 8px;border-radius:6px;font-size:12px;margin-right:4px}
+@media(max-width:900px){.guide-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -303,6 +319,7 @@ tbody tr:last-child td{border-bottom:0}
     <button class="tab" data-v="operacao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Operação</button>
     <button class="tab" data-v="qualidade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>Qualidade / SQA</button>
     <button class="tab" data-v="tech"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1.5v3M15 1.5v3M9 19.5v3M15 19.5v3M1.5 9h3M1.5 15h3M19.5 9h3M19.5 15h3"/></svg>Fluxo / Automação</button>
+    <button class="tab" data-v="guia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M9 8h5M9 12h6M9 16h4"/></svg>Guia</button>
   </div>
 </div>
 
@@ -371,6 +388,40 @@ tbody tr:last-child td{border-bottom:0}
     </div>
   </div>
 
+  <!-- Resultado real pós-atendimento / campanha -->
+  <div class="section-head"><h2>Resultado real pós-atendimento / campanha</h2><span class="sub">análise cruzada entre Chatwoot, CRM, financeiro e plataforma</span></div>
+  <div class="ext-note"><span class="ext-badge">Integração externa</span> Estes indicadores <b>não vêm do Chatwoot</b> — dependem de cruzamento com CRM, financeiro e plataforma/LMS. É uma referência visual para o time técnico dimensionar as integrações futuras.</div>
+  <div class="three">
+    <div class="metric-block ext-block">
+      <div class="mb-head"><span class="mb-tag bg-amber">Reversão / Cancelamento</span><div class="mb-total"><div class="n tabular">120</div><div class="l">Solicitaram cancelamento</div></div></div>
+      <div class="kpi-row" style="flex-wrap:wrap;gap:6px 0">
+        <div class="kpi" style="min-width:150px"><div class="p c-red tabular">40,0%</div><div class="name">Cancelamento concluído</div><div class="v tabular"><b>48</b> alunos</div></div>
+        <div class="kpi" style="min-width:150px"><div class="p c-green tabular">26,7%</div><div class="name">Revertidos</div><div class="v tabular"><b>32</b> alunos</div></div>
+        <div class="kpi" style="min-width:150px"><div class="p c-amber tabular">33,3%</div><div class="name">Em tratativa</div><div class="v tabular"><b>40</b> alunos</div></div>
+      </div>
+      <div class="ext-src">Considera alunos que abriram atendimento de cancelamento e cruza com o <b>status final no CRM</b>.</div>
+    </div>
+    <div class="metric-block ext-block">
+      <div class="mb-head"><span class="mb-tag bg-amber">Inadimplência / Financeiro</span><div class="mb-total"><div class="n tabular">300</div><div class="l">Impactados por campanha</div></div></div>
+      <div class="kpi-row" style="flex-wrap:wrap;gap:6px 0">
+        <div class="kpi" style="min-width:130px"><div class="p c-green tabular">29,0%</div><div class="name">Pagaram após campanha</div><div class="v tabular"><b>87</b></div></div>
+        <div class="kpi" style="min-width:130px"><div class="p c-cyan tabular">46,7%</div><div class="name">Link enviado</div><div class="v tabular"><b>140</b></div></div>
+        <div class="kpi" style="min-width:130px"><div class="p c-red tabular">9,3%</div><div class="name">Negaram pagar</div><div class="v tabular"><b>28</b></div></div>
+        <div class="kpi" style="min-width:130px"><div class="p c-amber tabular">15,0%</div><div class="name">Sem retorno</div><div class="v tabular"><b>45</b></div></div>
+      </div>
+      <div class="ext-src">Considera alunos impactados por campanha de inadimplência e cruza com a <b>confirmação de pagamento no financeiro</b>.</div>
+    </div>
+    <div class="metric-block ext-block">
+      <div class="mb-head"><span class="mb-tag bg-amber">CS / Onboarding / Engajamento</span><div class="mb-total"><div class="n tabular">250</div><div class="l">Impactados por campanha</div></div></div>
+      <div class="kpi-row" style="flex-wrap:wrap;gap:6px 0">
+        <div class="kpi" style="min-width:145px"><div class="p c-green tabular">44,8%</div><div class="name">Acessaram após mensagem</div><div class="v tabular"><b>112</b></div></div>
+        <div class="kpi" style="min-width:145px"><div class="p c-red tabular">55,2%</div><div class="name">Não acessaram</div><div class="v tabular"><b>138</b></div></div>
+        <div class="kpi" style="min-width:145px"><div class="p c-cyan tabular">30,4%</div><div class="name">Avançaram etapa</div><div class="v tabular"><b>76</b></div></div>
+      </div>
+      <div class="ext-src">Considera alunos impactados por campanha de CS/Onboarding e cruza com <b>acesso ou evolução na plataforma</b>.</div>
+    </div>
+  </div>
+
   <!-- Gráficos -->
   <div class="section-head"><h2>Composição geral da caixa</h2><span class="sub">três leituras da mesma base de conversas</span></div>
   <div class="chart-card">
@@ -436,8 +487,9 @@ tbody tr:last-child td{border-bottom:0}
         <p class="cs" style="margin-top:0">Quem aplicou as tabulações no período</p>
         <div class="chart-box sm"><canvas id="ch-origem"></canvas></div>
         <div class="legend">
-          <div class="leg"><span class="sw" style="background:var(--purple)"></span><span class="ln">Aplicada por IA</span><span class="lv tabular">471</span><span class="lp tabular">76,0%</span></div>
-          <div class="leg"><span class="sw" style="background:var(--teal)"></span><span class="ln">Aplicada por colaborador</span><span class="lv tabular">149</span><span class="lp tabular">24,0%</span></div>
+          <div class="leg"><span class="sw" style="background:var(--purple)"></span><span class="ln">Aplicada por IA</span><span class="lv tabular">445</span><span class="lp tabular">71,8%</span></div>
+          <div class="leg"><span class="sw" style="background:var(--teal)"></span><span class="ln">Aplicada por colaborador</span><span class="lv tabular">136</span><span class="lp tabular">21,9%</span></div>
+          <div class="leg"><span class="sw" style="background:var(--amber)"></span><span class="ln">Aplicada por Monitoria</span><span class="lv tabular">39</span><span class="lp tabular">6,3%</span></div>
         </div>
       </div>
     </div>
@@ -452,13 +504,16 @@ tbody tr:last-child td{border-bottom:0}
   <div class="section-head"><h2>Etiquetas / tabulações no período</h2></div>
   <div class="table-card"><div class="table-scroll"><table id="tbl-etiq"></table></div></div>
 
-  <div class="section-head"><h2>Exportação</h2><span class="sub">gera a lista completa de conversas conforme os filtros aplicados</span></div>
+  <div class="section-head"><h2>Lista analítica</h2><span class="sub">amostra dos atendimentos no recorte atual — inclui origem da tabulação, transbordo e resultado real</span></div>
+  <div class="table-card"><div class="table-scroll"><table id="tbl-lista"></table></div></div>
+
+  <div class="section-head"><h2>Exportação</h2><span class="sub">gera um CSV com os atendimentos conforme os filtros aplicados</span></div>
   <div class="metric-block">
     <button class="btn-primary" id="export-btn">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
       Exportar lista filtrada (CSV)
     </button>
-    <div class="export-note">Exporta a lista de atendimentos/alunos <b>exatamente conforme os filtros aplicados acima</b> (mesmo recorte da tela). Colunas: Data de entrada · Origem · Caixa · Campanha · Etiquetas · Etiqueta por · Status · Nome · Telefone · E-mail · ID conversa · Agente · Time · Status de envio · Motivo da falha</div>
+    <div class="export-note">Gera um CSV com os atendimentos/alunos <b>conforme os filtros aplicados acima</b>. Colunas: Data de entrada · Origem · Caixa · Campanha · Etiquetas / Tabulações · <b>Etiqueta / Tabulação aplicada por (IA / Colaborador / Monitoria)</b> · Status · Nome · Telefone · E-mail · ID conversa · Agente · Time · Status de envio · Motivo da falha · Houve transbordo · Motivo do transbordo · Destino do transbordo · <b>cancelamento_concluido · pagamento_realizado · acesso_pos_campanha · evoluiu_etapa</b>.</div>
   </div>
 </section>
 
@@ -530,6 +585,40 @@ tbody tr:last-child td{border-bottom:0}
   <div class="three" id="tech-tables"></div>
 </section>
 
+<!-- ============ GUIA ============ -->
+<section class="view" id="view-guia">
+  <div class="hint"><b>Guia do dashboard</b> — como ler os indicadores e de onde vêm os dados. Protótipo com dados fictícios; referência para o dashboard real no Looker Studio / Data Studio.</div>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <h3>Etiqueta / Tabulação por</h3>
+      <p>Indica <b>quem aplicou ou originou</b> aquela classificação na conversa:</p>
+      <ul>
+        <li><span class="by" style="background:rgba(167,139,250,.16);color:var(--purple)">IA</span> classificação automática do agente virtual.</li>
+        <li><span class="by" style="background:rgba(45,212,191,.16);color:var(--teal)">Colaborador</span> aplicada manualmente pela operação.</li>
+        <li><span class="by" style="background:rgba(251,191,36,.16);color:var(--amber)">Monitoria</span> aplicada ou ajustada pela Qualidade ao revisar o atendimento.</li>
+      </ul>
+      <p>Esse filtro afeta cards, gráficos, tabelas, a lista analítica, a exportação e a “Origem das etiquetas” na aba Operação.</p>
+    </div>
+    <div class="guide-card">
+      <h3>Ativa × Receptiva e Transbordo</h3>
+      <p><b>Ativa</b>: a operação inicia o contato (campanha / template). <b>Receptiva</b>: o aluno inicia o contato.</p>
+      <p><b>Transbordo</b>: quando a conversa é encaminhada para outro time. Mostramos volume, motivo e destino — usamos sempre “Transbordado / Transbordo”, nunca “ganho/perdido”.</p>
+      <p>Os percentuais ficam sempre em destaque; o volume numérico aparece menor, logo abaixo.</p>
+    </div>
+    <div class="guide-card" style="grid-column:1 / -1">
+      <h3>Indicadores que dependem de integração externa</h3>
+      <p>O Chatwoot mostra a <b>conversa, campanha, etiquetas, atendimento, agente, time e status da conversa</b>. Para medir o <b>resultado real</b> após o contato, é preciso cruzar o Chatwoot com outras bases:</p>
+      <ul>
+        <li><b>Cancelamento concluído</b> depende do <b>CRM</b>.</li>
+        <li><b>Pagamento realizado</b> depende do <b>financeiro</b>.</li>
+        <li><b>Acesso à plataforma</b> depende da <b>base / LMS</b>.</li>
+        <li><b>Evolução do aluno</b> depende da <b>plataforma / sistema acadêmico</b>.</li>
+      </ul>
+      <p>A seção <b>“Resultado real pós-atendimento / campanha”</b> (na aba Visão Geral) é uma <b>referência visual</b> para o time técnico entender quais integrações futuras seriam necessárias. Ela fica <b>separada</b> dos indicadores operacionais do Chatwoot justamente porque depende desses cruzamentos.</p>
+    </div>
+  </div>
+</section>
+
 </div>
 
 <div class="toast" id="toast">
@@ -566,7 +655,11 @@ const FAILS = [
   "131026: Message undeliverable",
   "131049: This message was not delivered to maintain healthy ecosystem engagement",
   "janela expirada",
-  "template não entregue"
+  "template não entregue",
+  "erro de integração",
+  "opt-in ausente",
+  "telefone inválido",
+  "erro desconhecido"
 ];
 const alpha = a => [...a].sort((x,y)=>x.localeCompare(y,'pt-BR'));
 
@@ -583,7 +676,7 @@ function buildFilters(container){
     {key:"campanha", lbl:"Campanha", type:"multi", dynamic:true},
     {key:"status", lbl:"Status", type:"multi", opts:["Abertas","Fechadas","Todas"]},
     {key:"etiquetas", lbl:"Etiquetas / Tabulações", type:"multi", opts:alpha(TAGS)},
-    {key:"por", lbl:"Etiqueta / Tabulação por", type:"single", opts:["Todos","Colaborador","IA"]},
+    {key:"por", lbl:"Etiqueta / Tabulação por", type:"single", opts:["Todos","Colaborador","IA","Monitoria"]},
     {key:"falha", lbl:"Falha de envio", type:"multi", opts:alpha(FAILS)}
   ];
   defs.forEach(d=>container.appendChild(makeFilter(d)));
@@ -791,7 +884,7 @@ function renderCharts(v){
   }
 
   if(v==="operacao"){
-    doughnut("ch-origem",["IA","Colaborador"],[471,149],[C.purple,C.teal]);
+    doughnut("ch-origem",["IA","Colaborador","Monitoria"],[445,136,39],[C.purple,C.teal,C.amber]);
   }
 
   if(v==="qualidade"){
@@ -879,14 +972,14 @@ table("tbl-camp",
 
 // Etiquetas
 const etiqRows=[
-  ["resolvido",142,118,24],["transbordo",89,71,18],["sem_retorno",76,76,0],["pago",54,38,16],
-  ["quero_pagar",41,29,12],["retorno_ativo",38,31,7],["revertido",33,12,21],["cancelado",29,4,25],
-  ["onboarding_50",27,22,5],["onboarding_100",21,18,3],["falha_ao_enviar_msg",19,19,0],
-  ["az_agendada",16,11,5],["onboarding_20",14,12,2],["ra_procon",12,3,9],["az_concluida",9,7,2]
+  ["resolvido",142,110,22,10],["transbordo",89,66,17,6],["sem_retorno",76,74,0,2],["pago",54,35,15,4],
+  ["quero_pagar",41,27,11,3],["retorno_ativo",38,29,7,2],["revertido",33,11,18,4],["cancelado",29,4,22,3],
+  ["onboarding_50",27,21,5,1],["onboarding_100",21,17,3,1],["falha_ao_enviar_msg",19,19,0,0],
+  ["az_agendada",16,10,5,1],["onboarding_20",14,12,2,0],["ra_procon",12,3,7,2],["az_concluida",9,7,2,0]
 ];
 table("tbl-etiq",
-  [{h:"Etiqueta / Tabulação"},{h:"Conversas",num:1},{h:"Por IA",num:1},{h:"Por colaborador",num:1}],
-  etiqRows.map(r=>[`<span class="tag" style="background:rgba(79,140,255,.14);color:var(--blue)">${r[0]}</span>`,`<b class="tabular">${r[1]}</b>`,`<span class="c-purple tabular">${r[2]}</span>`,`<span class="c-teal tabular">${r[3]}</span>`]));
+  [{h:"Etiqueta / Tabulação"},{h:"Conversas",num:1},{h:"Aplicada por IA",num:1},{h:"Aplicada por Colaborador",num:1},{h:"Aplicada por Monitoria",num:1}],
+  etiqRows.map(r=>[`<span class="tag" style="background:rgba(79,140,255,.14);color:var(--blue)">${r[0]}</span>`,`<b class="tabular">${r[1]}</b>`,`<span class="c-purple tabular">${r[2]}</span>`,`<span class="c-teal tabular">${r[3]}</span>`,`<span class="c-amber tabular">${r[4]}</span>`]));
 
 // SQA — faixa
 table("tbl-faixa",
@@ -929,25 +1022,77 @@ document.getElementById("tech-tables").innerHTML=techGroups.map(g=>{
 /* =========================================================
    EXPORTAÇÃO FAKE
 ========================================================= */
+/* =========================================================
+   LISTA ANALÍTICA + RESULTADO REAL (mock) + EXPORTAÇÃO CSV
+========================================================= */
+const CSV_COLS=["Data de entrada","Origem","Caixa","Campanha","Etiquetas / Tabulações","Etiqueta / Tabulação aplicada por","Status da conversa","Nome","Telefone","E-mail","ID conversa","Agente","Time","Status envio","Motivo da falha","Houve transbordo","Motivo do transbordo","Destino do transbordo","cancelamento_concluido","pagamento_realizado","acesso_pos_campanha","evoluiu_etapa"];
+const analytics=[
+ {data:"01/07/2026",origem:"Receptiva",caixa:"WOL - Reversão - 5022",campanha:"—",etiquetas:"revertido; retorno_ativo",por:"Monitoria",status:"Fechada",nome:"João Almeida",tel:"(41) 99812-3345",email:"joao.almeida@email.com",id:"CW-10421",agente:"Carla Souza",time:"Reversão",envio:"—",falha:"—",transb:"Não",mtransb:"—",dtransb:"—",canc:"não",pgto:"",acesso:"",evol:""},
+ {data:"01/07/2026",origem:"Receptiva",caixa:"LIVE - Reversão - 3714",campanha:"—",etiquetas:"cancelado",por:"Colaborador",status:"Fechada",nome:"Marina Costa",tel:"(11) 99671-2210",email:"marina.costa@email.com",id:"CW-10422",agente:"Bruno Lima",time:"Reversão",envio:"—",falha:"—",transb:"Não",mtransb:"—",dtransb:"—",canc:"sim",pgto:"",acesso:"",evol:""},
+ {data:"02/07/2026",origem:"Ativa",caixa:"Live - Inadimplência - 0423",campanha:"Inad Live D+1",etiquetas:"quero_pagar; pago",por:"IA",status:"Fechada",nome:"Rafael Nunes",tel:"(21) 98812-9087",email:"rafael.nunes@email.com",id:"CW-10430",agente:"IA · Bot Live",time:"Financeiro",envio:"Entregue",falha:"—",transb:"Não",mtransb:"—",dtransb:"—",canc:"",pgto:"sim",acesso:"",evol:""},
+ {data:"02/07/2026",origem:"Ativa",caixa:"WOL - Inadimplencia - 0926",campanha:"Inad WOL D+3",etiquetas:"sem_retorno",por:"IA",status:"Aberta",nome:"Patrícia Gomes",tel:"(31) 99422-1145",email:"patricia.gomes@email.com",id:"CW-10431",agente:"IA · Bot WOL",time:"Financeiro",envio:"Entregue",falha:"—",transb:"Não",mtransb:"—",dtransb:"—",canc:"",pgto:"não",acesso:"",evol:""},
+ {data:"03/07/2026",origem:"Ativa",caixa:"Live - Inadimplência MD - 6286",campanha:"Inad Live D+7",etiquetas:"falha_ao_enviar_msg",por:"IA",status:"Aberta",nome:"Diego Martins",tel:"(41) 99333-8890",email:"diego.martins@email.com",id:"CW-10432",agente:"IA · Bot Live",time:"Financeiro",envio:"Falhou",falha:"131049: This message was not delivered to maintain healthy ecosystem engagement",transb:"Não",mtransb:"—",dtransb:"—",canc:"",pgto:"",acesso:"",evol:""},
+ {data:"03/07/2026",origem:"Ativa",caixa:"Live - Inadimplência - 0423",campanha:"Inad Live D+1",etiquetas:"quero_pagar; transbordo",por:"IA",status:"Aberta",nome:"Luana Ferreira",tel:"(11) 98122-6654",email:"luana.ferreira@email.com",id:"CW-10433",agente:"IA · Bot Live",time:"Financeiro",envio:"Entregue",falha:"—",transb:"Sim",mtransb:"Dúvida financeira",dtransb:"Time Financeiro",canc:"",pgto:"não",acesso:"",evol:""},
+ {data:"04/07/2026",origem:"Ativa",caixa:"WOL Onboarding - 5531",campanha:"CS Boas-vindas",etiquetas:"onboarding_50",por:"IA",status:"Fechada",nome:"Camila Rocha",tel:"(85) 99511-3320",email:"camila.rocha@email.com",id:"CW-10440",agente:"IA · Bot WOL",time:"Onboarding / CS",envio:"Entregue",falha:"—",transb:"Não",mtransb:"—",dtransb:"—",canc:"",pgto:"",acesso:"sim",evol:"sim"},
+ {data:"04/07/2026",origem:"Ativa",caixa:"WOL Onboarding - 5531",campanha:"Onboarding WOL D+5",etiquetas:"onboarding_20",por:"Colaborador",status:"Aberta",nome:"Thiago Souza",tel:"(62) 99870-4412",email:"thiago.souza@email.com",id:"CW-10441",agente:"Elaine Ramos",time:"Onboarding / CS",envio:"Entregue",falha:"—",transb:"Não",mtransb:"—",dtransb:"—",canc:"",pgto:"",acesso:"não",evol:"não"},
+ {data:"05/07/2026",origem:"Receptiva",caixa:"WOL FAQ - 4054",campanha:"—",etiquetas:"resolvido",por:"IA",status:"Fechada",nome:"Beatriz Lima",tel:"(51) 99120-7788",email:"beatriz.lima@email.com",id:"CW-10450",agente:"IA · Bot WOL",time:"FAQ / Suporte",envio:"—",falha:"—",transb:"Não",mtransb:"—",dtransb:"—",canc:"",pgto:"",acesso:"",evol:""},
+ {data:"05/07/2026",origem:"Receptiva",caixa:"WOL - Auditoria - 0772",campanha:"—",etiquetas:"az_concluida",por:"Monitoria",status:"Fechada",nome:"Amostra auditada",tel:"—",email:"—",id:"CW-10451",agente:"Monitoria",time:"Qualidade",envio:"—",falha:"—",transb:"Não",mtransb:"—",dtransb:"—",canc:"",pgto:"",acesso:"",evol:""},
+ {data:"06/07/2026",origem:"Ativa",caixa:"WOL - Renovação - 5537",campanha:"Renovação 30D",etiquetas:"retorno_ativo",por:"IA",status:"Aberta",nome:"Gustavo Pereira",tel:"(19) 99655-2201",email:"gustavo.pereira@email.com",id:"CW-10460",agente:"IA · Bot WOL",time:"Financeiro",envio:"Entregue",falha:"—",transb:"Não",mtransb:"—",dtransb:"—",canc:"",pgto:"",acesso:"",evol:""},
+ {data:"06/07/2026",origem:"Ativa",caixa:"Live - Inadimplência - 0423",campanha:"Inad Live D+7",etiquetas:"ra_procon; transbordo",por:"Colaborador",status:"Aberta",nome:"Fernanda Dias",tel:"(11) 99044-1123",email:"fernanda.dias@email.com",id:"CW-10461",agente:"Ana Prado",time:"Financeiro",envio:"—",falha:"—",transb:"Sim",mtransb:"Reclamação RA/Procon",dtransb:"Time Jurídico / RA",canc:"",pgto:"",acesso:"",evol:""}
+];
+function porTag(p){const m={IA:"var(--purple)",Colaborador:"var(--teal)",Monitoria:"var(--amber)"};const c=m[p]||"var(--txt-2)";return `<span class="tag" style="background:${c}22;color:${c}">${p}</span>`;}
+function resReal(r){const o=[];if(r.canc==="sim")o.push("cancelou");if(r.pgto==="sim")o.push("pagou");if(r.acesso==="sim")o.push("acessou");if(r.evol==="sim")o.push("avançou etapa");return o.length?`<span class="c-green">${o.join(" · ")}</span>`:'<span style="color:var(--txt-3)">—</span>';}
+table("tbl-lista",
+  [{h:"Data"},{h:"Origem"},{h:"Caixa"},{h:"Campanha"},{h:"Etiquetas / Tabulações"},{h:"Aplicada por"},{h:"Status"},{h:"Agente"},{h:"Time"},{h:"Transbordo"},{h:"Destino transb."},{h:"Resultado real"}],
+  analytics.map(r=>[
+    r.data,
+    `<span class="tag" style="${r.origem==="Ativa"?"background:rgba(79,140,255,.14);color:var(--blue)":"background:rgba(56,189,248,.14);color:var(--cyan)"}">${r.origem}</span>`,
+    r.caixa, r.campanha, r.etiquetas, porTag(r.por), r.status, r.agente, r.time,
+    r.transb==="Sim"?'<span class="c-amber">Sim</span>':'<span style="color:var(--txt-3)">Não</span>',
+    r.dtransb, resReal(r)
+  ]));
+
+function filteredRows(){
+  return analytics.filter(r=>{
+    if(state.caixa.length && !state.caixa.includes(r.caixa)) return false;
+    if(state.campanha.length && !state.campanha.includes(r.campanha)) return false;
+    if(state.por!=="Todos" && r.por!==state.por) return false;
+    if(state.status.length && !state.status.includes("Todas")){
+      const s=r.status==="Fechada"?"Fechadas":"Abertas";
+      if(!state.status.includes(s)) return false;
+    }
+    if(state.etiquetas.length && !state.etiquetas.some(t=>r.etiquetas.includes(t))) return false;
+    if(state.falha.length && !state.falha.includes(r.falha)) return false;
+    return true;
+  });
+}
+function csvEscape(v){v=(v==null?"":String(v));return '"'+v.replace(/"/g,'""')+'"';}
 document.getElementById("export-btn").onclick=function(){
-  const t=document.getElementById("toast"); const btn=this;
-  const orig=btn.innerHTML;
+  const t=document.getElementById("toast"); const btn=this; const orig=btn.innerHTML;
   btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9" opacity=".3"/><path d="M12 3a9 9 0 019 9"/></svg> Gerando arquivo…';
   btn.style.opacity=".8";
   setTimeout(()=>{
-    const p=[];
-    p.push("Período: "+state.periodo);
+    const rows=filteredRows();
+    const lines=[CSV_COLS.map(csvEscape).join(";")];
+    rows.forEach(r=>lines.push([r.data,r.origem,r.caixa,r.campanha,r.etiquetas,r.por,r.status,r.nome,r.tel,r.email,r.id,r.agente,r.time,r.envio,r.falha,r.transb,r.mtransb,r.dtransb,r.canc,r.pgto,r.acesso,r.evol].map(csvEscape).join(";")));
+    try{
+      const blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8;"});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a"); a.href=url; a.download="atendimentos_filtrados.csv";
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }catch(e){}
+    const p=["Período: "+state.periodo];
     if(state.caixa.length) p.push(state.caixa.length===1?("Caixa: "+state.caixa[0]):(state.caixa.length+" caixas"));
     if(state.campanha.length) p.push(state.campanha.length+" campanha(s)");
     if(state.status.length) p.push("Status: "+state.status.join("/"));
     if(state.etiquetas.length) p.push(state.etiquetas.length+" etiqueta(s)");
     if(state.por!=="Todos") p.push("Tabulado por: "+state.por);
     if(state.falha.length) p.push(state.falha.length+" motivo(s) de falha");
-    document.getElementById("toast-msg").textContent="CSV gerado — atendimentos/alunos exportados conforme o filtro ("+p.join(" · ")+").";
+    document.getElementById("toast-msg").textContent="CSV gerado — "+rows.length+" registro(s) conforme o filtro ("+p.join(" · ")+").";
     t.classList.add("show");
     btn.innerHTML=orig; btn.style.opacity="1";
-    setTimeout(()=>t.classList.remove("show"),3200);
-  },1100);
+    setTimeout(()=>t.classList.remove("show"),3600);
+  },700);
 };
 </script>
 </body>
